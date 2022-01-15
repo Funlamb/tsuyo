@@ -1,0 +1,18 @@
+This software will keep track of work outs.
+Cardio and strength training
+
+Must Haves:
+quick to insert new sets, reps, and weights
+keep track of progress
+show graphs of strength gains
+Edit mistakes
+login on the web
+
+Wants:
+keep track of user's weight
+set goals from the user
+set goals that could hep the user automatically
+Apple App
+
+Research:
+Look up things
