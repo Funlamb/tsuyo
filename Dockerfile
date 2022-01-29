@@ -7,7 +7,7 @@ RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN python3 -m pip install flask
-COPY example.py .
-ENTRYPOINT  FLASK_APP=example flask run --host=0.0.0.0
+COPY main.py .
+ENTRYPOINT  FLASK_APP=main flask run --host=0.0.0.0
 
 EXPOSE 5000
