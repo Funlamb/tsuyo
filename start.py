@@ -14,6 +14,7 @@ def index():
    db = get_db_connection()
    posts = db.execute("SELECT * FROM users").fetchall()
    db.close()
+   print("Hello")
    return render_template("index.html", posts=posts)
 
 if __name__ == '__main__':
