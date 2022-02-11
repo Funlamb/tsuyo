@@ -1,4 +1,4 @@
-This software will keep track of work outs.
+This software will keep track of work outs
 Cardio and strength training
 
 Must Haves:
