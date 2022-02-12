@@ -1,0 +1,11 @@
+{%extends 'base.html'%}
+
+{%block content%} 
+    <h1>{%block title%} Mike {% endblock %}</h1>
+    {%for p in posts %}
+            <p>Hello</p>
+            <div class='post'>
+                <p>{{p['firstName']}}</p>
+            </div>
+    {% endfor %} 
+{% endblock %}
