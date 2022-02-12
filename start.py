@@ -11,7 +11,6 @@ def get_db_connection():
 
 @app.route('/')
 def index():
-   print("Hello")
    db = get_db_connection()
    posts = db.execute("SELECT * FROM users").fetchall()
    print(posts)
@@ -21,13 +20,10 @@ def index():
 @app.route('/mike')
 def mike():
    db = get_db_connection()
-   print("Mike")
    query = """SELECT users.firstName, workouts.dateandtime, sets.*, exercises.name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = 1"""
-   # query = """SELECT * FROM workouts"""
    posts = db.execute(query).fetchall()
-   print(posts[0][4])
    db.close()
    return render_template("mike.html", posts=posts)
 

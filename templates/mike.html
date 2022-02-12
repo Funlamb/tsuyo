@@ -2,10 +2,25 @@
 
 {%block content%} 
     <h1>{%block title%} Mike {% endblock %}</h1>
-    {%for p in posts %}
-            <p>Hello</p>
-            <div class='post'>
-                <p>{{p['firstName']}}</p>
-            </div>
-    {% endfor %} 
+    <table class="table tablestriped">
+        <thead>
+            <tr>
+                <th class="text-start">Name</th>
+                <th class="text-end">Date And Time</th>
+                <th class="text-end">Exercise Name</th>
+                <th class="text-end">Interval</th>
+                <th class="text-end">Resistance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for p in posts %}
+                <tr>
+                    <td class="border-0 fw-bold text-end">{{p['firstName']}}</td>
+                    <td class="border-0 fw-bold text-end">{{p['dateandtime']}}</td>
+                    <td class="border-0 fw-bold text-end">{{p['name']}}</td>
+                    <td class="border-0 fw-bold text-end">{{p['interval']}}</td>
+                    <td class="border-0 fw-bold text-end">{{p['resistance']}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
 {% endblock %}
