@@ -24,6 +24,10 @@ def mike():
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = 1"""
    posts = db.execute(query).fetchall()
+   # Get all workout orginized
+   # Split them by days
+   # Split them by exercises
+   # Give them to the .thml to sort nicly 
    db.close()
    return render_template("mike.html", posts=posts)
 
