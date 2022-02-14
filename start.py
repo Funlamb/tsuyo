@@ -24,27 +24,29 @@ def mike():
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = 1"""
    posts = db.execute(query).fetchall()
+   
    # Get all workout orginized
-   # Split them by days
-   # Split them by exercises
-   # Give them to the .html to sort nicly 
-   workoutID = 0
-   workoutID = posts[0]["id"]
-   user_posts = []
    daily_posts = []
-   exercise_posts = []
    temp = []
+   # Split them by days
+   workoutID = posts[0]["id"]
    for p in posts:
-      if p['id'] == workoutID:
-         temp.append(p)
-      daily_posts.append(temp)
-      temp = []
-      workoutID = p['id']
-      temp.append(p)
-   print(daily_posts)
-   print(workoutID)
+      if p['id'] != workoutID:
+         daily_posts.append(temp)
+         # print(daily_posts)
+         temp = []
+         workoutID = p['id']
+      temp.append(p)   
+   daily_posts.append(temp) # Adds the last day from the query
+   temp = []
+   print(daily_posts[0][0]["Dateandtime"])
+   # Split them by exercises
+   exercise_posts = []
+   
+   # Give them to the .html to sort nicly 
+
    db.close()
-   return render_template("mike.html", posts=posts)
+   return render_template("mike.html", posts=daily_posts)
 
 @app.route('/help')
 def help():
