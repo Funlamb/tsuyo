@@ -1,9 +1,11 @@
+from crypt import methods
 from pkgutil import extend_path
 from flask import Flask, redirect, render_template, request, session
 
 import sqlite3
 
 app = Flask(__name__)
+app.secret_key = "toots"
 
 def get_db_connection():
    db = sqlite3.connect("workout.db")
@@ -15,8 +17,32 @@ def index():
    db = get_db_connection()
    posts = db.execute("SELECT * FROM users").fetchall()
    db.close()
-   return render_template("index.html", posts=posts)
+   return render_template("login.html", posts=posts)
 
+@app.route('/login', methods=["GET", "POST"])
+def login():
+   # remove any prior session
+   session.clear()
+   if request.method == "POST":
+      print("Login")
+      # check that a user name was submitted
+      if not request.form.get("username"):
+         # return a page stating no user name
+         print("Need user name")
+
+      # check that a password was submitted
+      if not request.form.get("password"):
+         # return a page stating no password
+         print("Need password")
+
+      db = get_db_connection()
+      user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("username")]).fetchall()
+
+      print(user[0]['email'])
+      # test those feilds to see if any match the users database
+      # record the userID in the session
+      return ("Logged In")
+       
 @app.route('/mike')
 def mike():
    db = get_db_connection()
@@ -55,7 +81,7 @@ def mike():
             exercise_temp = []
             exerciseID = exercise['exerciseID']
          exercise_temp.append(exercise)
-      day_temp.append(exercise_temp)
+      posts_sorted_exercise.append(exercise_temp)
    for day in posts_sorted_exercise:
       for d in day:
          print(d['dateandtime'])
