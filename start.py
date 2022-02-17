@@ -44,6 +44,7 @@ def mike():
    posts_sorted_exercise = []
    # Take the posts_sorted_daily and sort them by exercise
    # Look at the daily post
+   # Can't seem to figure out how to sort this list. Ask Steve is there is a term for what it is I'm trying to do. 
    day_temp = []
    exercise_temp = []
    for daily in posts_sorted_daily:
@@ -54,8 +55,7 @@ def mike():
             exercise_temp = []
             exerciseID = exercise['exerciseID']
          exercise_temp.append(exercise)
-      
-      posts_sorted_exercise.append(exercise_temp)
+      day_temp.append(exercise_temp)
    for day in posts_sorted_exercise:
       for d in day:
          print(d['dateandtime'])
