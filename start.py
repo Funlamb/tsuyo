@@ -3,6 +3,8 @@ from pkgutil import extend_path
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from helper import message
+
 import sqlite3
 
 app = Flask(__name__)
@@ -24,17 +26,17 @@ def login():
    session.clear()
    if request.method == "POST":
       # check that a user name was submitted
-      if not request.form.get("username"):
+      if not request.form.get("email"):
          # return a page stating no user name
-         print("Need user name")
+         return message("Need an e-mail")
 
       # check that a password was submitted
       if not request.form.get("password"):
          # return a page stating no password
-         print("Need password")
+         return message("Need a password")
 
       db = get_db_connection()
-      user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("username")]).fetchall()
+      user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("email")]).fetchall()
 
       # Check password
       print("Login")
@@ -47,7 +49,7 @@ def login():
          session['name'] = user[0]['firstName']
          return redirect("/user_index")
       error = "Wrong Password. Go to log in page to try again."
-      return render_template('error_page.html', error=error)
+      return message(error)
       # test those feilds to see if any match the users database
       # record the userID in the session
 
@@ -55,7 +57,7 @@ def login():
 # @login_required
 def user_index():
    if not session.get('userID'):
-      return render_template("message_page.html", error="Must be logged in.")
+      return message("Must be logged in.")
 
    db = get_db_connection()
    cur = db.cursor()
@@ -127,34 +129,34 @@ def register():
    #   <!-- Create First Name text box -->
       first_name = request.form.get("first_name")
       if not first_name:
-         return render_template("message_page.html", error="Need to input a first name.")
+         return message("Need to input a first name.")
    #   <!-- Create Last Name text box -->
       last_name = request.form.get("last_name")
       if not last_name:
-         return render_template("message_page.html", error="Need to input a last name.")
+         return message("Need to input a last name.")
    #   <!-- Create E-Mail text box -->
       email_address = request.form.get("email_address")
       if not email_address:
-         return render_template("message_page.html", error="Need to input an e-mail address.")
+         return message("Need to input an e-mail address.")
    #   <!-- Create Date of Birth text box -->
       date_of_birth = request.form.get("date_of_birth")
       if not date_of_birth:
-         return render_template("message_page.html", error="Need to input a date of birth.")
+         return message("Need to input a date of birth.")
    #   <!-- Create Password text box -->
       password = request.form.get("password")
       if not password:
-         return render_template("message_page.html", error="Need to input a password.")
+         return message("Need to input a password.")
    #   <!-- Create Confirm Password text box -->
       confirm_password = request.form.get("confirm_password")
       if not confirm_password:
-         return render_template("message_page.html", error="Need to input a confermation password.")
-   return render_template("message_page.html", error="You successfully registered. Go ahead and log in on the log in page.")
+         return message("Need to input a confermation password.")
+   return message("You successfully registered. Go ahead and log in on the log in page.")
 
    
 @app.route('/logout')
 def help():
    session.clear()
-   return render_template("message_page.html", error="Logging Out")
+   return message("Logging Out")
 
 if __name__ == '__main__':
    app.run()
