@@ -118,6 +118,11 @@ def user_index():
    db.close()
    return render_template("index.html", posts=posts_sorted_daily, name=session['name'])
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+   if request.method == "GET":
+      return render_template("register.html")
+   
 @app.route('/logout')
 def help():
    session.clear()
