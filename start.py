@@ -24,7 +24,6 @@ def login():
    # remove any prior session
    session.clear()
    if request.method == "POST":
-      print("Login")
       # check that a user name was submitted
       if not request.form.get("username"):
          # return a page stating no user name
@@ -38,18 +37,25 @@ def login():
       db = get_db_connection()
       user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("username")]).fetchall()
 
+      print("Login")
       print(user[0]['email'])
+      session['userID'] = user[0]['id']
+      print(session['userID'])
       # test those feilds to see if any match the users database
       # record the userID in the session
       return ("Logged In")
-       
-@app.route('/mike')
-def mike():
+
+@app.route('/index')
+def index():
    db = get_db_connection()
+   cur = db.cursor()
+   print(session['userID']) # prints: 1
+   print(type(session['userID'])) # prints: <class 'int'>
+
    query = """SELECT users.firstName, workouts.dateandtime, workouts.id, sets.*, exercises.name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = 1"""
-   posts_unsorted = db.execute(query).fetchall()
+      sets.exerciseID = exercises.id WHERE users.id = ?"""
+   posts_unsorted = cur.execute(query, session['userID']).fetchall()
    
    # Get all workout orginized
    posts_sorted_daily = []
