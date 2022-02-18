@@ -38,24 +38,23 @@ def login():
       user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("username")]).fetchall()
 
       print("Login")
-      print(user[0]['email'])
       session['userID'] = user[0]['id']
-      print(session['userID'])
       # test those feilds to see if any match the users database
       # record the userID in the session
-      return ("Logged In")
+      return redirect("/user_index")
 
-@app.route('/index')
-def index():
+@app.route('/user_index')
+def user_index():
+   print("user_index")
+   
    db = get_db_connection()
    cur = db.cursor()
-   print(session['userID']) # prints: 1
-   print(type(session['userID'])) # prints: <class 'int'>
-
+   value = []
+   value.append(session['userID']) # needs to be in a list to use .execute
    query = """SELECT users.firstName, workouts.dateandtime, workouts.id, sets.*, exercises.name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ?"""
-   posts_unsorted = cur.execute(query, session['userID']).fetchall()
+   posts_unsorted = cur.execute(query, value).fetchall()
    
    # Get all workout orginized
    posts_sorted_daily = []
