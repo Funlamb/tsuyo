@@ -55,7 +55,7 @@ def login():
 # @login_required
 def user_index():
    if not session.get('userID'):
-      return render_template("not_logged_in.html")
+      return render_template("message_page.html", error="Must be logged in.")
 
    db = get_db_connection()
    cur = db.cursor()
@@ -121,7 +121,7 @@ def user_index():
 @app.route('/logout')
 def help():
    session.clear()
-   return render_template("logout.html")
+   return render_template("message_page.html", error="Logging Out")
 
 if __name__ == '__main__':
    app.run()
