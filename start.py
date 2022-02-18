@@ -39,6 +39,7 @@ def login():
 
       print("Login")
       session['userID'] = user[0]['id']
+      session['name'] = user[0]['firstName']
       # test those feilds to see if any match the users database
       # record the userID in the session
       return redirect("/user_index")
@@ -49,18 +50,23 @@ def user_index():
    
    db = get_db_connection()
    cur = db.cursor()
-   value = []
-   value.append(session['userID']) # needs to be in a list to use .execute
+   userID = []
+   userID.append(session['userID']) # needs to be in a list to use .execute
    query = """SELECT users.firstName, workouts.dateandtime, workouts.id, sets.*, exercises.name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ?"""
-   posts_unsorted = cur.execute(query, value).fetchall()
+   posts_unsorted = cur.execute(query, userID).fetchall()
    
    # Get all workout orginized
    posts_sorted_daily = []
    temp = []
    # Split them by days
-   workoutID = posts_unsorted[0]["id"]
+   if not posts_unsorted:
+      return render_template("index.html", name=session['name'])
+      
+      print(posts_unsorted[0]["id"])
+      workoutID = posts_unsorted[0]["id"]
+
    for p in posts_unsorted:
       if p['id'] != workoutID:
          posts_sorted_daily.append(temp)
@@ -98,7 +104,7 @@ def user_index():
    # Give them to the .html to sort nicly 
 
    db.close()
-   return render_template("mike.html", posts=posts_sorted_daily)
+   return render_template("index.html", posts=posts_sorted_daily, name=session['name'])
 
 @app.route('/help')
 def help():

@@ -1,11 +1,32 @@
 {%extends 'base.html'%}
 
 {%block content%} 
-    <h1>{%block title%} Posts {% endblock %}</h1>
-    {%for p in posts %}
-        <div class='post'>
-            <p>{{p['id']}}</p>
-            <p>{{p['firstName']}}</p>
-        </div>
-    {% endfor %} 
+    <h1>{%block title%} 
+        {% if name %} 
+            {{name}} 
+        {% endif %} 
+        {% endblock %}
+    </h1>
+    
+    <table class="table tablestriped">
+        <tbody>
+            {%for p in posts %}
+                {% set date = p[0]['DateAndTime']%}
+                    <thead>
+                        <th>{{date}}</th>
+                    </thead>
+                    <thead>
+                        <th>Exercise</th>
+                        <th>Intervals</th>
+                        <th>Resistance</th>
+                    </thead>
+                        {%- for d in p %}
+                            <tr>
+                                <td class="border-0 fw-bold text-end">{{d['name']}}</td>
+                                <td class="border-0 fw-bold text-end">{{d['interval']}}</td>
+                                <td class="border-0 fw-bold text-end">{{d['resistance']}}</td>
+                            </tr>
+                        {% endfor -%}
+            {% endfor %}
+        </tbody>
 {% endblock %}
