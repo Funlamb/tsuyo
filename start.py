@@ -1,6 +1,7 @@
 from crypt import methods
 from pkgutil import extend_path
 from flask import Flask, redirect, render_template, request, session
+from werkzeug.security import check_password_hash, generate_password_hash
 
 import sqlite3
 
@@ -35,12 +36,20 @@ def login():
       db = get_db_connection()
       user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("username")]).fetchall()
 
+      # Check password
       print("Login")
-      session['userID'] = user[0]['id']
-      session['name'] = user[0]['firstName']
+      pwhash = user[0]['hash']
+      password = request.form.get('password')
+      password_check = check_password_hash(pwhash, password)
+      db.close()
+      if password_check:
+         session['userID'] = user[0]['id']
+         session['name'] = user[0]['firstName']
+         return redirect("/user_index")
+      error = "Wrong Password. Go to log in page to try again."
+      return render_template('error_page.html', error=error)
       # test those feilds to see if any match the users database
       # record the userID in the session
-      return redirect("/user_index")
 
 @app.route('/user_index')
 # @login_required
@@ -64,7 +73,7 @@ def user_index():
    if not posts_unsorted:
       return render_template("index.html", name=session['name'])
       
-   print(posts_unsorted[0]["id"])
+   # print(posts_unsorted[0]["id"])
    workoutID = posts_unsorted[0]["id"]
 
    for p in posts_unsorted:
@@ -93,9 +102,12 @@ def user_index():
             exerciseID = exercise['exerciseID']
          exercise_temp.append(exercise)
       posts_sorted_exercise.append(exercise_temp)
-   for day in posts_sorted_exercise:
-      for d in day:
-         print(d['dateandtime'])
+
+   # Debugging to check if sorting all exercises
+   # for day in posts_sorted_exercise:
+   #    for d in day:
+   #       print(d['dateandtime'])
+
    # Find the exercise
    # Put the exercise in a temp list
    # Add the exercise list to new daily post list
