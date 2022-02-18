@@ -14,10 +14,8 @@ def get_db_connection():
 
 @app.route('/')
 def index():
-   db = get_db_connection()
-   posts = db.execute("SELECT * FROM users").fetchall()
-   db.close()
-   return render_template("login.html", posts=posts)
+   session.clear()
+   return render_template("login.html")
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -45,9 +43,11 @@ def login():
       return redirect("/user_index")
 
 @app.route('/user_index')
+# @login_required
 def user_index():
-   print("user_index")
-   
+   if not session.get('userID'):
+      return render_template("not_logged_in.html")
+
    db = get_db_connection()
    cur = db.cursor()
    userID = []
@@ -64,8 +64,8 @@ def user_index():
    if not posts_unsorted:
       return render_template("index.html", name=session['name'])
       
-      print(posts_unsorted[0]["id"])
-      workoutID = posts_unsorted[0]["id"]
+   print(posts_unsorted[0]["id"])
+   workoutID = posts_unsorted[0]["id"]
 
    for p in posts_unsorted:
       if p['id'] != workoutID:
@@ -106,9 +106,10 @@ def user_index():
    db.close()
    return render_template("index.html", posts=posts_sorted_daily, name=session['name'])
 
-@app.route('/help')
+@app.route('/logout')
 def help():
-   return "Helped"
+   session.clear()
+   return render_template("logout.html")
 
 if __name__ == '__main__':
    app.run()
