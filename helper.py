@@ -7,6 +7,4 @@ from functools import wraps
 
 def message(message):
     """Render a message to the user"""
-    print("helpers: message")
-    print(message)
     return render_template("message_page.html", message=message)

@@ -48,8 +48,7 @@ def login():
          session['userID'] = user[0]['id']
          session['name'] = user[0]['firstName']
          return redirect("/user_index")
-      error = "Wrong Password. Go to log in page to try again."
-      return message(error)
+      return message("Wrong Password. Go to log in page to try again.")
       # test those feilds to see if any match the users database
       # record the userID in the session
 
@@ -126,30 +125,43 @@ def register():
       return render_template("register.html")
 
    if request.method == "POST":
-   #   <!-- Create First Name text box -->
+   #   <!-- Check First Name text box -->
       first_name = request.form.get("first_name")
       if not first_name:
          return message("Need to input a first name.")
-   #   <!-- Create Last Name text box -->
+   #   <!-- Check Last Name text box -->
       last_name = request.form.get("last_name")
       if not last_name:
          return message("Need to input a last name.")
-   #   <!-- Create E-Mail text box -->
+   #   <!-- Check E-Mail text box -->
       email_address = request.form.get("email_address")
       if not email_address:
          return message("Need to input an e-mail address.")
-   #   <!-- Create Date of Birth text box -->
+   #   <!-- Check Date of Birth text box -->
       date_of_birth = request.form.get("date_of_birth")
       if not date_of_birth:
          return message("Need to input a date of birth.")
-   #   <!-- Create Password text box -->
+   #   <!-- Check Password text box -->
       password = request.form.get("password")
       if not password:
          return message("Need to input a password.")
-   #   <!-- Create Confirm Password text box -->
+   #   <!-- Check Confirm Password text box -->
       confirm_password = request.form.get("confirm_password")
       if not confirm_password:
          return message("Need to input a confermation password.")
+
+      # Check if passwords match
+      if password != confirm_password:
+         return message("Password and Confirm Password does not match")
+      
+      print("Creating Row for user")
+      db = get_db_connection()
+      cur = db.cursor()
+      ls = [last_name, first_name, email_address, date_of_birth, generate_password_hash(password)]
+      cur.execute("INSERT INTO users (lastName, firstName, email, dateOfBirth, hash) VALUES (?, ?, ?, ?, ?)", ls)
+      # cur.execute("create table lang (name, first_appeared)")
+      db.commit() # Need to commit the changes or it will not save to the database
+      db.close()
    return message("You successfully registered. Go ahead and log in on the log in page.")
 
    
