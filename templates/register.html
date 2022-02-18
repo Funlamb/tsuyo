@@ -1,0 +1,22 @@
+{%extends 'base.html'%}
+
+{%block content%} 
+    <h1>{%block title%} Login {% endblock %}</h1>
+    <form action="/login" method="post">
+        <!-- Create User Name text box -->
+        <p> First Name: </p>
+        <input name="first_name" type="password">
+        <!-- Create Password text box -->
+        <p> Last Name: </p>
+        <input name="last_name" type="text"> 
+        <p> E-Mail Address: </p>
+        <input name="email_address" type="password">
+        <p> Date of Birth: </p>
+        <input name="date_of_birth" type="date">
+        <p> Password: </p>
+        <input name="password" type="password">
+        <p> Repeat Password: </p>
+        <input name="repeat_password" type="password">
+        <button type="submit">Register</button>
+    </form>
+{% endblock %}

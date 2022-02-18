@@ -1,6 +1,10 @@
+Need to setup user settings page
+
 02-18-2022
-Need to check passwords
+Need to setup Registration page
+Changed individual error message pages to use one message page with a error variable. 
+Finished log in page checking passwords correctly.
 
 02-17-2022
-Got login screen working
-Got bug fixed where users could click on a Work Out list without being logged in
+Got login screen working.
+Got bug fixed where users could click on a Work Out list without being logged in.
