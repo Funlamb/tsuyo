@@ -2,21 +2,25 @@
 
 {%block content%} 
     <h1>{%block title%} Register {% endblock %}</h1>
-    <form action="/login" method="post">
-        <!-- Create User Name text box -->
+    <form action="/register" method="post">
+        <!-- Create First Name text box -->
         <p> First Name: </p>
-        <input name="first_name" type="password">
-        <!-- Create Password text box -->
+        <input name="first_name" type="text">
+        <!-- Create Last Name text box -->
         <p> Last Name: </p>
         <input name="last_name" type="text"> 
+        <!-- Create E-Mail text box -->
         <p> E-Mail Address: </p>
-        <input name="email_address" type="password">
+        <input name="email_address" type="email">
+        <!-- Create Date of Birth text box -->
         <p> Date of Birth: </p>
         <input name="date_of_birth" type="date">
+        <!-- Create Password text box -->
         <p> Password: </p>
         <input name="password" type="password">
-        <p> Repeat Password: </p>
-        <input name="repeat_password" type="password">
+        <!-- Create Confirm Password text box -->
+        <p> Confirm Password: </p>
+        <input name="confirm_password" type="password">
         <button type="submit">Register</button>
     </form>
 {% endblock %}

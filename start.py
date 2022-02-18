@@ -122,6 +122,34 @@ def user_index():
 def register():
    if request.method == "GET":
       return render_template("register.html")
+
+   if request.method == "POST":
+   #   <!-- Create First Name text box -->
+      first_name = request.form.get("first_name")
+      if not first_name:
+         return render_template("message_page.html", error="Need to input a first name.")
+   #   <!-- Create Last Name text box -->
+      last_name = request.form.get("last_name")
+      if not last_name:
+         return render_template("message_page.html", error="Need to input a last name.")
+   #   <!-- Create E-Mail text box -->
+      email_address = request.form.get("email_address")
+      if not email_address:
+         return render_template("message_page.html", error="Need to input an e-mail address.")
+   #   <!-- Create Date of Birth text box -->
+      date_of_birth = request.form.get("date_of_birth")
+      if not date_of_birth:
+         return render_template("message_page.html", error="Need to input a date of birth.")
+   #   <!-- Create Password text box -->
+      password = request.form.get("password")
+      if not password:
+         return render_template("message_page.html", error="Need to input a password.")
+   #   <!-- Create Confirm Password text box -->
+      confirm_password = request.form.get("confirm_password")
+      if not confirm_password:
+         return render_template("message_page.html", error="Need to input a confermation password.")
+   return render_template("message_page.html", error="You successfully registered. Go ahead and log in on the log in page.")
+
    
 @app.route('/logout')
 def help():
