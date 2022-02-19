@@ -1,5 +1,8 @@
 Need to setup user settings page
 
+02-19-2022
+Using classes to access data
+
 02-18-2022
 Setup Registration page
 Changed individual error message pages to use one message page with a error variable. 

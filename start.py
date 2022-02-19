@@ -6,6 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helper import message
 
 import sqlite3
+import exercise as exer
 
 app = Flask(__name__)
 app.secret_key = "toots"
@@ -51,6 +52,19 @@ def login():
          return redirect("/user_index")
       return message("Wrong Password. Go to log in page to try again.")
 
+# class Exercise:
+#     def __init__(self, intervals, resistance, setNumber, workoutID, exerciseID, workoutDate, exerciseName):
+#         self.intervals = intervals
+#         self.resistance = resistance
+#         self.setNumber = setNumber
+#         self.woroutID = workoutID
+#         self.exerciseID = exerciseID
+#         self.workoutDate = workoutDate
+#         self.exerciseName = exerciseName
+
+#     def anounce(self):
+#         print ("Name: " + self.exerciseName)
+
 @app.route('/user_index')
 # @login_required
 def user_index():
@@ -65,6 +79,16 @@ def user_index():
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ?"""
    posts_unsorted = cur.execute(query, userID).fetchall()
+   
+   # Get all the exercises
+   exercises = []
+   for e in posts_unsorted:
+      temp_exercise = exer.Exercise(e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
+      exercises.append(temp_exercise)
+   
+   # Make sure we have them
+   for e in exercises:
+      e.anounce()
    
    # Get all workout orginized
    posts_sorted_daily = []
