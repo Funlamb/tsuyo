@@ -194,6 +194,24 @@ def settings():
    if request.method == "GET":
       return render_template("settings.html")
 
+   if request.method == "POST":
+      # Get users current settings
+      db = get_db_connection()
+      ls = [session['userID']]
+      user_settings = db.execute("SELECT * FROM users WHERE id=?", ls).fetchall()
+      last_name = request.form.get("last_name")
+      first_name = user_settings[0]['firstName']
+      email = user_settings[0]['email']
+      date_of_birth = user_settings[0]['dateofbirth']
+      if last_name:
+         temp = [last_name, session['userID']]
+         print(temp)
+         db.execute("UPDATE users SET lastName = ? WHERE id = ?", temp)
+      db.commit()
+      # check that original password is correct
+      # change fields that have data in them
+      return message("Post")
+
     
 @app.route('/logout')
 def help():

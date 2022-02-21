@@ -2,10 +2,16 @@
 
 {%block content%} 
     <h1>{%block title%} Login {% endblock %}</h1>
-    <form action="/save_settings" method="post">
+    <form action="/settings" method="post">
         <!-- Create Password text box -->
         <p> Original Password: </p>
         <input name="original_password" type="password">
+        <!-- Create Password text box -->
+        <p> First Name: </p>
+        <input name="first_name" type="text">
+        <!-- Create Password text box -->
+        <p> Last Name: </p>
+        <input name="last_name" type="text">
         <!-- Create Date of Birth text box -->
         <p> Date of Birth: </p>
         <input name="date_of_birth" type="date">
