@@ -198,15 +198,42 @@ def settings():
       # Get users current settings
       db = get_db_connection()
       ls = [session['userID']]
-      user_settings = db.execute("SELECT * FROM users WHERE id=?", ls).fetchall()
+      user_settings = db.execute("SELECT * FROM users WHERE id=?", ls).fetchall()[0]
+      # Test the original password
+      if not check_password_hash(user_settings['hash'], request.form.get("original_password")):
+         return message("Need correct original password")
+
+      # Change last name
       last_name = request.form.get("last_name")
-      first_name = user_settings[0]['firstName']
-      email = user_settings[0]['email']
-      date_of_birth = user_settings[0]['dateofbirth']
       if last_name:
          temp = [last_name, session['userID']]
-         print(temp)
          db.execute("UPDATE users SET lastName = ? WHERE id = ?", temp)
+      
+      # Change first name
+      first_name = request.form.get("first_name")
+      if first_name:
+         temp = [first_name, session['userID']]
+         db.execute("UPDATE users SET firstName = ? WHERE id = ?", temp)
+      
+      email = request.form.get("email")
+      if email:
+         temp = [email, session['userID']]
+         db.execute("UPDATE users SET email = ? WHERE id = ?", temp)
+
+      date_of_birth = request.form.get("date_of_birth")
+      if date_of_birth:
+         temp = [date_of_birth, session['userID']]
+         db.execute("UPDATE users SET dateOfBirth = ? WHERE id = ?", temp)
+      
+      # Change password
+      change_password = request.form.get("change_password")
+      confirm_password = request.form.get("confirm_password")
+      if change_password or confirm_password:
+         if change_password != confirm_password:
+            return message("Changed passwords do not match")
+         temp = [generate_password_hash(change_password), session['userID']]
+         db.execute("UPDATE users SET hash = ? WHERE id = ?", temp)
+      
       db.commit()
       # check that original password is correct
       # change fields that have data in them
