@@ -186,7 +186,15 @@ def register():
       db.close()
    return message("You successfully registered. Go ahead and log in on the log in page.")
 
-   
+@app.route('/settings', methods=['get', 'post'])
+def settings():
+   if not session.get('userID'):
+      return message("Must be logged in.")
+
+   if request.method == "GET":
+      return render_template("settings.html")
+
+    
 @app.route('/logout')
 def help():
    session.clear()

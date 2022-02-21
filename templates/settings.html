@@ -1,0 +1,23 @@
+{%extends 'base.html'%}
+
+{%block content%} 
+    <h1>{%block title%} Login {% endblock %}</h1>
+    <form action="/save_settings" method="post">
+        <!-- Create Password text box -->
+        <p> Original Password: </p>
+        <input name="original_password" type="password">
+        <!-- Create Date of Birth text box -->
+        <p> Date of Birth: </p>
+        <input name="date_of_birth" type="date">
+        <!-- Create User Name text box -->
+        <p> New E-Mail: </p>
+        <input name="email" type="email"> 
+        <!-- Create Password text box -->
+        <p> Change Password: </p>
+        <input name="change_password" type="password">
+        <!-- Create Password text box -->
+        <p> Confirm Changed Password: </p>
+        <input name="confirm_password" type="password">
+        <button type="submit">Log In</button>
+    </form>
+{% endblock %}

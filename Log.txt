@@ -1,5 +1,8 @@
 Need to setup user settings page
 
+02-21--2022
+Need to add functionality to the settings page
+Setup the settings pages
 02-19-2022
 Using classes to access data
 
