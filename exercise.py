@@ -1,5 +1,6 @@
 class Exercise:
-    def __init__(self, intervals, resistance, setNumber, workoutID, exerciseID, workoutDate, exerciseName):
+    def __init__(self, firstName, intervals, resistance, setNumber, workoutID, exerciseID, workoutDate, exerciseName):
+        self.firstName = firstName
         self.intervals = intervals
         self.resistance = resistance
         self.setNumber = setNumber
@@ -9,4 +10,4 @@ class Exercise:
         self.exerciseName = exerciseName
 
     def anounce(self):
-        print ("Name: " + self.exerciseName, " Set: ", self.setNumber, " Intervals: ", self.intervals, " Resistance: ", self.resistance)
+        print ("First Name: " + self.firstName + " Name: " + self.exerciseName, " Set: ", self.setNumber, " Intervals: ", self.intervals, " Resistance: ", self.resistance)

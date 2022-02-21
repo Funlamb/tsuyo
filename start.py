@@ -83,7 +83,7 @@ def user_index():
    # Get all the exercises
    exercises = []
    for e in posts_unsorted:
-      temp_exercise = exer.Exercise(e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
+      temp_exercise = exer.Exercise(e['firstName'], e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
       exercises.append(temp_exercise)
    
    # Make sure we have them
