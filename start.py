@@ -87,8 +87,8 @@ def user_index():
       exercises.append(temp_exercise)
    
    # Make sure we have them
-   for e in exercises:
-      e.anounce()
+   # for e in exercises:
+   #    e.anounce()
    
    # Get all workout orginized
    posts_sorted_daily = []
