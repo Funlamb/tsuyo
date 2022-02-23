@@ -3,10 +3,10 @@ from pkgutil import extend_path
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helper import message
-
 import sqlite3
+from helper import message
 import exercise as exer
+from users import User
 
 app = Flask(__name__)
 app.secret_key = "toots"
@@ -36,34 +36,16 @@ def login():
          # return a page stating no password
          return message("Need a password")
 
-      # get user's data to test for correct password
       db = get_db_connection()
-      user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("email")]).fetchall()
+      user = User(db)
 
-      # Check password
-      pwhash = user[0]['hash']
-      password = request.form.get('password')
-      password_check = check_password_hash(pwhash, password)
-      db.close()
       # Check passwork and send to user_index if correct
-      if password_check: 
-         session['userID'] = user[0]['id']
-         session['name'] = user[0]['firstName']
+      password = request.form.get('password')
+      if user.check_password(password): 
+         session['userID'] = user.get_id()
+         session['name'] = user.get_first_name()
          return redirect("/user_index")
       return message("Wrong Password. Go to log in page to try again.")
-
-# class Exercise:
-#     def __init__(self, intervals, resistance, setNumber, workoutID, exerciseID, workoutDate, exerciseName):
-#         self.intervals = intervals
-#         self.resistance = resistance
-#         self.setNumber = setNumber
-#         self.woroutID = workoutID
-#         self.exerciseID = exerciseID
-#         self.workoutDate = workoutDate
-#         self.exerciseName = exerciseName
-
-#     def anounce(self):
-#         print ("Name: " + self.exerciseName)
 
 @app.route('/user_index')
 # @login_required
