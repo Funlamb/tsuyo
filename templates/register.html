@@ -11,7 +11,7 @@
         <input name="last_name" type="text"> 
         <!-- Create E-Mail text box -->
         <p> E-Mail Address: </p>
-        <input name="email_address" type="email">
+        <input name="email_address" type="email" value={% if email %}{{email}}{%endif%}>
         <!-- Create Date of Birth text box -->
         <p> Date of Birth: </p>
         <input name="date_of_birth" type="date">

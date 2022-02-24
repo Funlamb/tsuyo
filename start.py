@@ -36,12 +36,19 @@ def login():
          # return a page stating no password
          return message("Need a password")
 
+      email = request.form.get("email")
       db = get_db_connection()
-      user = User(db, request.form.get("email"))
-
+      user = User()
+      does_user_exist = user.check_if_user_exists(db, email)
+      if not does_user_exist: # If user does not exist send user to registration page
+         return render_template("register.html", email=email)
+         # return message("No user with that e-mail address.")
+      
+      # populate user
+      user.populate_user(db, email)
       # Check passwork and send to user_index if correct
       password = request.form.get('password')
-      if user.check_password(password): 
+      if user.check_password(password):
          session['userID'] = user.get_id()
          session['name'] = user.get_first_name()
          session['email'] = user.get_email()
@@ -161,11 +168,10 @@ def register():
          return message("Password and Confirm Password does not match")
       
       # Create the new user
-      db = get_db_connection()
-      cur = db.cursor()
       ls = [last_name, first_name, email_address, date_of_birth, generate_password_hash(password)]
-      cur.execute("INSERT INTO users (lastName, firstName, email, dateOfBirth, hash) VALUES (?, ?, ?, ?, ?)", ls)
-      db.commit() # Need to commit the changes or it will not save to the database
+      db = get_db_connection()
+      new_user = User()
+      new_user.add_user(db, ls)
       db.close()
    return message("You successfully registered. Go ahead and log in on the log in page.")
 
@@ -180,24 +186,16 @@ def settings():
    if request.method == "POST":
       # Get users current settings
       db = get_db_connection()
-      user = User(db, session['email'])
-
-      # user_settings = db.execute("SELECT * FROM users WHERE id=?", ls).fetchall()[0]
-      
+      user = User()
+      user.populate_user(db, session['email'])
       # Change last name
-      last_name = request.form.get("last_name")
-      first_name = request.form.get("first_name")
-      email = request.form.get("email")
-      date_of_birth = request.form.get("date_of_birth")
-      change_password = request.form.get("change_password")
-      confirm_password = request.form.get("confirm_password")
       ls = {}
-      ls['last_name'] = last_name
-      ls['first_name'] = first_name
-      ls['email'] = email
-      ls['date_of_birth'] = date_of_birth
-      ls['change_password'] = change_password
-      ls['confirm_password'] = confirm_password
+      ls['email'] = request.form.get("email")
+      ls['last_name'] = request.form.get("last_name")
+      ls['first_name'] = request.form.get("first_name")
+      ls['date_of_birth'] = request.form.get("date_of_birth")
+      ls['change_password'] = request.form.get("change_password")
+      ls['confirm_password'] = request.form.get("confirm_password")
       ls['original_password'] = request.form.get("original_password")
 
       # Test the original password
@@ -205,32 +203,8 @@ def settings():
          return message("Need correct original password")
       elif user.change_user_data(db, ls) == 2:
          return message("Changed passwords do not match")
-      # if last_name:
-      #    temp = [last_name, session['userID']]
-      #    db.execute("UPDATE users SET lastName = ? WHERE id = ?", temp)
       
-      # # Change first name
-      # if first_name:
-      #    temp = [first_name, session['userID']]
-      #    db.execute("UPDATE users SET firstName = ? WHERE id = ?", temp)
-      
-      # if email:
-      #    temp = [email, session['userID']]
-      #    db.execute("UPDATE users SET email = ? WHERE id = ?", temp)
-
-      # if date_of_birth:
-      #    temp = [date_of_birth, session['userID']]
-      #    db.execute("UPDATE users SET dateOfBirth = ? WHERE id = ?", temp)
-      
-      # # Change password
-      # if change_password or confirm_password:
-      #    if change_password != confirm_password:
-      #       return message("Changed passwords do not match")
-      #    temp = [generate_password_hash(change_password), session['userID']]
-      #    db.execute("UPDATE users SET hash = ? WHERE id = ?", temp)
-      
-      # db.commit()
-      return message("Post")
+      return message("Successfully changed your settings")
 
     
 @app.route('/logout')

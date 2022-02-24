@@ -1,7 +1,13 @@
 Use classes to access data 
 Refractor 
 
-02-21--2022
+02-24-2022
+Moved all user related tasks to the user class
+
+02-23-2022
+Added user class and had class handle all user Setup
+
+02-21-2022
 Added functionality to the settings page
 Setup the settings pages
 
