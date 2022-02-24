@@ -1,18 +1,11 @@
 import sqlite3
-from helper import message
-from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 class User:
-    def __init__(self, database):
+    def __init__(self, database, email):
         db = database
-        # db.row_factory = sqlite3.Row
 
-        user = db.execute("SELECT * FROM users WHERE users.email = ?", [request.form.get("email")]).fetchall()[0]
-
-        # Check if user exists
-        if not user:
-            return message("No such user. Try to register")
+        user = db.execute("SELECT * FROM users WHERE users.email = ?", [email]).fetchall()[0]
 
         self.__id = user['id']
         self.__last_name = user['lastName']
@@ -22,10 +15,46 @@ class User:
         self.__hash = user['hash']
     
     def check_password(self, password):
+        print(self.__hash)
+        print(generate_password_hash(password))
         if check_password_hash(self.__hash, password):
             return True
         else:
             return False
+
+    def change_user_data(self, db, ls):
+        print(generate_password_hash (ls['original_password']))
+        print(self.__hash)
+        if not check_password_hash(self.__hash, ls['original_password']):
+            return 1
+
+        # Change last name
+        if ls['last_name']:
+            temp = [ls['last_name'], self.__id]
+            db.execute("UPDATE users SET lastName = ? WHERE id = ?", temp)
+      
+        # Change first name
+        if ls['first_name']:
+            temp = [ls['first_name'], self.__id]
+            db.execute("UPDATE users SET firstName = ? WHERE id = ?", temp)
+        
+        if ls['email']:
+            temp = [ls['email'], self.__id]
+            db.execute("UPDATE users SET email = ? WHERE id = ?", temp)
+
+        if ls['date_of_birth']:
+            temp = [ls['date_of_birth'], self.__id]
+            db.execute("UPDATE users SET dateOfBirth = ? WHERE id = ?", temp)
+        
+        # # Change password
+        if ls['change_password'] or ls['confirm_password']:
+            if ls['change_password'] != ls['confirm_password']:
+                return 2 # Change_password and Confirm_password do not match
+            temp = [generate_password_hash(ls['change_password']), self.__id]
+            db.execute("UPDATE users SET hash = ? WHERE id = ?", temp)
+        
+        db.commit()
+        return 0 # Worked
 
     def get_id(self):
         return self.__id

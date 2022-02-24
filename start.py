@@ -37,13 +37,14 @@ def login():
          return message("Need a password")
 
       db = get_db_connection()
-      user = User(db)
+      user = User(db, request.form.get("email"))
 
       # Check passwork and send to user_index if correct
       password = request.form.get('password')
       if user.check_password(password): 
          session['userID'] = user.get_id()
          session['name'] = user.get_first_name()
+         session['email'] = user.get_email()
          return redirect("/user_index")
       return message("Wrong Password. Go to log in page to try again.")
 
@@ -179,46 +180,56 @@ def settings():
    if request.method == "POST":
       # Get users current settings
       db = get_db_connection()
-      ls = [session['userID']]
-      user_settings = db.execute("SELECT * FROM users WHERE id=?", ls).fetchall()[0]
-      # Test the original password
-      if not check_password_hash(user_settings['hash'], request.form.get("original_password")):
-         return message("Need correct original password")
+      user = User(db, session['email'])
 
+      # user_settings = db.execute("SELECT * FROM users WHERE id=?", ls).fetchall()[0]
+      
       # Change last name
       last_name = request.form.get("last_name")
-      if last_name:
-         temp = [last_name, session['userID']]
-         db.execute("UPDATE users SET lastName = ? WHERE id = ?", temp)
-      
-      # Change first name
       first_name = request.form.get("first_name")
-      if first_name:
-         temp = [first_name, session['userID']]
-         db.execute("UPDATE users SET firstName = ? WHERE id = ?", temp)
-      
       email = request.form.get("email")
-      if email:
-         temp = [email, session['userID']]
-         db.execute("UPDATE users SET email = ? WHERE id = ?", temp)
-
       date_of_birth = request.form.get("date_of_birth")
-      if date_of_birth:
-         temp = [date_of_birth, session['userID']]
-         db.execute("UPDATE users SET dateOfBirth = ? WHERE id = ?", temp)
-      
-      # Change password
       change_password = request.form.get("change_password")
       confirm_password = request.form.get("confirm_password")
-      if change_password or confirm_password:
-         if change_password != confirm_password:
-            return message("Changed passwords do not match")
-         temp = [generate_password_hash(change_password), session['userID']]
-         db.execute("UPDATE users SET hash = ? WHERE id = ?", temp)
+      ls = {}
+      ls['last_name'] = last_name
+      ls['first_name'] = first_name
+      ls['email'] = email
+      ls['date_of_birth'] = date_of_birth
+      ls['change_password'] = change_password
+      ls['confirm_password'] = confirm_password
+      ls['original_password'] = request.form.get("original_password")
+
+      # Test the original password
+      if user.change_user_data(db, ls) == 1:
+         return message("Need correct original password")
+      elif user.change_user_data(db, ls) == 2:
+         return message("Changed passwords do not match")
+      # if last_name:
+      #    temp = [last_name, session['userID']]
+      #    db.execute("UPDATE users SET lastName = ? WHERE id = ?", temp)
       
-      db.commit()
-      # check that original password is correct
-      # change fields that have data in them
+      # # Change first name
+      # if first_name:
+      #    temp = [first_name, session['userID']]
+      #    db.execute("UPDATE users SET firstName = ? WHERE id = ?", temp)
+      
+      # if email:
+      #    temp = [email, session['userID']]
+      #    db.execute("UPDATE users SET email = ? WHERE id = ?", temp)
+
+      # if date_of_birth:
+      #    temp = [date_of_birth, session['userID']]
+      #    db.execute("UPDATE users SET dateOfBirth = ? WHERE id = ?", temp)
+      
+      # # Change password
+      # if change_password or confirm_password:
+      #    if change_password != confirm_password:
+      #       return message("Changed passwords do not match")
+      #    temp = [generate_password_hash(change_password), session['userID']]
+      #    db.execute("UPDATE users SET hash = ? WHERE id = ?", temp)
+      
+      # db.commit()
       return message("Post")
 
     
