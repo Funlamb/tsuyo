@@ -4,17 +4,15 @@ from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import sqlite3
-from helper import message
+from helper import message, get_db_connection
 import exercise as exer
 from users import User
+# from . import app
 
 app = Flask(__name__)
 app.secret_key = "toots"
-
-def get_db_connection():
-   db = sqlite3.connect("workout.db")
-   db.row_factory = sqlite3.Row
-   return db
+db = get_db_connection()
+User.db = db
 
 @app.route('/')
 def index():
@@ -37,15 +35,11 @@ def login():
          return message("Need a password")
 
       email = request.form.get("email")
-      db = get_db_connection()
-      user = User()
-      does_user_exist = user.check_if_user_exists(db, email)
-      if not does_user_exist: # If user does not exist send user to registration page
-         return render_template("register.html", email=email)
-         # return message("No user with that e-mail address.")
+      user = User.get(email)
+
+      if not user: # If user does not exist send user to registration page
+         return message("Invalid credentials")
       
-      # populate user
-      user.populate_user(db, email)
       # Check passwork and send to user_index if correct
       password = request.form.get('password')
       if user.check_password(password):
@@ -53,7 +47,7 @@ def login():
          session['name'] = user.get_first_name()
          session['email'] = user.get_email()
          return redirect("/user_index")
-      return message("Wrong Password. Go to log in page to try again.")
+      return message("Invalid credentials")
 
 @app.route('/user_index')
 # @login_required
@@ -61,7 +55,6 @@ def user_index():
    if not session.get('userID'):
       return message("Must be logged in.")
 
-   db = get_db_connection()
    cur = db.cursor()
    userID = []
    userID.append(session['userID']) # needs to be in a list to use .execute
@@ -69,11 +62,12 @@ def user_index():
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ?"""
    posts_unsorted = cur.execute(query, userID).fetchall()
-   
+
    # Get all the exercises
    exercises = []
    for e in posts_unsorted:
       temp_exercise = exer.Exercise(e['firstName'], e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
+      # temp_exercise = exer.Exercise(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7])
       exercises.append(temp_exercise)
    
    # Make sure we have them
@@ -91,11 +85,11 @@ def user_index():
    workoutID = posts_unsorted[0]["id"]
 
    for p in posts_unsorted:
-      if p['id'] != workoutID:
+      if p["id"] != workoutID:
          posts_sorted_daily.append(temp)
          # print(daily_posts)
          temp = []
-         workoutID = p['id']
+         workoutID = p["id"]
       temp.append(p)   
    posts_sorted_daily.append(temp) # Adds the last day from the query
    temp = []
@@ -107,15 +101,15 @@ def user_index():
    # Can't seem to figure out how to sort this list. Ask Steve is there is a term for what it is I'm trying to do. 
    day_temp = []
    exercise_temp = []
-   for daily in posts_sorted_daily:
-      exerciseID = daily[0]['exerciseID'] # get the first exerciseID
-      for exercise in daily:
-         if exercise['exerciseID'] != exerciseID:
-            day_temp.append(exercise_temp)
-            exercise_temp = []
-            exerciseID = exercise['exerciseID']
-         exercise_temp.append(exercise)
-      posts_sorted_exercise.append(exercise_temp)
+   # for daily in posts_sorted_daily:
+   #    exerciseID = daily[0]['exerciseID'] # get the first exerciseID
+   #    for exercise in daily:
+   #       if exercise['exerciseID'] != exerciseID:
+   #          day_temp.append(exercise_temp)
+   #          exercise_temp = []
+   #          exerciseID = exercise['exerciseID']
+   #       exercise_temp.append(exercise)
+   #    posts_sorted_exercise.append(exercise_temp)
 
    # Debugging to check if sorting all exercises
    # for day in posts_sorted_exercise:
@@ -169,7 +163,6 @@ def register():
       
       # Create the new user
       ls = [last_name, first_name, email_address, date_of_birth, generate_password_hash(password)]
-      db = get_db_connection()
       new_user = User()
       new_user.add_user(db, ls)
       db.close()
