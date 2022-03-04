@@ -12,20 +12,10 @@ class User:
         self.email = email
         self.date_of_birth = date_of_birth
         self.hash = hash
-    
-    # def populate_user(self, database, email):
-    #     db = database
-    #     user = db.execute("SELECT * FROM users WHERE users.email = ?", [email]).fetchall()[0]
-    #     self.id = user['id']
-    #     self.last_name = user['lastName']
-    #     self.first_name = user['firstName']
-    #     self.email = user['email'] 
-    #     self.date_of_birth = user['dateOfBirth']
-    #     self.hash = user['hash'] 
 
     @staticmethod
     def get(email):
-        user_result = User.db.execute("SELECT * FROM users WHERE users.email = ?", [email]).fetchone()
+        user_result = User.db.execute("SELECT * FROM users WHERE users.email LIKE ?", [email]).fetchone()
         if user_result:
             return User(user_result[0], user_result[1], user_result[2], user_result[3], user_result[4], user_result[5])
         else: 
@@ -37,7 +27,8 @@ class User:
         else:
             return False
     
-    def add_user(self, ls):
+    @staticmethod
+    def add_user(ls):
         User.db.execute("INSERT INTO users (lastName, firstName, email, dateOfBirth, hash) VALUES (?, ?, ?, ?, ?)", ls)
         User.db.commit() # Need to commit the changes or it will not save to the database
     

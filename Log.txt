@@ -5,6 +5,8 @@ Moving methods to helper class
 3-3-2022
 Got User class it hold the database
 Got page to display the way it used to
+Got login to allow for upper and lowercase emails
+Got Registration page to check for emails with upper and lowercase discrepancies
 The problem was I stopped using sqlite3.Row and row_factory when I hooked into my database
 
 02-24-2022

@@ -7,12 +7,10 @@ import sqlite3
 from helper import message, get_db_connection
 import exercise as exer
 from users import User
-# from . import app
 
 app = Flask(__name__)
 app.secret_key = "toots"
-db = get_db_connection()
-User.db = db
+User.db = get_db_connection()
 
 @app.route('/')
 def index():
@@ -42,6 +40,8 @@ def login():
       
       # Check passwork and send to user_index if correct
       password = request.form.get('password')
+      print(password)
+      print(user)
       if user.check_password(password):
          session['userID'] = user.get_id()
          session['name'] = user.get_first_name()
@@ -55,7 +55,7 @@ def user_index():
    if not session.get('userID'):
       return message("Must be logged in.")
 
-   cur = db.cursor()
+   cur = User.db.cursor()
    userID = []
    userID.append(session['userID']) # needs to be in a list to use .execute
    query = """SELECT users.firstName, workouts.dateandtime, workouts.id, sets.*, exercises.name FROM users
@@ -123,7 +123,6 @@ def user_index():
 
    # Give them to the .html to sort nicly 
 
-   db.close()
    return render_template("index.html", posts=posts_sorted_daily, name=session['name'])
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -161,11 +160,12 @@ def register():
       if password != confirm_password:
          return message("Password and Confirm Password does not match")
       
+      # Check for existing user with email address
+      if User.get(email_address):
+         return message("E-mail already in use")
       # Create the new user
       ls = [last_name, first_name, email_address, date_of_birth, generate_password_hash(password)]
-      new_user = User()
-      new_user.add_user(db, ls)
-      db.close()
+      User.add_user(ls)
    return message("You successfully registered. Go ahead and log in on the log in page.")
 
 @app.route('/settings', methods=['get', 'post'])
