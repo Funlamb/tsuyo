@@ -123,6 +123,12 @@ def user_index():
 
    return render_template("index.html", posts=posts_sorted_daily, name=session['name'])
 
+@app.route('/exercise', methods=["GET", "POST"])
+def exercise():
+   if not session.get('userID'):
+      return message("Need to be logged in")
+   return render_template("exercise.html")
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
    if request.method == "GET":
