@@ -5,4 +5,17 @@
         Exercise
         {% endblock %}
     </h1> 
+
+    <form action="/exercise" method="post">
+        <label for="datetime">Date and Time</label>
+        <input type="datetime-local" id="datetime" name="datetime">
+        <label for="Exercise">Exercise</label>
+        <input type="text" id="Exercise" name="Exercise">
+        <label for="setnumber">Set Number</label>
+        <input type="number" id="setnumber" name="setnumber">
+        <label for="Rep">Repatitions</label>
+        <input type="number" id="rep" name="rep">
+        <label for="resistance">Resistance</label>
+        <input type="number" step='.5' id="resistance" name="resistance" > 
+    </form>
 {% endblock %}

@@ -5,6 +5,7 @@ Add pages to add exercises
 
 3-4-22
 Got Index page to change names after user changes names in settings
+Started exercise page
 
 3-3-2022
 Got User class it hold the database
