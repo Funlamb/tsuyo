@@ -1,9 +1,8 @@
 from crypt import methods
 from pkgutil import extend_path
 from flask import Flask, redirect, render_template, request, session
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash
 
-import sqlite3
 from helper import message, get_db_connection
 import exercise as exer
 from users import User
@@ -32,21 +31,21 @@ def login():
          # return a page stating no password
          return message("Need a password")
 
+      # Get user if one exists
       email = request.form.get("email")
       user = User.get(email)
 
-      if not user: # If user does not exist send user to registration page
+      if not user: # If user does not exist send user error message
          return message("Invalid credentials")
       
       # Check passwork and send to user_index if correct
       password = request.form.get('password')
-      print(password)
-      print(user)
       if user.check_password(password):
          session['userID'] = user.get_id()
          session['name'] = user.get_first_name()
          session['email'] = user.get_email()
          return redirect("/user_index")
+      # If password did not match give user error message
       return message("Invalid credentials")
 
 @app.route('/user_index')
@@ -67,7 +66,6 @@ def user_index():
    exercises = []
    for e in posts_unsorted:
       temp_exercise = exer.Exercise(e['firstName'], e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
-      # temp_exercise = exer.Exercise(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7])
       exercises.append(temp_exercise)
    
    # Make sure we have them
@@ -177,11 +175,7 @@ def settings():
       return render_template("settings.html")
 
    if request.method == "POST":
-      # Get users current settings
-      db = get_db_connection()
-      user = User()
-      user.populate_user(db, session['email'])
-      # Change last name
+      user = User.get(session["email"])
       ls = {}
       ls['email'] = request.form.get("email")
       ls['last_name'] = request.form.get("last_name")
@@ -192,18 +186,20 @@ def settings():
       ls['original_password'] = request.form.get("original_password")
 
       # Test the original password
-      if user.change_user_data(db, ls) == 1:
+      if user.change_user_data(ls) == 1:
          return message("Need correct original password")
-      elif user.change_user_data(db, ls) == 2:
+      elif user.change_user_data(ls) == 2:
          return message("Changed passwords do not match")
       
+      user = User.get(session['email'])
+      session['name'] = user.get_first_name()
       return message("Successfully changed your settings")
 
     
 @app.route('/logout')
-def help():
+def logout():
    session.clear()
-   return message("Logging Out")
+   return message("Logged Out")
 
 if __name__ == '__main__':
    app.run()

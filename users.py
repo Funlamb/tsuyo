@@ -34,7 +34,7 @@ class User:
     
     def change_user_data(self, ls):
         if not check_password_hash(self.hash, ls['original_password']):
-            return 1
+            return 1 # Original password does not match
 
         # Change last name
         if ls['last_name']:
