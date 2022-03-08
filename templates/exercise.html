@@ -6,18 +6,55 @@
         {% endblock %}
     </h1> 
 
-    <form action="/exercise" method="post">
-        <label for="datetime">Date and Time</label>
-        <input type="datetime-local" id="datetime" name="datetime">
-        <label for="Exercise">Exercise</label>
-        <input type="text" id="Exercise" name="Exercise">
-        <label for="setnumber">Set Number</label>
-        <input type="number" id="setnumber" name="setnumber">
-        <label for="Rep">Repatitions</label>
-        <input type="number" id="rep" name="rep">
-        <label for="resistance">Resistance</label>
-        <input type="number" step='.5' id="resistance" name="resistance" > 
-        <button type="submit">Add Another Exercise</button>
+    <form action="/exercise" method="post" id="form">
+        <table class="form-table">
+            <tr> 
+                <th>Date and Time</th>
+                <th>Exercise</th>
+                <th>Set Number</th>
+                <th>Repatitions</th>
+                <th>Resistance</th>
+            </tr>
+            <tr>
+                <td id="datetime"><input type="datetime-local" name="ndatetime[]"></td>
+                <td id="exercise"><input type="text" name="nExercise[]"></td>
+                <td id="setnumber"><input type="number" name="nsetnumber[]"></td>
+                <td id="rep"><input type="number" name="nrep[]"></td>
+                <td id="resistance"><input type="number" step='.5' name="nresistance[]" ></td>
+                <td><input id="addRow"type="button" value="Add Another Exercise"></td>
+                <td><button type="button">Please Press Me</button></td>
+            </tr>
+        </table>
         <button type="submit">Submit</button>
     </form>
+    
+<script>
+    // var temp = document.getElementById("addRow").click(function(){
+    //     alert("You did it.");
+    // });
+    var pressedButton = document.getElementsById("addRow")[0];
+        pressedButton.addEventListener("click", function (event) {
+        // alert("You have pressed the button..........")
+        var width = $("#datetime");
+        var input;
+        var input = $("<input>").attr("type","text").attr("name","ndatetime[]");
+        var br = $("<br>");
+        width.append(br);
+        width.append(input);
+
+        var height = $("#exercise");
+        var input = $("<input>").attr("type","text").attr("name","nExercise[]");
+        var br = $("<br>");
+        height.append(br);
+        height.append(input);
+    })
+    $(document).ready(function () {
+        $('#addRow').click(function(){
+        });
+        $("#form").submit(function () {
+            alert(JSON.stringify($(this).serialize()));
+            return false;
+        });
+    });
+</script>
 {% endblock %}
