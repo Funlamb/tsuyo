@@ -18,6 +18,12 @@ def index():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+   # Get into app faster
+   user = User.get("fun@gmail.com")
+   session['userID'] = user.get_id()
+   session['name'] = user.get_first_name()
+   session['email'] = user.get_email()
+   return redirect("/user_index")
    # remove any prior session
    session.clear()
    if request.method == "POST":
