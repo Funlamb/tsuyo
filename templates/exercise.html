@@ -1,90 +1,44 @@
 {% extends 'base.html'%}
 {% block content %}
 <style>
-    input {
+    input , button{
         height: 20px;
     }
 </style>    
 
 <h1>
-        {% block title %}
-        Exercise
-        {% endblock %}
-    </h1> 
+    {% block title %}
+    Exercise
+    {% endblock %}
+</h1> 
 
-    <form action="/exercise" method="post" id="form">
-        <table class="form-table">
-            <tr> 
-                <th>Date and Time</th>
-                <th>Exercise</th>
-                <th>Set Number</th>
-                <th>Repatitions</th>
-                <th>Resistance</th>
-            </tr>
-            <tr valign="top">
-                <td id="datetime"><input type="datetime-local" name="ndatetime[]"/></td>
-                <td id="exercise"><input type="text" name="nExercise[]"></td>
-                <td id="setnumber"><input type="number" name="nsetnumber[]"></td>
-                <td id="rep"><input type="number" name="nrep[]"></td>
-                <td id="resistance"><input type="number" step='.5' name="nresistance[]" ></td>
-                <td><button id="addCap" type="button" onclick="displayAlert()">Add Another Exercise</button></td>
-            </tr>
-        </table>
-        <button type="submit" onclick="displayData()">Submit</button>
-    </form>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='exjs.js') }}" type="text/javascript"></script>
+<form action="/exercise" method="post" id="form">
+    <table class="form-table">
+        <tr> 
+            <th>Date and Time</th>
+            <th>Exercise</th>
+            <th>Set Number</th>
+            <th>Repatitions</th>
+            <th>Resistance</th>
+        </tr>
+        <tr valign="top">
+            <td id="datetime"><input type="datetime-local" name="ndatetime[]"/></td>
+            <td id="exercise"><input type="text" name="nExercise[]"></td>
+            <td id="setnumber"><input type="number" name="nsetnumber[]"></td>
+            <td id="rep"><input type="number" name="nrep[]"></td>
+            <td id="resistance"><input type="number" step='.5' name="nresistance[]" ></td>
+            <td><button id="addCap" type="button" onclick="addRow()" disabled>Add Another Exercise</button></td>
+        </tr>
+    </table>
+    <button type="submit" onclick="displayData()">Submit</button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='exjs.js') }}" type="text/javascript"></script>
 <script>
-    dome();
-    // var temp = document.getElementById("addRow").click(function(){
-    //     alert("You did it.");
-    // });
-    function displayAlert(){
-        // Add a new row to exercises
-        let datetime = $("#datetime");
-        var input;
-        var input = $("<input>").attr("type", "datetime-local").attr("name", "ndatetime[]");  
-        var br = $("<br>");
-        datetime.append(br);
-        datetime.append(input);
-
-        let exercise = $("#exercise");
-        var input;
-        var input = $("<input>").attr("type", "text").attr("name", "nExercise[]");  
-        var br = $("<br>");
-        exercise.append(br);
-        exercise.append(input);
-
-        let setNumber = $("#setnumber");
-        var input;
-        var input = $("<input>").attr("type", "number").attr("name", "nsetnumber[]");  
-        var br = $("<br>");
-        setNumber.append(br);
-        setNumber.append(input);
-
-        let rep = $("#rep")
-        var input;
-        var input = $("<input>").attr("type", "number").attr("name", "nrep[]");  
-        var br = $("<br>");
-        rep.append(br);
-        rep.append(input);
-
-        let resistance = $("#resistance")
-        var input;
-        var input = $("<input>").attr("type", "number").attr("name", "nresistance[]").attr("step", ".5");  
-        var br = $("<br>");
-        resistance.append(br);
-        resistance.append(input);
-    }
-    function displayData(){
-        let dateTimes = document.getElementsByName("ndatetime[]");
-        let exercises = document.getElementsByName("nExercise[]");
-        let setNumber = document.getElementsByName("nsetnumber[]");
-        let rep = document.getElementsByName("nrep[]");
-        let resistance = document.getElementsByName("nresistance[]");
-        alert(dateTimes[0].value);
-        return false;
-    }
+    // get all text fields
+    // check that they are filled
+    // enable the button
+    // do the same for the next button
 </script>
 {% endblock %}

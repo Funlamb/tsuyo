@@ -1,9 +1,14 @@
+Get JS functions is JS files
 Get exercise page to save the date and time to all new fields
 Get exercise page to add exercise name to next field 
 Get exercises to load into the database for the user
 Use classes to access data 
 Refractor 
 Moving methods to helper class
+
+3-9-22
+Got add row button inactive till all fields are filled
+Got add row to enable and disable when needed
 
 3-8-22
 Got exercises page to start adding text boxes to add more exercises
