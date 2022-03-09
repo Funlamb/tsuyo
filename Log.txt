@@ -1,13 +1,14 @@
+Get exercise page to save the date and time to all new fields
+Get exercise page to add exercise name to next field 
+Get exercises to load into the database for the user
 Use classes to access data 
 Refractor 
 Moving methods to helper class
-Need to get exercise page to add rows evenly
-Get exercise page to save the date and time to all new fields
-Get exercise page to add exercise name to next field 
 
 3-8-22
 Got exercises page to start adding text boxes to add more exercises
 Got exercise page to add all fields
+Got exercise page to add rows evenly
 
 3-4-22
 Got Index page to change names after user changes names in settings

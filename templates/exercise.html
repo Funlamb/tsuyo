@@ -1,6 +1,12 @@
 {% extends 'base.html'%}
 {% block content %}
-    <h1>
+<style>
+    input {
+        height: 20px;
+    }
+</style>    
+
+<h1>
         {% block title %}
         Exercise
         {% endblock %}
@@ -24,7 +30,7 @@
                 <td><button id="addCap" type="button" onclick="displayAlert()">Add Another Exercise</button></td>
             </tr>
         </table>
-        <button type="submit">Submit</button>
+        <button type="submit" onclick="displayData()">Submit</button>
     </form>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -69,24 +75,14 @@
         resistance.append(br);
         resistance.append(input);
     }
-
-    var pressedButton = document.getElementsById("addCap")[0];
-        pressedButton.addEventListener("click", function (event) {
-        alert("You have pressed the button..........")
-
-        var height = $("#exercise");
-        var input = $("<input>").attr("type","text").attr("name","nExercise[]");
-        var br = $("<br>");
-        height.append(br);
-        height.append(input);
-    })
-    $(document).ready(function () {
-        $('#addRow').click(function(){
-        });
-        $("#form").submit(function () {
-            alert(JSON.stringify($(this).serialize()));
-            return false;
-        });
-    });
+    function displayData(){
+        let dateTimes = document.getElementsByName("ndatetime[]");
+        let exercises = document.getElementsByName("nExercise[]");
+        let setNumber = document.getElementsByName("nsetnumber[]");
+        let rep = document.getElementsByName("nrep[]");
+        let resistance = document.getElementsByName("nresistance[]");
+        alert(dateTimes[0].value);
+        return false;
+    }
 </script>
 {% endblock %}
