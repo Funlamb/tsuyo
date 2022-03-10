@@ -1,6 +1,7 @@
 function addRow(){
     // Disable button
     document.getElementById("addCap").disabled = true;
+
     // Add a new row to exercises
     let datetime = $("#datetime");
     var input;
@@ -42,19 +43,17 @@ function addRow(){
 function addInputs(){
     let inputs = document.getElementsByTagName("input");
     for (let index = 0; index < inputs.length; index++) {
-        inputs[index].addEventListener("change", checkFilled);
+        inputs[index].addEventListener("input", checkFilled);
     }
 }
 
 function checkFilled(){
-    // alert("cheakfilled()");
     let inputs = document.getElementsByTagName("input");
     let count = inputs.length;
     let testCount = 0;
     for (let index = 0; index < count; index++) {
         if (inputs[index].value !== "") {
             testCount += 1;
-            // alert(testCount);
         }
     }
     if (testCount == count){
