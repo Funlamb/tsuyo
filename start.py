@@ -1,6 +1,8 @@
 from crypt import methods
 from pkgutil import extend_path
+from unittest.mock import sentinel
 from flask import Flask, redirect, render_template, request, session
+from markupsafe import re
 from werkzeug.security import generate_password_hash
 
 from helper import message, get_db_connection
@@ -133,6 +135,21 @@ def user_index():
 def exercise():
    if not session.get('userID'):
       return message("Need to be logged in")
+   if request.method == "POST":
+      # for dates, exercise, set_number, repatition, resistance in zip(request.form.getlist('ndatetime[]'),
+      #                                                                request.form.getlist('nExercise[]'),
+      #                                                                request.form.getlist('nsetnumber[]'),
+      #                                                                request.form.getlist('nrep[]'),
+      #                                                                request.form.getlist('nresistance[]')):
+      #    print(dates, exercise, set_number, repatition, resistance)
+      dates = request.form.getlist("ndatetime[]")
+      exercise = request.form.getlist("nExercise[]")
+      set_number = request.form.getlist("nsetnumber[]")
+      repatition = request.form.getlist("nrep[]")
+      resistance = request.form.getlist("nresistance[]")
+      ex = zip(dates, exercise,set_number, repatition, resistance)
+      for d in ex:
+         print(d)
    return render_template("exercise.html")
 
 @app.route('/register', methods=['GET', 'POST'])

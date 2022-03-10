@@ -1,10 +1,10 @@
 Get exercise page to copy top row elements to newly created row 
-Get JS functions is JS files
-Get exercise page to save the date and time to all new fields
 Get exercises to load into the database for the user
+Get JS functions is JS files
 Use classes to access data 
-Refractor 
-Moving methods to helper class
+
+3-10-22
+Got data from form on exercise page
 
 3-9-22
 Got add row button inactive till all fields are filled

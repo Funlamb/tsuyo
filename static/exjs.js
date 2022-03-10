@@ -57,9 +57,13 @@ function checkFilled(){
         }
     }
     if (testCount == count){
-        alert("All filled");
         document.getElementById('addCap').removeAttribute("disabled");
     }
 }
-
+function nameRows(){
+    let inputs = document.getElementsByTagName("input");
+    for (let i = 0; i < inputs.length; i++){
+    }
+}
+// nameRows();
 addInputs();
