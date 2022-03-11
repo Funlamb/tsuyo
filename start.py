@@ -1,5 +1,6 @@
 from crypt import methods
 from pkgutil import extend_path
+from time import strftime
 from unittest.mock import sentinel
 from flask import Flask, redirect, render_template, request, session
 from markupsafe import re
@@ -12,6 +13,7 @@ from users import User
 app = Flask(__name__)
 app.secret_key = "toots"
 User.db = get_db_connection()
+database = get_db_connection()
 
 @app.route('/')
 def index():
@@ -20,6 +22,23 @@ def index():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+   # changing the database date and time to remove seconds
+   datesInDB = database.execute("SELECT * FROM workouts").fetchall()
+   zippedDates = []
+   for dates in datesInDB:
+      word = ''
+      for i, t in enumerate(dates['DateAndTime']):
+         if i == 10:
+            word+='T'
+         elif i >15:
+            pass
+         else:
+            word+=t
+      datetime = word # 10 to T stop at 15
+      zippedDates.append([dates['id'], dates['userID'], datetime])
+   for z in zippedDates:
+      database.execute("UPDATE workouts SET DateAndTime=? where id=?", [z[2],z[0]])
+   database.commit()
    # Get into app faster
    user = User.get("fun@gmail.com")
    session['userID'] = user.get_id()
@@ -136,20 +155,23 @@ def exercise():
    if not session.get('userID'):
       return message("Need to be logged in")
    if request.method == "POST":
-      # for dates, exercise, set_number, repatition, resistance in zip(request.form.getlist('ndatetime[]'),
-      #                                                                request.form.getlist('nExercise[]'),
-      #                                                                request.form.getlist('nsetnumber[]'),
-      #                                                                request.form.getlist('nrep[]'),
-      #                                                                request.form.getlist('nresistance[]')):
-      #    print(dates, exercise, set_number, repatition, resistance)
       dates = request.form.getlist("ndatetime[]")
       exercise = request.form.getlist("nExercise[]")
       set_number = request.form.getlist("nsetnumber[]")
       repatition = request.form.getlist("nrep[]")
       resistance = request.form.getlist("nresistance[]")
       ex = zip(dates, exercise,set_number, repatition, resistance)
-      for d in ex:
-         print(d)
+      for e in ex:
+         # Create workout day and time if one does not exist
+         workoutID = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (e[0], session['userID'])).fetchone()
+         if workoutID != 1:
+            print("Does not exist")
+         else:
+            print(workoutID)
+            print("exists")
+      # Create exercise
+      # Log the workout in the database
+         print(e)
    return render_template("exercise.html")
 
 @app.route('/register', methods=['GET', 'POST'])

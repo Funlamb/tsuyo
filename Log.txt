@@ -1,3 +1,4 @@
+Create a set, create a workout day for the user, create an exercise for the user
 Get exercise page to copy top row elements to newly created row 
 Get exercises to load into the database for the user
 Get JS functions is JS files
