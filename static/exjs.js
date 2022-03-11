@@ -1,46 +1,48 @@
 function addRow(){
-    // Disable button
-    document.getElementById("addCap").disabled = true;
-
     // Add a new row to exercises
+    let datetimeValue = document.getElementById("datetime").lastElementChild.value;
     let datetime = $("#datetime");
     var input;
-    var input = $("<input>").attr("type", "datetime-local").attr("name", "ndatetime[]");  
+    var input = $("<input>").attr("type", "datetime-local").attr("name", "ndatetime[]").attr("value", datetimeValue);  
     var br = $("<br>");
     datetime.append(br);
     datetime.append(input);
-
+    
+    let exerciseValue = document.getElementById("exercise").lastElementChild.value;
     let exercise = $("#exercise");
     var input;
-    var input = $("<input>").attr("type", "text").attr("name", "nExercise[]");  
+    var input = $("<input>").attr("type", "text").attr("name", "nExercise[]").attr("value", exerciseValue);  
     var br = $("<br>");
     exercise.append(br);
     exercise.append(input);
 
+    let setNumberValue = parseInt(document.getElementById("setnumber").lastElementChild.value) + 1;
     let setNumber = $("#setnumber");
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", "nsetnumber[]");  
+    var input = $("<input>").attr("type", "number").attr("name", "nsetnumber[]").attr("value", setNumberValue);  
     var br = $("<br>");
     setNumber.append(br);
     setNumber.append(input);
 
+    let repValue = parseInt(document.getElementById("rep").lastElementChild.value);
     let rep = $("#rep")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", "nrep[]");  
+    var input = $("<input>").attr("type", "number").attr("name", "nrep[]").attr("value", repValue);  
     var br = $("<br>");
     rep.append(br);
     rep.append(input);
 
+    let resistanceValue = parseInt(document.getElementById("resistance").lastElementChild.value);
     let resistance = $("#resistance")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", "nresistance[]").attr("step", ".5");  
+    var input = $("<input>").attr("type", "number").attr("name", "nresistance[]").attr("step", ".5").attr("value", resistanceValue);  
     var br = $("<br>");
     resistance.append(br);
     resistance.append(input);
-    addInputs();
+    trackInputs();
 }
 
-function addInputs(){
+function trackInputs(){
     let inputs = document.getElementsByTagName("input");
     for (let index = 0; index < inputs.length; index++) {
         inputs[index].addEventListener("input", checkFilled);
@@ -60,10 +62,5 @@ function checkFilled(){
         document.getElementById('addCap').removeAttribute("disabled");
     }
 }
-function nameRows(){
-    let inputs = document.getElementsByTagName("input");
-    for (let i = 0; i < inputs.length; i++){
-    }
-}
-// nameRows();
-addInputs();
+
+trackInputs();
