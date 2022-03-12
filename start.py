@@ -17,24 +17,6 @@ def index():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-   # changing the database date and time to remove seconds
-   # datesInDB = database.execute("SELECT * FROM workouts").fetchall()
-   # zippedDates = []
-   # for dates in datesInDB:
-   #    word = ''
-   #    for i, t in enumerate(dates['DateAndTime']):
-   #       if i == 10:
-   #          word+='T'
-   #       elif i >15:
-   #          pass
-   #       else:
-   #          word+=t
-   #    datetime = word # 10 to T stop at 15
-   #    zippedDates.append([dates['id'], dates['userID'], datetime])
-   # for z in zippedDates:
-   #    database.execute("UPDATE workouts SET DateAndTime=? where id=?", [z[2],z[0]])
-   # database.commit()
-   # Get into app faster
    user = User.get("fun@gmail.com")
    session['userID'] = user.get_id()
    session['name'] = user.get_first_name()
@@ -155,7 +137,7 @@ def exercise():
       set_number = request.form.getlist("nsetnumber[]")
       repatition = request.form.getlist("nrep[]")
       resistance = request.form.getlist("nresistance[]")
-      ex = zip(dates, exercise,set_number, repatition, resistance)
+      ex = zip(dates, exercise, set_number, repatition, resistance)
       for e in ex:
          # Create workout day and time if one does not exist
          doesWorkoutExist = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (e[0], session['userID'])).fetchone()
@@ -168,25 +150,26 @@ def exercise():
                   datestr += 'T'
                else:
                   datestr += v
-            #  TODO: Create one
-            database.execute("INSERT INTO workouts (userID, DateAndTime) values (?,?)", [session['userID'], datestr])
+            database.execute("INSERT INTO workouts (userID, DateAndTime) VALUES (?,?)", [session['userID'], datestr])
+            workoutID = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (e[0], session['userID'])).fetchone()[0]
             database.commit()
-            # print("Does not exist")
          else:
             workoutID = doesWorkoutExist[0]
+         
          # Create exercise if one does not exist
          word = ''.join(e[1])
          doesExerciseExist = database.execute("SELECT id FROM exercises WHERE name=?", [word]).fetchone()
          exerciseID = -1
          if doesExerciseExist is None:
-            # TODO: Create one
-            print("Does not exist")
+            database.execute("INSERT INTO exercises (name) VALUES (?)", [word])
+            exerciseID = database.execute("SELECT id FROM exercises WHERE name=?", [word]).fetchone()[0]
+            database.commit()
          else:
             exerciseID = doesExerciseExist[0]
-            print(exerciseID)
-      # Create exercise
-      # Log the workout in the database
-         print(e)
+      
+         # Create the set
+         database.execute("INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance ) VALUES (?, ?, ?, ?, ?)", [workoutID, exerciseID, e[2], e[3], e[4]])
+         database.commit()
    return render_template("exercise.html")
 
 @app.route('/register', methods=['GET', 'POST'])

@@ -1,8 +1,12 @@
-Create a set, create a workout day for the user, create an exercise for the user
 Get exercise page to copy top row elements to newly created row 
 Get exercises to load into the database for the user
 Get JS functions is JS files
 Use classes to access data 
+
+3-12-22
+Got exercises page to create an exercise for the user
+Got exercises page to create a set
+Changed exercises table to have a unique id 
 
 3-11-22
 Got exercise page to add workout date to the workouts table in the database
