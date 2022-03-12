@@ -4,6 +4,9 @@ Get exercises to load into the database for the user
 Get JS functions is JS files
 Use classes to access data 
 
+3-11-22
+Got exercise page to add workout date to the workouts table in the database
+
 3-10-22
 Got data from form on exercise page
 Got data to copy to next row in exercise page

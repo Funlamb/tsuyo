@@ -1,9 +1,4 @@
-from crypt import methods
-from pkgutil import extend_path
-from time import strftime
-from unittest.mock import sentinel
 from flask import Flask, redirect, render_template, request, session
-from markupsafe import re
 from werkzeug.security import generate_password_hash
 
 from helper import message, get_db_connection
@@ -23,22 +18,22 @@ def index():
 @app.route('/login', methods=["GET", "POST"])
 def login():
    # changing the database date and time to remove seconds
-   datesInDB = database.execute("SELECT * FROM workouts").fetchall()
-   zippedDates = []
-   for dates in datesInDB:
-      word = ''
-      for i, t in enumerate(dates['DateAndTime']):
-         if i == 10:
-            word+='T'
-         elif i >15:
-            pass
-         else:
-            word+=t
-      datetime = word # 10 to T stop at 15
-      zippedDates.append([dates['id'], dates['userID'], datetime])
-   for z in zippedDates:
-      database.execute("UPDATE workouts SET DateAndTime=? where id=?", [z[2],z[0]])
-   database.commit()
+   # datesInDB = database.execute("SELECT * FROM workouts").fetchall()
+   # zippedDates = []
+   # for dates in datesInDB:
+   #    word = ''
+   #    for i, t in enumerate(dates['DateAndTime']):
+   #       if i == 10:
+   #          word+='T'
+   #       elif i >15:
+   #          pass
+   #       else:
+   #          word+=t
+   #    datetime = word # 10 to T stop at 15
+   #    zippedDates.append([dates['id'], dates['userID'], datetime])
+   # for z in zippedDates:
+   #    database.execute("UPDATE workouts SET DateAndTime=? where id=?", [z[2],z[0]])
+   # database.commit()
    # Get into app faster
    user = User.get("fun@gmail.com")
    session['userID'] = user.get_id()
@@ -163,12 +158,32 @@ def exercise():
       ex = zip(dates, exercise,set_number, repatition, resistance)
       for e in ex:
          # Create workout day and time if one does not exist
-         workoutID = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (e[0], session['userID'])).fetchone()
-         if workoutID != 1:
+         doesWorkoutExist = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (e[0], session['userID'])).fetchone()
+         workoutID = -1
+         if doesWorkoutExist is None:
+            # Add a T to the datetime
+            datestr = ''
+            for i, v in enumerate(e[0]):
+               if i == 10:
+                  datestr += 'T'
+               else:
+                  datestr += v
+            #  TODO: Create one
+            database.execute("INSERT INTO workouts (userID, DateAndTime) values (?,?)", [session['userID'], datestr])
+            database.commit()
+            # print("Does not exist")
+         else:
+            workoutID = doesWorkoutExist[0]
+         # Create exercise if one does not exist
+         word = ''.join(e[1])
+         doesExerciseExist = database.execute("SELECT id FROM exercises WHERE name=?", [word]).fetchone()
+         exerciseID = -1
+         if doesExerciseExist is None:
+            # TODO: Create one
             print("Does not exist")
          else:
-            print(workoutID)
-            print("exists")
+            exerciseID = doesExerciseExist[0]
+            print(exerciseID)
       # Create exercise
       # Log the workout in the database
          print(e)
