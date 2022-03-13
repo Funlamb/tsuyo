@@ -1,16 +1,11 @@
 {% extends 'base.html'%}
 {% block content %}
-<style>
-    input , button{
-        height: 20px;
-    }
-</style>    
-
+<link rel="stylesheet" href="{{url_for('static', filename='css/exercise.css') }}">
 <h1>
     {% block title %}
     Exercise
     {% endblock %}
-</h1> 
+</h1>
 
 <form action="/exercise" method="post" id="form">
     <table class="form-table">
@@ -34,6 +29,5 @@
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='exjs.js') }}" type="text/javascript"></script>
-
 </form>
 {% endblock %}
