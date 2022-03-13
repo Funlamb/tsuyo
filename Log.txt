@@ -1,3 +1,6 @@
+Get an edit button next to every workout for the user to edit
+Make an edit page to change that set
+Make the edit in the same page 
 Get JS functions is JS files
 Use classes to access data 
 
