@@ -1,3 +1,4 @@
+Refactor
 Get exercise page to start at set number 1 for first set
 Get users list to show latest workouts first
 

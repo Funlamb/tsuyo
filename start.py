@@ -72,10 +72,6 @@ def user_index():
       temp_exercise = exer.Exercise(e['firstName'], e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
       exercises.append(temp_exercise)
    
-   # Make sure we have them
-   # for e in exercises:
-   #    e.anounce()
-   
    # Get all workout orginized
    posts_sorted_daily = []
    temp = []
@@ -133,31 +129,31 @@ def exercise():
       return message("Need to be logged in")
    if request.method == "POST":
       dates = request.form.getlist("ndatetime[]")
-      exercise = request.form.getlist("nExercise[]")
-      set_number = request.form.getlist("nsetnumber[]")
-      repatition = request.form.getlist("nrep[]")
-      resistance = request.form.getlist("nresistance[]")
-      ex = zip(dates, exercise, set_number, repatition, resistance)
-      for e in ex:
+      exercises = request.form.getlist("nExercise[]")
+      set_numbers = request.form.getlist("nsetnumber[]")
+      repetitions = request.form.getlist("nrep[]")
+      resistances = request.form.getlist("nresistance[]")
+      zippedExercises = zip(dates, exercises, set_numbers, repetitions, resistances)
+      for exercises in zippedExercises:
          # Create workout day and time if one does not exist
-         doesWorkoutExist = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (e[0], session['userID'])).fetchone()
+         doesWorkoutExist = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (exercises[0], session['userID'])).fetchone()
          workoutID = -1
          if doesWorkoutExist is None:
             # Add a T to the datetime
-            datestr = ''
-            for i, v in enumerate(e[0]):
+            date_time_str = ''
+            for i, v in enumerate(exercises[0]):
                if i == 10:
-                  datestr += 'T'
+                  date_time_str += 'T'
                else:
-                  datestr += v
-            database.execute("INSERT INTO workouts (userID, DateAndTime) VALUES (?,?)", [session['userID'], datestr])
-            workoutID = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (e[0], session['userID'])).fetchone()[0]
+                  date_time_str += v
+            database.execute("INSERT INTO workouts (userID, DateAndTime) VALUES (?,?)", [session['userID'], date_time_str])
+            workoutID = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (exercises[0], session['userID'])).fetchone()[0]
             database.commit()
          else:
             workoutID = doesWorkoutExist[0]
          
          # Create exercise if one does not exist
-         word = ''.join(e[1])
+         word = ''.join(exercises[1])
          doesExerciseExist = database.execute("SELECT id FROM exercises WHERE name=?", [word]).fetchone()
          exerciseID = -1
          if doesExerciseExist is None:
@@ -168,7 +164,8 @@ def exercise():
             exerciseID = doesExerciseExist[0]
       
          # Create the set
-         database.execute("INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance ) VALUES (?, ?, ?, ?, ?)", [workoutID, exerciseID, e[2], e[3], e[4]])
+         sql = "INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance) VALUES (?, ?, ?, ?, ?)"
+         database.execute(sql, [workoutID, exerciseID, exercises[2], exercises[3], exercises[4]])
          database.commit()
    return render_template("exercise.html")
 
