@@ -1,11 +1,10 @@
-Refactor
-Get exercise page to start at set number 1 for first set
-Get users list to show latest workouts first
-
 Get JS functions is JS files
 Use classes to access data 
 
 3-12-22
+Got users list to show latest workouts first
+Got exercise page to start 'set-number' at 1 for first set
+Refactored /settings, /exercise, setting.html
 Get exercises to load into the database for the user
 Got exercises page to create an exercise for the user
 Got exercises page to create a set

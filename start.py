@@ -63,7 +63,7 @@ def user_index():
    userID.append(session['userID']) # needs to be in a list to use .execute
    query = """SELECT users.firstName, workouts.dateandtime, workouts.id, sets.*, exercises.name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ?"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY sets.id DESC"""
    posts_unsorted = cur.execute(query, userID).fetchall()
 
    # Get all the exercises
