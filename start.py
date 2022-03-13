@@ -212,7 +212,7 @@ def register():
       User.add_user(ls)
    return message("You successfully registered. Go ahead and log in on the log in page.")
 
-@app.route('/settings', methods=['get', 'post'])
+@app.route('/settings', methods=['GET', 'POST'])
 def settings():
    if not session.get('userID'):
       return message("Must be logged in.")
@@ -224,12 +224,12 @@ def settings():
       user = User.get(session["email"])
       ls = {}
       ls['email'] = request.form.get("email")
-      ls['last_name'] = request.form.get("last_name")
+      ls['last_name'] = request.form.get("last-name")
       ls['first_name'] = request.form.get("first_name")
-      ls['date_of_birth'] = request.form.get("date_of_birth")
-      ls['change_password'] = request.form.get("change_password")
-      ls['confirm_password'] = request.form.get("confirm_password")
-      ls['original_password'] = request.form.get("original_password")
+      ls['date_of_birth'] = request.form.get("date-of-birth")
+      ls['change_password'] = request.form.get("change-password")
+      ls['confirm_password'] = request.form.get("confirm-password")
+      ls['original_password'] = request.form.get("original-password")
 
       # Test the original password
       if user.change_user_data(ls) == 1:
