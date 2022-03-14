@@ -61,7 +61,7 @@ def user_index():
    cur = User.db.cursor()
    userID = []
    userID.append(session['userID']) # needs to be in a list to use .execute
-   query = """SELECT users.firstName, workouts.dateandtime, workouts.id, sets.*, exercises.name FROM users
+   query = """SELECT users.firstName, workouts.dateandtime, workouts.id as w_id, sets.*, exercises.name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY sets.id DESC"""
    posts_unsorted = cur.execute(query, userID).fetchall()
@@ -71,6 +71,7 @@ def user_index():
    for e in posts_unsorted:
       temp_exercise = exer.Exercise(e['firstName'], e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
       exercises.append(temp_exercise)
+      print(e['id'])
    
    # Get all workout orginized
    posts_sorted_daily = []
@@ -80,14 +81,14 @@ def user_index():
       return render_template("index.html", name=session['name'])
       
    # print(posts_unsorted[0]["id"])
-   workoutID = posts_unsorted[0]["id"]
+   workoutID = posts_unsorted[0]["w_id"]
 
    for p in posts_unsorted:
-      if p["id"] != workoutID:
+      if p["w_id"] != workoutID:
          posts_sorted_daily.append(temp)
          # print(daily_posts)
          temp = []
-         workoutID = p["id"]
+         workoutID = p["w_id"]
       temp.append(p)   
    posts_sorted_daily.append(temp) # Adds the last day from the query
    temp = []
