@@ -1,8 +1,12 @@
-Get an edit button next to every workout for the user to edit
-Make an edit page to change that set
+Get workouts, sets, and exercises to have classes and helper functions
 Make the edit in the same page 
 Get JS functions is JS files
-Use classes to access data 
+Use classes to access data
+Add duration to workouts
+
+3-14-22
+Got an edit button next to every workout for the user to edit
+Got an edit page to change show what needs to be changed
 
 3-12-22
 Got users list to show latest workouts first

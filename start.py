@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
@@ -52,6 +53,28 @@ def login():
       # If password did not match give user error message
       return message("Invalid credentials")
 
+@app.route('/begin_edit_set', methods=["POST"])
+def begin_edit_set():
+   set_id = request.form.get('edit-set')
+   cur = User.db.cursor()
+   s_id = []
+   s_id.append(set_id)
+   query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
+      sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
+      JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
+      sets.exerciseID = exercises.id WHERE s_id = ?"""
+   set_to_edit = cur.execute(query, s_id).fetchone()
+   # print(set_to_edit['s_id'])
+   return render_template("edit_set.html", set_to_edit=set_to_edit)
+
+@app.route('/edit_set', methods=["POST"])
+def edit_set():
+   # get workout id
+   # get exercise id
+   # get set id
+   # edit the set
+   return message("Set edited successfully")
+
 @app.route('/user_index')
 # @login_required
 def user_index():
@@ -61,7 +84,8 @@ def user_index():
    cur = User.db.cursor()
    userID = []
    userID.append(session['userID']) # needs to be in a list to use .execute
-   query = """SELECT users.firstName, workouts.dateandtime, workouts.id as w_id, sets.*, exercises.name FROM users
+   query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
+      sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY sets.id DESC"""
    posts_unsorted = cur.execute(query, userID).fetchall()
@@ -69,9 +93,8 @@ def user_index():
    # Get all the exercises
    exercises = []
    for e in posts_unsorted:
-      temp_exercise = exer.Exercise(e['firstName'], e['interval'], e['resistance'], e['setNumber'], e['workoutID'], e['exerciseID'], e['dateandtime'], e['name'])
+      temp_exercise = exer.Exercise(e['firstName'], e['s_interval'], e['s_res'], e['s_setNum'], e['s_workID'], e['s_exeID'], e['w_datetime'], e['e_name'])
       exercises.append(temp_exercise)
-      print(e['id'])
    
    # Get all workout orginized
    posts_sorted_daily = []

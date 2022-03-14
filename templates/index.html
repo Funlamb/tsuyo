@@ -10,6 +10,7 @@
     
     <table class="table tablestriped">
         <tbody>
+            <form action="/begin_edit_set" method="post">
             {%for p in posts %}
                 {% set date = p[0]['DateAndTime']%}
                     <thead>
@@ -22,11 +23,15 @@
                     </thead>
                         {%- for d in p %}
                             <tr>
-                                <td class="border-0 fw-bold text-end">{{d['name']}}</td>
-                                <td class="border-0 fw-bold text-end">{{d['interval']}}</td>
-                                <td class="border-0 fw-bold text-end">{{d['resistance']}}</td>
+                                <td class="border-0 fw-bold text-end">{{d['e_name']}}</td>
+                                <td class="border-0 fw-bold text-end">{{d['s_interval']}}</td>
+                                <td class="border-0 fw-bold text-end">{{d['s_res']}}</td>
+                                <td>
+                                    <button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-set" value="{{d['s_id']}}">Edit</button>
+                                </td>
                             </tr>
                         {% endfor -%}
             {% endfor %}
+            </form>
         </tbody>
 {% endblock %}
