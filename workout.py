@@ -10,8 +10,14 @@ class Workout:
 
     @staticmethod
     def get(id):
-        worlout_result = Workout.db.execute("SELECT * FROM workouts WHERE id=?", [id])
+        worlout_result = Workout.db.execute("SELECT * FROM workouts WHERE id=?", [id]).fetchone()
         if worlout_result:
             return Workout(worlout_result[0], worlout_result[1],worlout_result[2])
         else:
             return None
+
+    def get_id(self):
+        return self.id
+
+    def get_date_time(self):
+        return self.date_time

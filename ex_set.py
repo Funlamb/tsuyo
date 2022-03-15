@@ -15,6 +15,6 @@ class Ex_set:
     def get(id):
         ex_set_result = Ex_set.db.execute("SELECT * FROM sets WHERE id=?", [id]).fetchone()
         if ex_set_result:
-            return Ex_set(ex_set_result[0], ex_set_result[1],ex_set_result[2],ex_set_result[3],ex_set_result[4])
+            return Ex_set(ex_set_result[0], ex_set_result[1],ex_set_result[2],ex_set_result[3],ex_set_result[4], ex_set_result[5])
         else:
             return None

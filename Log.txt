@@ -4,6 +4,8 @@ Get JS functions is JS files
 Use classes to access data
 Add duration to workouts
 
+03-15-22
+
 3-14-22
 Got an edit button next to every workout for the user to edit
 Got an edit page to change show what needs to be changed

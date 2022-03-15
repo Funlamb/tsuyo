@@ -1,15 +1,25 @@
 from crypt import methods
+import imp
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
 from helper import message, get_db_connection
-import exercise as exer
+
 from user import User
+from head_set import Head_set
+from workout import Workout
+from ex_set import Ex_set
+from exercise import Exercise
 
 app = Flask(__name__)
 app.secret_key = "toots"
-User.db = get_db_connection()
+
+# Setup databases from all classes
 database = get_db_connection()
+User.db = database
+Workout.db = database
+Ex_set.db = database
+Exercise.db = database
 
 @app.route('/')
 def index():
@@ -88,62 +98,49 @@ def user_index():
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY sets.id DESC"""
-   posts_unsorted = cur.execute(query, userID).fetchall()
+   exercises = cur.execute(query, userID).fetchall()
 
-   # Get all the exercises
-   exercises = []
-   for e in posts_unsorted:
-      temp_exercise = exer.Exercise(e['firstName'], e['s_interval'], e['s_res'], e['s_setNum'], e['s_workID'], e['s_exeID'], e['w_datetime'], e['e_name'])
-      exercises.append(temp_exercise)
+   # If there are zero exercises show the user there name
+   if not exercises:
+      return render_template("index.html", name=session['name'])
+
+   # Get all the exercises in head_set class
+   head_sets = []
+   for ex in exercises:
+      # make a head_set form all the exercises
+      head_set = Head_set(Workout.get(ex['w_id']), Exercise.get(ex['s_exeID']), Ex_set.get(ex['s_id']))
+      head_sets.append(head_set)
    
+   # Split workouts into days
+   workout_id = head_sets[0].get_workout().get_id()
+   head_sets_by_days = []
+   temp = []
+   for i in head_sets:
+      if workout_id != i.get_workout().get_id():
+         head_sets_by_days.append(temp)
+         temp = []
+         temp.append(i)
+         workout_id = i.get_workout().get_id()
+      temp.append(i)
+
+   exercise_id = head_sets[0].get_exercise().get_id()
+   head_sets_by_days_and_exercises = []
+   for i in head_sets_by_days:
+      temp_day = []
+      temp = []
+      for j in i:
+         if exercise_id != j.get_exercise().get_id():
+           temp_day.append(temp)
+           temp = []
+           temp.append(j)
+           exercise_id = j.get_exercise().get_id()
+         temp.append(j) 
+      head_sets_by_days_and_exercises.append(temp_day)
+   for i in head_sets_by_days_and_exercises:
+      print(len(i))
    # Get all workout orginized
    posts_sorted_daily = []
    temp = []
-   # Split them by days
-   if not posts_unsorted:
-      return render_template("index.html", name=session['name'])
-      
-   # print(posts_unsorted[0]["id"])
-   workoutID = posts_unsorted[0]["w_id"]
-
-   for p in posts_unsorted:
-      if p["w_id"] != workoutID:
-         posts_sorted_daily.append(temp)
-         # print(daily_posts)
-         temp = []
-         workoutID = p["w_id"]
-      temp.append(p)   
-   posts_sorted_daily.append(temp) # Adds the last day from the query
-   temp = []
-   
-   # Split them by exercises
-   posts_sorted_exercise = []
-   # Take the posts_sorted_daily and sort them by exercise
-   # Look at the daily post
-   # Can't seem to figure out how to sort this list. Ask Steve is there is a term for what it is I'm trying to do. 
-   day_temp = []
-   exercise_temp = []
-   # for daily in posts_sorted_daily:
-   #    exerciseID = daily[0]['exerciseID'] # get the first exerciseID
-   #    for exercise in daily:
-   #       if exercise['exerciseID'] != exerciseID:
-   #          day_temp.append(exercise_temp)
-   #          exercise_temp = []
-   #          exerciseID = exercise['exerciseID']
-   #       exercise_temp.append(exercise)
-   #    posts_sorted_exercise.append(exercise_temp)
-
-   # Debugging to check if sorting all exercises
-   # for day in posts_sorted_exercise:
-   #    for d in day:
-   #       print(d['dateandtime'])
-
-   # Find the exercise
-   # Put the exercise in a temp list
-   # Add the exercise list to new daily post list
-   # Add the daily post list to posts_sorted_exercise list
-
-   # Give them to the .html to sort nicly 
 
    return render_template("index.html", posts=posts_sorted_daily, name=session['name'])
 
