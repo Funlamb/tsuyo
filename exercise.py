@@ -1,13 +1,14 @@
-class Exercise:
-    def __init__(self, firstName, intervals, resistance, setNumber, workoutID, exerciseID, workoutDate, exerciseName):
-        self.firstName = firstName
-        self.intervals = intervals
-        self.resistance = resistance
-        self.setNumber = setNumber
-        self.woroutID = workoutID
-        self.exerciseID = exerciseID
-        self.workoutDate = workoutDate
-        self.exerciseName = exerciseName
 
-    def anounce(self):
-        print ("First Name: " + self.firstName + " Name: " + self.exerciseName, " Set: ", self.setNumber, " Intervals: ", self.intervals, " Resistance: ", self.resistance)
+class Exercise:
+    db = None
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+    @staticmethod
+    def get(id):
+        exercise_result = Exercise.db.execute("SELECT * FROM exercises WHERE id=?", [id])
+        if exercise_result:
+            return Exercise(exercise_result[0], exercise_result[1])
+        else:
+            return None
