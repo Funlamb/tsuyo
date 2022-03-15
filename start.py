@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 
 from helper import message, get_db_connection
 import exercise as exer
-from users import User
+from user import User
 
 app = Flask(__name__)
 app.secret_key = "toots"
