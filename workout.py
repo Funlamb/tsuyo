@@ -1,0 +1,1 @@
+# Setup class to handle workout things
