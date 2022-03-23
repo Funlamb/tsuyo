@@ -1,5 +1,14 @@
 
 class Head_set:
+    """
+    Main call to hold workout data
+
+    Workout holds date, and self.id
+
+    Exercise holds name, and self.id
+
+    Ex_set holds interval, resistance, set_number, workout_id, and exercise_id
+    """
     def __init__(self, workout, exercise, ex_set):
         self.workout = workout
         self.exercise = exercise

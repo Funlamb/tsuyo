@@ -111,38 +111,26 @@ def user_index():
       head_set = Head_set(Workout.get(ex['w_id']), Exercise.get(ex['s_exeID']), Ex_set.get(ex['s_id']))
       head_sets.append(head_set)
    
-   # Split workouts into days
-   workout_id = head_sets[0].get_workout().get_id()
-   head_sets_by_days = []
-   temp = []
-   for i in head_sets:
-      if workout_id != i.get_workout().get_id():
-         head_sets_by_days.append(temp)
-         temp = []
-         temp.append(i)
-         workout_id = i.get_workout().get_id()
-      temp.append(i)
+   all_workout_dates = [hs.get_workout().get_date_time() for hs in head_sets]
+   workout_date_dict = {d: {} for d in all_workout_dates}
 
-   exercise_id = head_sets[0].get_exercise().get_id()
-   head_sets_by_days_and_exercises = []
-   for i in head_sets_by_days:
-      temp_day = []
-      temp = []
-      for j in i:
-         if exercise_id != j.get_exercise().get_id():
-           temp_day.append(temp)
-           temp = []
-           temp.append(j)
-           exercise_id = j.get_exercise().get_id()
-         temp.append(j) 
-      head_sets_by_days_and_exercises.append(temp_day)
-   for i in head_sets_by_days_and_exercises:
-      print(len(i))
-   # Get all workout orginized
-   posts_sorted_daily = []
-   temp = []
+   number_of_columns_for_table = 0
+   for hs in head_sets:
+      date = hs.get_workout().get_date_time()
+      name = hs.get_exercise().get_name()
+      interval = hs.get_ex_set().interval
+      resistance = hs.get_ex_set().resistance
+      if name in workout_date_dict[date]:
+         workout_date_dict[date][name] += [interval, resistance]
+      else:
+         workout_date_dict[date][name] = [interval, resistance]
+      curr_columns = len(workout_date_dict[date][name])
+      if curr_columns > number_of_columns_for_table:
+         number_of_columns_for_table = curr_columns
+   number_of_columns_for_table = int(number_of_columns_for_table / 2)
 
-   return render_template("index.html", posts=posts_sorted_daily, name=session['name'])
+   single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
+   return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table) 
 
 @app.route('/exercise', methods=["GET", "POST"])
 def exercise():
