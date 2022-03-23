@@ -120,10 +120,11 @@ def user_index():
       name = hs.get_exercise().get_name()
       interval = hs.get_ex_set().interval
       resistance = hs.get_ex_set().resistance
+      set_id = hs.get_ex_set().id
       if name in workout_date_dict[date]:
-         workout_date_dict[date][name] += [interval, resistance]
+         workout_date_dict[date][name] += [interval, resistance, set_id]
       else:
-         workout_date_dict[date][name] = [interval, resistance]
+         workout_date_dict[date][name] = [interval, resistance, set_id]
       curr_columns = len(workout_date_dict[date][name])
       if curr_columns > number_of_columns_for_table:
          number_of_columns_for_table = curr_columns

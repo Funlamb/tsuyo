@@ -19,6 +19,7 @@
                     {% for i in range(columns) %}
                     <th>Intervals</th>
                     <th>Resistance</th>
+                    <th></th>
                     {% endfor %}
                 </thead>
                     {%for key, value in workouts[date].items() %}
@@ -26,7 +27,11 @@
                         <td></td>
                         <td>{{key}}</td>
                         {% for i in value %}
+                            {% if loop.index % 3 == 0 %}
+                            <td><button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-set" value="{{i}}">&#60-Edit</button></td>
+                            {% else %}
                             <td>{{i}}</td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                     {% endfor %}
