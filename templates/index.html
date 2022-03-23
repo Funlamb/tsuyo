@@ -11,26 +11,25 @@
     <table class="table tablestriped">
         <tbody>
             <form action="/begin_edit_set" method="post">
-            {%for p in posts %}
-                {% set date = p[0]['DateAndTime']%}
-                    <thead>
-                        <th>{{date}}</th>
-                    </thead>
-                    <thead>
-                        <th>Exercise</th>
-                        <th>Intervals</th>
-                        <th>Resistance</th>
-                    </thead>
-                        {%- for d in p %}
-                            <tr>
-                                <td class="border-0 fw-bold text-end">{{d['e_name']}}</td>
-                                <td class="border-0 fw-bold text-end">{{d['s_interval']}}</td>
-                                <td class="border-0 fw-bold text-end">{{d['s_res']}}</td>
-                                <td>
-                                    <button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-set" value="{{d['s_id']}}">Edit</button>
-                                </td>
-                            </tr>
-                        {% endfor -%}
+            {%for date in dates %}
+                <thead>
+                    <th>{{date}}</th>
+                    <th>Exercise</th>
+                    <!-- run a for loop to get the correct amount of colomns -->
+                    {% for i in range(columns) %}
+                    <th>Intervals</th>
+                    <th>Resistance</th>
+                    {% endfor %}
+                </thead>
+                    {%for key, value in workouts[date].items() %}
+                    <tr>
+                        <td></td>
+                        <td>{{key}}</td>
+                        {% for i in value %}
+                            <td>{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
             {% endfor %}
             </form>
         </tbody>
