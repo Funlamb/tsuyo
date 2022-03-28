@@ -128,7 +128,7 @@ def user_index():
       curr_columns = len(workout_date_dict[date][name])
       if curr_columns > number_of_columns_for_table:
          number_of_columns_for_table = curr_columns
-   number_of_columns_for_table = int(number_of_columns_for_table / 2)
+   number_of_columns_for_table = int(number_of_columns_for_table / 3)
 
    single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
    return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table) 
