@@ -1,4 +1,7 @@
 
+from os import stat
+
+
 class Exercise:
     db = None
     def __init__(self, id, name):
@@ -18,3 +21,21 @@ class Exercise:
 
     def get_id(self):
         return self.id
+
+    @staticmethod
+    def get_exercise_id(name):
+        """
+        Gets exercise id if one exists
+
+        Returns None if it does not
+        """
+        exercise_id = Exercise.db.execute("SELECT id FROM exercises WHERE name=?", [name]).fetchone()
+        if exercise_id:
+            return exercise_id
+        else:
+            return None
+
+    @staticmethod
+    def create_exercise(name):
+        Exercise.db.execute("INSERT INTO exercises (name) VALUES (?)", [name])
+        Exercise.db.commit()
