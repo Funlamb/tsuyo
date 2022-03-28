@@ -21,3 +21,24 @@ class Workout:
 
     def get_date_time(self):
         return self.date_time
+    
+    @staticmethod
+    def get_workout_id(datetime, userID):
+        """
+        Gets the workout id from the database given the datetime and userID
+        
+        Returns None if one does not exist
+        """
+        workout_id = Workout.db.execute("SELECT id FROM workouts WHERE userID=? AND DateAndTime=?", [userID, datetime]).fetchone()
+        if workout_id:
+            return workout_id
+        else:
+            return None
+
+    @staticmethod
+    def create_workout(datetime, userID):
+        """
+        Create a workout using the datetime for the userID
+        """
+        Workout.db.execute("INSERT INTO workouts (userID, DateAndTime) VALUES (?,?)", [userID, datetime])
+        Workout.db.commit()

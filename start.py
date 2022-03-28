@@ -1,5 +1,6 @@
 from crypt import methods
 import imp
+from unicodedata import name
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
@@ -74,15 +75,36 @@ def begin_edit_set():
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE s_id = ?"""
    set_to_edit = cur.execute(query, s_id).fetchone()
-   # print(set_to_edit['s_id'])
    return render_template("edit_set.html", set_to_edit=set_to_edit)
 
 @app.route('/edit_set', methods=["POST"])
 def edit_set():
-   # get workout id
-   # get exercise id
-   # get set id
+   set_id = request.form.get('edit-set')
+   
+   # Get workout id, create a workout if one does not exist
+   datetime = request.form.get('datetime')
+   workout_id =  Workout.get_workout_id(datetime, session['userID'])
+   if workout_id:
+      workout_id = workout_id[0]
+   else:
+      Workout.create_workout(datetime, session['userID'])
+      workout_id = Workout.get_workout_id(datetime, session['userID'])[0]
+   
+   # Get exercise id, create one if one does not exist
+   name = request.form.get('e_name')
+   exercise_id = Exercise.get_exercise_id(name)
+   if exercise_id:
+      exercise_id = exercise_id[0]
+   else:
+      Exercise.create_exercise(name)
+      exercise_id = Exercise.get_exercise_id(name)[0]
+
+   interval = request.form.get('s_interval')
+   resistance = request.form.get('s_res')
+   query = """UPDATE sets SET interval=?, resistance=?, workoutID=?, exerciseID=? WHERE ID=?"""
    # edit the set
+   database.execute(query, [interval, resistance, workout_id, exercise_id, set_id])
+   database.commit()
    return message("Set edited successfully")
 
 @app.route('/user_index')
@@ -97,7 +119,7 @@ def user_index():
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY sets.id DESC"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY w_id DESC"""
    exercises = cur.execute(query, userID).fetchall()
 
    # If there are zero exercises show the user there name
@@ -146,7 +168,7 @@ def exercise():
       zippedExercises = zip(dates, exercises, set_numbers, repetitions, resistances)
       for exercises in zippedExercises:
          # Create workout day and time if one does not exist
-         doesWorkoutExist = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (exercises[0], session['userID'])).fetchone()
+         doesWorkoutExist = Workout.get_workout_id(exercises[0], session['userID']).fetchone()
          workoutID = -1
          if doesWorkoutExist is None:
             # Add a T to the datetime
@@ -156,20 +178,18 @@ def exercise():
                   date_time_str += 'T'
                else:
                   date_time_str += v
-            database.execute("INSERT INTO workouts (userID, DateAndTime) VALUES (?,?)", [session['userID'], date_time_str])
-            workoutID = database.execute("SELECT id FROM workouts WHERE DateAndTime=? AND userID=?", (exercises[0], session['userID'])).fetchone()[0]
-            database.commit()
+            Workout.create_workout(date_time_str, session['userID'])
+            workoutID = Workout.get_workout_id(date_time_str, session['userID'])[0]
          else:
             workoutID = doesWorkoutExist[0]
          
          # Create exercise if one does not exist
          word = ''.join(exercises[1])
-         doesExerciseExist = database.execute("SELECT id FROM exercises WHERE name=?", [word]).fetchone()
+         doesExerciseExist = Exercise.get_exercise_id(word).fetchone()
          exerciseID = -1
          if doesExerciseExist is None:
-            database.execute("INSERT INTO exercises (name) VALUES (?)", [word])
-            exerciseID = database.execute("SELECT id FROM exercises WHERE name=?", [word]).fetchone()[0]
-            database.commit()
+            Exercise.create_exercise(word)
+            exerciseID = Exercise.get_exercise_id(word)[0]
          else:
             exerciseID = doesExerciseExist[0]
       
