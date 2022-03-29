@@ -168,7 +168,7 @@ def exercise():
       zippedExercises = zip(dates, exercises, set_numbers, repetitions, resistances)
       for exercises in zippedExercises:
          # Create workout day and time if one does not exist
-         doesWorkoutExist = Workout.get_workout_id(exercises[0], session['userID']).fetchone()
+         doesWorkoutExist = Workout.get_workout_id(exercises[0], session['userID'])
          workoutID = -1
          if doesWorkoutExist is None:
             # Add a T to the datetime
@@ -185,7 +185,7 @@ def exercise():
          
          # Create exercise if one does not exist
          word = ''.join(exercises[1])
-         doesExerciseExist = Exercise.get_exercise_id(word).fetchone()
+         doesExerciseExist = Exercise.get_exercise_id(word)
          exerciseID = -1
          if doesExerciseExist is None:
             Exercise.create_exercise(word)
