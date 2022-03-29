@@ -1,11 +1,16 @@
-Make the edit in the same page 
-Get JS functions is JS files
-Add duration to workouts
-
-03-23-22
-Got workouts, sets, and exercises to have classes and helper functions
+Get workouts, sets, and exercises to have classes and helper functions
+Make the edit in the same page (may not possible)
+Get JS functions in JS files
 Use classes to access data
-Got exercises to display left to right
+Add duration to workouts (may not make sense)
+Have exercises drop down so user can input previously done exercises
+Pretty up the table
+Add graphing capabilities
+
+03-28-22
+Got edit to change day of workout
+Got edit to work
+Added methods to classes to create and find rows
 
 3-14-22
 Got an edit button next to every workout for the user to edit

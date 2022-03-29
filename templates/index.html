@@ -7,30 +7,55 @@
         {% endif %} 
         {% endblock %}
     </h1>
-    
-    <table class="table tablestriped">
-        <tbody>
+
+    <table class="table tablestriped"> 
+        <!-- <tbody> -->
             <form action="/begin_edit_set" method="post">
-            {%for date in dates %}
-                <thead>
-                    <th>{{date}}</th>
-                    <th>Exercise</th>
-                    <!-- run a for loop to get the correct amount of colomns -->
-                    {% for i in range(columns) %}
-                    <th>Intervals</th>
-                    <th>Resistance</th>
-                    {% endfor %}
-                </thead>
-                    {%for key, value in workouts[date].items() %}
+                {%for date in dates %}
+                <div>
+                    <thead height="50px" vertical-align="bottom">
+                        <th>{{date}}</th>
+                        <th>Exercise</th>
+                        {% for i in range(columns) %}
+                        <th>Intervals</th>
+                        <th>Resistance</th>
+                        <th></th>
+                        {% endfor %}
+                    </thead>
+                    {% for key, value in workouts[date].items() %}
                     <tr>
                         <td></td>
+                        <!-- Key  is the name of the exercise -->
                         <td>{{key}}</td>
                         {% for i in value %}
-                            <td>{{i}}</td>
+                        <!-- Loop through the values to get all intervals, resistances, and edit buttons -->
+                        {% if loop.index % 3 == 0 %}
+                        <td><button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-set" value="{{i}}">&#60-Edit</button></td>
+                        {% else %}
+                        <td>{{i}}</td>
+                        {% endif %}
                         {% endfor %}
                     </tr>
                     {% endfor %}
-            {% endfor %}
+                    <!-- <p>{{date}}</p>  Testing how tables get rendered. It looks like <p> gets rendered before any tables get created -->
+                    <tr class="blank_row">
+                        <td colspan="{{columns * 3 + 2}}"></td>
+                    </tr>
+                        
+                </div>
+                {% endfor %}
             </form>
-        </tbody>
+        <!-- </tbody> -->
+        
+        <style>
+            .blank_row {
+                height: 20px !important; /* overwrites any other rules */
+                background-color: #FFFFFF;
+                border:#FFFFFF;
+            }
+            table, tbody, thead, th, tr, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
 {% endblock %}
