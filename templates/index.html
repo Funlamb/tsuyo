@@ -7,7 +7,7 @@
         {% endif %} 
         {% endblock %}
     </h1>
-    <div style="width:100%; background:#F2F2F2">
+    <div style="width:100%;">
     <form action="/begin_edit_set" method="post">
         {%for date in dates %}
         <table> 
@@ -26,7 +26,7 @@
                     {% for key, value in workouts[date].items() %}
                     <tr>
                         <!-- Key  is the name of the exercise -->
-                        <td style="background-color: var(--side)">{{key}}</td>
+                        <th>{{key}}</th>
                         {% for i in value %}
                         <!-- Loop through the values to get all intervals, resistances, and edit buttons -->
                         {% if loop.index % 3 == 0 %}
@@ -43,17 +43,18 @@
     </div>
     <style>
             :root{
-                --main: #0C0F0A;
+                --main: #171616;
                 --white: #FFFFFF;
-                --side: #41EAD4;
-                --off: #FF206E;
-                --on: #FBFF12;
+                --side: #E28A37;
+                --off_side: #ffa24a;
+                --off: #8B9ABB;
+                --on: #587EB1;
             }
 
             .blank_row {
                 height: 20px !important; /* overwrites any other rules */
-                background-color: #FFFFFF;
-                border:#FFFFFF;
+                background-color: var(--white);
+                border:var(--white);
             }
             
             thead {
@@ -72,12 +73,20 @@
                 border-collapse: collapse;
             }
 
-            tbody tr:nth-child(odd){
+            tbody:nth-child(odd){
                 background-color: var(--on);
             }
 
             tbody tr:nth-child(even){
                 background-color: var(--off);
+            }
+
+            tbody tr:nth-child(even) th {
+                background-color: var(--off_side);
+            }
+            
+            tbody tr:nth-child(odd) th {
+                background-color: var(--side);
             }
         </style>
 {% endblock %}
