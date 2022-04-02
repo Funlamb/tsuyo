@@ -2,5 +2,45 @@
 
 {%block content%} 
 <!-- Get all data and make graphs -->
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = [
+        {% for ex in graph_exercises %}
+            '{{ex.workout_date}}',
+        {% endfor %}
+    ];
+  
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: '{{graph_exercises[0].exercise_name}}',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: [
+            {% for ex in graph_exercises %}
+                    {{ex.resistance}},
+            {% endfor %}
+        ],
+      }]
+    };
+  
+    const config = {
+      type: 'line',
+      data: data,
+      options: {}
+    };
+ </script>
+
+<script>
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+</script>
 
 {% endblock %}

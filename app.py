@@ -82,12 +82,31 @@ def graph():
    graph_exercises = []
    for i in exercises:
       graph_exercises.append(Graph_set(i['s_id'], i['s_interval'], i['s_res'], i['s_setNum'], i['w_id'], i['w_datetime'], i['s_exeID'], i['e_name']))
+      
+   # find the first exercise of the exercises
+   exercise_id = graph_exercises[0].exercise_id
+   # start a small list
+   big_lst = []
+   small_lst = []
    for i in graph_exercises:
-      print(i.exercise_name + " " + i.workout_date)
-   # extract the data from those exercises
+      # add to small list til exercise changes
+      if i.exercise_id == exercise_id:
+         small_lst.append(i)
+      else:
+         # add small list to big list
+         big_lst.append(small_lst)
+         # start a new small list
+         small_lst = []
+         exercise_id = i.exercise_id
+         small_lst.append(i)
 
+   for i in big_lst:
+      for j in i:
+         print(j.exercise_name, sep=' ')
+      print()
+   print(len(big_lst))
    # pass graph data to html page
-   return render_template("graph.html")
+   return render_template("graph.html", graph_exercises=graph_exercises)
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():

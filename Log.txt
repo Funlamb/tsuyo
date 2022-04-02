@@ -1,12 +1,13 @@
 Add graphing capabilities
 Have exercises drop down so user can input previously done exercises
 Get workouts, sets, and exercises to have classes and helper functions
-Make the edit in the same page (may not possible)
+Make the edit in the same page (may not be possible)
 Get JS functions in JS files
 Use classes to access data
 Add duration to workouts (may not make sense)
 
 4-01-22
+Started adding graphing
 
 3-30-22
 Edited colors for tables
