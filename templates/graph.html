@@ -1,40 +1,60 @@
 {%extends 'base.html'%}
 
 {%block content%} 
-<!-- Get all data and make graphs -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Make multiple graphs -->
+
+{% for i in range(num_graphs)%}
+
 <div>
-    <canvas id="myChart"></canvas>
+    <canvas id="myChart{{loop.index}}"></canvas>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endfor %}
 
+<!-- pass smaller list to build those graphs -->
+{% for i in graph_exercises %}
+    makeGraph(i, loop.index)
+{% endfor %}
 <script>
-    const labels = [
-        {% for ex in graph_exercises %}
-            '{{ex.workout_date}}',
-        {% endfor %}
-    ];
-  
-    const data = {
-      labels: labels,
-      datasets: [{
-        label: '{{graph_exercises[0].exercise_name}}',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: [
-            {% for ex in graph_exercises %}
-                    {{ex.resistance}},
+    // <!-- setup function to make one graph -->
+    function makeGraph(lst, indexOfGraph){
+        console.log(lst)
+        console.log(indexOfGraph)
+        const labels = [
+            {% for ex in lst %}
+                '{{ex.workout_date}}',
             {% endfor %}
-        ],
-      }]
-    };
-  
-    const config = {
-      type: 'line',
-      data: data,
-      options: {}
-    };
- </script>
+        ];
+    
+        const data = {
+        labels: labels,
+        datasets: [{
+            label: '{{graph_exercises[0].exercise_name}}',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [
+                {% for ex in lst %}
+                        {{ex.resistance}},
+                {% endfor %}
+            ],
+        }]
+        };
+    
+        const config = {
+        type: 'line',
+        data: data,
+        options: {}
+        };
+    }
+
+    graphIndex = 'myChart' + str(indexOfGraph)
+        var myChart = new Chart(
+        document.getElementById(graphIndex),
+        config
+        );
+    
+</script>
 
 <script>
     const myChart = new Chart(

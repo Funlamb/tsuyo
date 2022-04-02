@@ -106,7 +106,7 @@ def graph():
       print()
    print(len(big_lst))
    # pass graph data to html page
-   return render_template("graph.html", graph_exercises=graph_exercises)
+   return render_template("graph.html", graph_exercises=graph_exercises, num_graphs=len(big_lst))
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():
@@ -323,3 +323,6 @@ def logout():
 
 if __name__ == '__main__':
    app.run()
+   # Trying to get the debugger to work
+   # https://www.youtube.com/watch?v=UXqiVe6h3lA&t=1194s
+   # https://stackoverflow.com/questions/49171144/how-do-i-debug-flask-app-in-vs-code
