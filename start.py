@@ -11,6 +11,7 @@ from head_set import Head_set
 from workout import Workout
 from ex_set import Ex_set
 from exercise import Exercise
+from graph_set import Graph_set
 
 app = Flask(__name__)
 app.secret_key = "toots"
@@ -63,6 +64,30 @@ def login():
          return redirect("/user_index")
       # If password did not match give user error message
       return message("Invalid credentials")
+
+@app.route('/graph', methods=["GET"])
+def graph():
+   if not session.get('userID'):
+      return message("Must be logged in.")
+   
+   
+   cur = database.cursor()
+   u_id = session['userID']
+   # get the exercises the user has done
+   query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
+      sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
+      JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id"""
+   exercises = cur.execute(query, [u_id]).fetchall()
+   graph_exercises = []
+   for i in exercises:
+      graph_exercises.append(Graph_set(i['s_id'], i['s_interval'], i['s_res'], i['s_setNum'], i['w_id'], i['w_datetime'], i['s_exeID'], i['e_name']))
+   for i in graph_exercises:
+      print(i.exercise_name + " " + i.workout_date)
+   # extract the data from those exercises
+
+   # pass graph data to html page
+   return render_template("graph.html")
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():
