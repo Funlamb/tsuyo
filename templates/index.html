@@ -7,26 +7,26 @@
         {% endif %} 
         {% endblock %}
     </h1>
-
-    <table class="table tablestriped"> 
-        <!-- <tbody> -->
-            <form action="/begin_edit_set" method="post">
-                {%for date in dates %}
-                <div>
-                    <thead height="50px" vertical-align="bottom">
-                        <th>{{date}}</th>
-                        <th>Exercise</th>
-                        {% for i in range(columns) %}
-                        <th>Intervals</th>
-                        <th>Resistance</th>
-                        <th></th>
-                        {% endfor %}
-                    </thead>
+    <div style="width:100%;">
+    <form action="/begin_edit_set" method="post">
+        {%for date in dates %}
+        <table> 
+            <caption>{{date}}</caption>
+                <thead>
+                    <th width="20%">Exercise</th>
+                    {% set totalCol = columns * 3 %}
+                    {% set width = 80/totalCol %}
+                    {% for i in range(columns) %}
+                    <th width="{{width}}%">Intervals</th>
+                    <th width="{{width}}%">Resistance</th>
+                    <th width="{{width}}%"></th>
+                    {% endfor %}
+                </thead>
+                <tbody>
                     {% for key, value in workouts[date].items() %}
                     <tr>
-                        <td></td>
                         <!-- Key  is the name of the exercise -->
-                        <td>{{key}}</td>
+                        <th>{{key}}</th>
                         {% for i in value %}
                         <!-- Loop through the values to get all intervals, resistances, and edit buttons -->
                         {% if loop.index % 3 == 0 %}
@@ -37,25 +37,56 @@
                         {% endfor %}
                     </tr>
                     {% endfor %}
-                    <!-- <p>{{date}}</p>  Testing how tables get rendered. It looks like <p> gets rendered before any tables get created -->
-                    <tr class="blank_row">
-                        <td colspan="{{columns * 3 + 2}}"></td>
-                    </tr>
-                        
-                </div>
+                    </tbody>
                 {% endfor %}
             </form>
-        <!-- </tbody> -->
-        
-        <style>
+    </div>
+    <style>
+            :root{
+                --main: #171616;
+                --white: #FFFFFF;
+                --side: #E28A37;
+                --off_side: #ffa24a;
+                --off: #8B9ABB;
+                --on: #587EB1;
+            }
+
             .blank_row {
                 height: 20px !important; /* overwrites any other rules */
-                background-color: #FFFFFF;
-                border:#FFFFFF;
+                background-color: var(--white);
+                border:var(--white);
             }
-            table, tbody, thead, th, tr, td {
+            
+            thead {
+                background-color: var(--main);
+                color: var(--white);
+            }
+
+            th, tr, td {
                 border: 1px solid black;
                 border-collapse: collapse;
+            }
+
+            table, tbody {
+                width: 100%;
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+
+            tbody:nth-child(odd){
+                background-color: var(--on);
+            }
+
+            tbody tr:nth-child(even){
+                background-color: var(--off);
+            }
+
+            tbody tr:nth-child(even) th {
+                background-color: var(--off_side);
+            }
+            
+            tbody tr:nth-child(odd) th {
+                background-color: var(--side);
             }
         </style>
 {% endblock %}
