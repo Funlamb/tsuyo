@@ -80,8 +80,13 @@ def graph():
       sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id"""
    exercises = cur.execute(query, [u_id]).fetchall()
    graph_exercises = []
+   exercise_names = []
    for i in exercises:
       graph_exercises.append(Graph_set(i['s_id'], i['s_interval'], i['s_res'], i['s_setNum'], i['w_id'], i['w_datetime'], i['s_exeID'], i['e_name']))
+      exercise_names.append(i['e_name'])
+
+   # Get list of exercises
+   unique_exercise_names = list(set(exercise_names))
       
    # find the first exercise of the exercises
    exercise_id = graph_exercises[0].exercise_id
@@ -100,13 +105,9 @@ def graph():
          exercise_id = i.exercise_id
          small_lst.append(i)
 
-   for i in big_lst:
-      for j in i:
-         print(j.exercise_name, sep=' ')
-      print()
-   print(len(big_lst))
-   # pass graph data to html page
-   return render_template("graph.html", graph_exercises=graph_exercises, num_graphs=len(big_lst))
+   # Make a drop down menu with exercises
+   # Update the graph with user choosen exercise
+   return render_template("graph.html", graph_exercises=graph_exercises, unique_exercise_names=unique_exercise_names)
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():

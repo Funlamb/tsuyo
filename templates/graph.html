@@ -2,20 +2,17 @@
 
 {%block content%} 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Make multiple graphs -->
 
-{% for i in range(num_graphs)%}
+<select name="exercise" id="exercise">
+    {% for i in unique_exercise_names %}
+    <option value="{{i}}">{{i}}</option>
+    {% endfor %}
+</select>
 
 <div>
-    <canvas id="myChart{{loop.index}}"></canvas>
+    <canvas id="myChart"></canvas>
 </div>
 
-{% endfor %}
-
-<!-- pass smaller list to build those graphs -->
-{% for i in graph_exercises %}
-    makeGraph(i, loop.index)
-{% endfor %}
 <script>
     // <!-- setup function to make one graph -->
     function makeGraph(lst, indexOfGraph){
