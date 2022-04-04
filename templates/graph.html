@@ -3,11 +3,13 @@
 {%block content%} 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<select name="exercise" id="exercise">
+<input type="text" list="exercise" />
+<datalist name="exercise" id="exercise">
+
     {% for i in unique_exercise_names %}
     <option value="{{i}}">{{i}}</option>
     {% endfor %}
-</select>
+</datalist>
 
 <div>
     <canvas id="myChart"></canvas>
