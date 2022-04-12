@@ -80,18 +80,16 @@ def graph():
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id LIMIT 25"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id LIMIT 10"""
    exercises = cur.execute(query, [u_id]).fetchall()
-   print(exercises)
    graph_exercises = []
    exercise_names = []
    for i in exercises:
       graph_exercises.append(Graph_set(i['s_id'], i['s_interval'], i['s_res'], i['s_setNum'], i['w_id'], i['w_datetime'], i['s_exeID'], i['e_name']))
       exercise_names.append(i['e_name'])
-   # print(graph_exercises)
-   # Get list of exercises
+   
    unique_exercise_names = list(set(exercise_names))
-   # print(unique_exercise_names)
+   unique_exercise_names.sort()
    # find the first exercise of the exercises
    exercise_id = graph_exercises[0].exercise_id
    # start a small list
@@ -99,7 +97,6 @@ def graph():
    small_lst = []
    graph_len = len(graph_exercises)
    for j, i in enumerate(graph_exercises):
-      print(str(j) + " " + str (graph_len))
       # add to small list til exercise changes
       if i.exercise_id == exercise_id:
          small_lst.append(i)
@@ -117,8 +114,6 @@ def graph():
    exercises = {"Exercises": big_lst}
    exercise_col = ExerciseCollection(exercises)
    json_exercise_col = json.dumps(exercise_col, default=default, indent=1)
-   # print(json_exercise_col)
-   print(big_lst)
    # Get dropdown options for the dropdown menu
    return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=unique_exercise_names)
 
@@ -176,7 +171,7 @@ def user_index():
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY w_id DESC LIMIT 10"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY w_id DESC"""
    exercises = cur.execute(query, [userID]).fetchall()
 
    # If there are zero exercises show the user there name
@@ -192,7 +187,7 @@ def user_index():
    
    all_workout_dates = [hs.get_workout().get_date_time() for hs in head_sets]
    workout_date_dict = {d: {} for d in all_workout_dates}
-
+   print(workout_date_dict)
    number_of_columns_for_table = 0
    for hs in head_sets:
       date = hs.get_workout().get_date_time()

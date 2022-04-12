@@ -6,6 +6,9 @@ Get JS functions in JS files
 Use classes to access data
 Add duration to workouts (may not make sense)
 
+4-12-22
+Fixed bug where last exercise was not being added to list
+
 4-01-22
 Started adding graphing
 
