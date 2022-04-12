@@ -4,7 +4,7 @@ from unicodedata import name
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
-from helper import message, get_db_connection
+from helper import message, get_db_connection, default
 
 from user import User
 from head_set import Head_set
@@ -12,6 +12,8 @@ from workout import Workout
 from ex_set import Ex_set
 from exercise import Exercise
 from graph_set import Graph_set
+from ExerciseCollection import ExerciseCollection
+import json
 
 app = Flask(__name__)
 app.secret_key = "toots"
@@ -100,13 +102,17 @@ def graph():
          exercise_id = i.exercise_id
          small_lst.append(i)
 
+   exercises = {"Exercises": big_lst}
+   exercise_col = ExerciseCollection(exercises)
+   json_exercise_col = json.dumps(exercise_col, default=default, indent=1)
+   print(json_exercise_col)
+   # Get dropdown options for the dropdown menu
+   dropdown_menu = set()
    for i in big_lst:
       for j in i:
-         print(j.exercise_name, sep=' ')
-      print()
-   print(len(big_lst))
-   # pass graph data to html page
-   return render_template("graph.html", graph_exercises=graph_exercises, num_graphs=len(big_lst))
+         dropdown_menu.add(j.exercise_name)
+
+   return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=dropdown_menu)
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():
@@ -322,7 +328,7 @@ def logout():
    return message("Logged Out")
 
 if __name__ == '__main__':
-   app.run()
+   app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
    # Trying to get the debugger to work
    # https://www.youtube.com/watch?v=UXqiVe6h3lA&t=1194s
    # https://stackoverflow.com/questions/49171144/how-do-i-debug-flask-app-in-vs-code

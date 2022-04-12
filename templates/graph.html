@@ -4,55 +4,85 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Make multiple graphs -->
 
-{% for i in range(num_graphs)%}
-
 <div>
-    <canvas id="myChart{{loop.index}}"></canvas>
+    <canvas id="myChart"></canvas>
 </div>
+<select name="exercise_type" id="exercise_type" onchange="fetchData()">
+    {% for i in dropdown_menu %}
+    <option value="{{i}}">{{i}}</option>
+    {% endfor %}
+</select>
 
-{% endfor %}
-
-<!-- pass smaller list to build those graphs -->
-{% for i in graph_exercises %}
-    makeGraph(i, loop.index)
-{% endfor %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // <!-- setup function to make one graph -->
-    function makeGraph(lst, indexOfGraph){
-        console.log(lst)
-        console.log(indexOfGraph)
-        const labels = [
-            {% for ex in lst %}
-                '{{ex.workout_date}}',
-            {% endfor %}
-        ];
-    
-        const data = {
-        labels: labels,
-        datasets: [{
-            label: '{{graph_exercises[0].exercise_name}}',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [
-                {% for ex in lst %}
-                        {{ex.resistance}},
-                {% endfor %}
-            ],
-        }]
-        };
-    
-        const config = {
-        type: 'line',
-        data: data,
-        options: {}
-        };
+    // Get chart to update with drop down options
+    const select = document.getElementById('exercise_type');
+    function exercise_changed(){
+        console.log(select.value);
     }
 
-    graphIndex = 'myChart' + str(indexOfGraph)
-        var myChart = new Chart(
-        document.getElementById(graphIndex),
-        config
-        );
+    async function fetchData(){
+        const file = JSON.parse('{{graph_exercises | tojson | safe}}');
+        const response = await fetch(file);
+        const datapoints = await response.json();
+        console.log(datapoints);
+        return datapoints;
+    }
+
+    // setup 
+    const data = {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Weekly Sales',
+        data: [18, 12, 6, 9, 12, 3, 9],
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(0, 0, 0, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(0, 0, 0, 1)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    // config 
+    const config = {
+      type: 'bar',
+      data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    // render init block
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+
+
+    // graphIndex = 'myChart' + str(indexOfGraph)
+    //     var myChart = new Chart(
+    //     document.getElementById(graphIndex),
+    //     config
+    //     );
     
 </script>
 
@@ -62,5 +92,7 @@
       config
     );
 </script>
+
+<!-- pass smaller list to build those graphs -->
 
 {% endblock %}
