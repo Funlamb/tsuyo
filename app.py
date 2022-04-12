@@ -1,3 +1,4 @@
+from cgitb import small
 from crypt import methods
 import imp
 from unicodedata import name
@@ -79,23 +80,26 @@ def graph():
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id LIMIT 25"""
    exercises = cur.execute(query, [u_id]).fetchall()
+   print(exercises)
    graph_exercises = []
    exercise_names = []
    for i in exercises:
       graph_exercises.append(Graph_set(i['s_id'], i['s_interval'], i['s_res'], i['s_setNum'], i['w_id'], i['w_datetime'], i['s_exeID'], i['e_name']))
       exercise_names.append(i['e_name'])
-
+   # print(graph_exercises)
    # Get list of exercises
    unique_exercise_names = list(set(exercise_names))
-      
+   # print(unique_exercise_names)
    # find the first exercise of the exercises
    exercise_id = graph_exercises[0].exercise_id
    # start a small list
    big_lst = []
    small_lst = []
-   for i in graph_exercises:
+   graph_len = len(graph_exercises)
+   for j, i in enumerate(graph_exercises):
+      print(str(j) + " " + str (graph_len))
       # add to small list til exercise changes
       if i.exercise_id == exercise_id:
          small_lst.append(i)
@@ -106,24 +110,17 @@ def graph():
          small_lst = []
          exercise_id = i.exercise_id
          small_lst.append(i)
+      # catches edge case if there is only one exercise in the query
+      if j == graph_len-1: 
+         big_lst.append(small_lst)
 
-<<<<<<< HEAD
    exercises = {"Exercises": big_lst}
    exercise_col = ExerciseCollection(exercises)
    json_exercise_col = json.dumps(exercise_col, default=default, indent=1)
-   print(json_exercise_col)
+   # print(json_exercise_col)
+   print(big_lst)
    # Get dropdown options for the dropdown menu
-   dropdown_menu = set()
-   for i in big_lst:
-      for j in i:
-         dropdown_menu.add(j.exercise_name)
-
-   return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=dropdown_menu)
-=======
-   # Make a drop down menu with exercises
-   # Update the graph with user choosen exercise
-   return render_template("graph.html", graph_exercises=graph_exercises, unique_exercise_names=unique_exercise_names)
->>>>>>> abd267698e89a9f7d24597950a06e42bc72b1283
+   return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=unique_exercise_names)
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():
@@ -175,13 +172,12 @@ def user_index():
       return message("Must be logged in.")
 
    cur = User.db.cursor()
-   userID = []
-   userID.append(session['userID']) # needs to be in a list to use .execute
+   userID = session['userID']
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY w_id DESC"""
-   exercises = cur.execute(query, userID).fetchall()
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY w_id DESC LIMIT 10"""
+   exercises = cur.execute(query, [userID]).fetchall()
 
    # If there are zero exercises show the user there name
    if not exercises:

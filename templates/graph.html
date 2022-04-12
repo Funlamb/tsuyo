@@ -1,7 +1,8 @@
 {%extends 'base.html'%}
 
+{% block title %} Graph {%endblock%}
 {%block content%} 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
 <div>
     <canvas id="myChart"></canvas>
@@ -12,9 +13,9 @@
     {% endfor %}
 </select>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // <!-- setup function to make one graph -->
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+<!-- <script>
+
     // Get chart to update with drop down options
     const select = document.getElementById('exercise_type');
     function exercise_changed(){
@@ -22,7 +23,7 @@
     }
 
     async function fetchData(){
-        const file = JSON.parse('{{graph_exercises | tojson | safe}}');
+        const file = JSON.parse('{{graph_exercises}}');
         const response = await fetch(file);
         const datapoints = await response.json();
         console.log(datapoints);
@@ -90,7 +91,7 @@
       document.getElementById('myChart'),
       config
     );
-</script>
+</script> -->
 
 <!-- pass smaller list to build those graphs -->
 
