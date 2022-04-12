@@ -1,6 +1,8 @@
 from cgitb import small
 from crypt import methods
+from datetime import datetime
 import imp
+from multiprocessing.sharedctypes import Value
 from unicodedata import name
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
@@ -187,7 +189,7 @@ def user_index():
    
    all_workout_dates = [hs.get_workout().get_date_time() for hs in head_sets]
    workout_date_dict = {d: {} for d in all_workout_dates}
-   print(workout_date_dict)
+
    number_of_columns_for_table = 0
    for hs in head_sets:
       date = hs.get_workout().get_date_time()
@@ -205,6 +207,7 @@ def user_index():
    number_of_columns_for_table = int(number_of_columns_for_table / 3)
 
    single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
+
    return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table) 
 
 @app.route('/exercise', methods=["GET", "POST"])
