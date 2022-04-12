@@ -82,8 +82,13 @@ def graph():
       sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id"""
    exercises = cur.execute(query, [u_id]).fetchall()
    graph_exercises = []
+   exercise_names = []
    for i in exercises:
       graph_exercises.append(Graph_set(i['s_id'], i['s_interval'], i['s_res'], i['s_setNum'], i['w_id'], i['w_datetime'], i['s_exeID'], i['e_name']))
+      exercise_names.append(i['e_name'])
+
+   # Get list of exercises
+   unique_exercise_names = list(set(exercise_names))
       
    # find the first exercise of the exercises
    exercise_id = graph_exercises[0].exercise_id
@@ -102,6 +107,7 @@ def graph():
          exercise_id = i.exercise_id
          small_lst.append(i)
 
+<<<<<<< HEAD
    exercises = {"Exercises": big_lst}
    exercise_col = ExerciseCollection(exercises)
    json_exercise_col = json.dumps(exercise_col, default=default, indent=1)
@@ -113,6 +119,11 @@ def graph():
          dropdown_menu.add(j.exercise_name)
 
    return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=dropdown_menu)
+=======
+   # Make a drop down menu with exercises
+   # Update the graph with user choosen exercise
+   return render_template("graph.html", graph_exercises=graph_exercises, unique_exercise_names=unique_exercise_names)
+>>>>>>> abd267698e89a9f7d24597950a06e42bc72b1283
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():
