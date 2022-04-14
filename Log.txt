@@ -1,10 +1,13 @@
-Add graphing capabilities
+Fix bug where JSON files creates multiple arrays
 Have exercises drop down so user can input previously done exercises
 Get workouts, sets, and exercises to have classes and helper functions
 Make the edit in the same page (may not be possible)
 Get JS functions in JS files
 Use classes to access data
 Add duration to workouts (may not make sense)
+
+4-14-22
+Added graphing capabilities
 
 4-12-22
 Fixed bug where last exercise was not being added to list

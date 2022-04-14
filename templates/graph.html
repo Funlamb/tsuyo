@@ -7,7 +7,7 @@
 <div>
     <canvas id="myChart"></canvas>
 </div>
-<select name="exercise_type" id="exercise_type" onchange="fetchData()">
+<select name="exercise_type" id="exercise_type" onchange="updateChart(this)">
     {% for i in dropdown_menu %}
     <option value="{{i}}">{{i}}</option>
     {% endfor %}
@@ -15,6 +15,10 @@
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Parse JSON data
+    const json = '{{graph_exercises | safe}}';
+    const obj = JSON.parse(json);
+    console.log(obj)
 
     // Get chart to update with drop down options
     const select = document.getElementById('exercise_type');
@@ -22,16 +26,30 @@
         console.log(select.value);
     }
 
-    async function fetchData(){
-        const file = JSON.parse('{{graph_exercises}}');
-        const response = await fetch(file);
-        const datapoints = await response.json();
-        console.log(datapoints);
-        return datapoints;
+    async function updateChart(val){
+        const exercise = obj.Exercises.Exercises[0];
+        // console.log(exercise);
+        // console.log(val.value);
+        
+        const date = exercise[val.value].map(
+            function(index){
+                return index.workout_date;
+            }
+        );
+        const data = exercise[val.value].map(
+            function(index){
+                return index.resistance;
+            }
+        );
+        myChart.data.labels = date;
+        myChart.data.datasets[0].label = val.value;
+        myChart.data.datasets[0].data = data;
+
+        myChart.update();
     }
 
     // setup 
-    const data = {
+    let data = {
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       datasets: [{
         label: 'Weekly Sales',
@@ -76,21 +94,7 @@
       document.getElementById('myChart'),
       config
     );
-
-
-    // graphIndex = 'myChart' + str(indexOfGraph)
-    //     var myChart = new Chart(
-    //     document.getElementById(graphIndex),
-    //     config
-    //     );
     
-</script>
-
-<script>
-    const myChart = new Chart(
-      document.getElementById('myChart'),
-      config
-    );
 </script>
 
 <!-- pass smaller list to build those graphs -->
