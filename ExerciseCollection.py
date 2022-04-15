@@ -19,14 +19,13 @@ class ExerciseCollection:
         return self.__str__()
 
     def to_json(self):
-        exercises = []
+        exercises = {}
         for small_lst in self.big_lst:
             ex_name = small_lst[0].exercise_name
-            exercise = {"name": ex_name,
-                        "sets": []}
+            exercise = []
             for sm in small_lst:
-                exercise["sets"].append(sm.__dict__)
-            exercises.append(exercise)
+                exercise.append(sm.__dict__)
+            exercises[ex_name] = (exercise)
 
         to_return = {"version": self.version, "type": self.type, "exercises": exercises}
         return to_return

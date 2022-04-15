@@ -27,9 +27,7 @@
     }
 
     async function updateChart(val){
-        const exercise = obj.Exercises.Exercises[0];
-        // console.log(exercise);
-        // console.log(val.value);
+        const exercise = obj.exercises;
         
         const date = exercise[val.value].map(
             function(index){
