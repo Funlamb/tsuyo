@@ -82,7 +82,7 @@ def graph():
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id limit 100"""
    exercises = cur.execute(query, [u_id]).fetchall()
    graph_exercises = []
    exercise_names = []
@@ -113,9 +113,10 @@ def graph():
       if j == graph_len-1: 
          big_lst.append(small_lst)
 
-   exercises = {"Exercises": big_lst}
-   exercise_col = ExerciseCollection(exercises)
+   # exercises = {"Exercises": big_lst}
+   exercise_col = ExerciseCollection(big_lst)
    json_exercise_col = json.dumps(exercise_col, default=default)
+   # print(json_exercise_col)
    return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=unique_exercise_names)
 
 @app.route('/begin_edit_set', methods=["POST"])

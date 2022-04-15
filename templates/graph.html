@@ -16,7 +16,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Parse JSON data
-    const json = '{{graph_exercises | safe}}';
+    const json = '{{graph_exercises | safe | replace("\\", "")}}';
     const obj = JSON.parse(json);
     console.log(obj)
 
@@ -78,7 +78,7 @@
 
     // config 
     const config = {
-      type: 'bar',
+      type: 'line',
       data,
       options: {
         scales: {
