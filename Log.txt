@@ -17,6 +17,10 @@ Added graphing capabilities
 Fixed bug where last exercise was not being added to list
 Fixed date bug that adds a T
 
+4-04-22
+Added a drop down menu to have user change the graph
+Found a nice way of showing exercises in the dropdown menu select2
+
 4-01-22
 Started adding graphing
 
