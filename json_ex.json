@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "exercises": [
+        { "name": "Barbell Curls",
+            "sets": [
+                {
+                    "resistance": 150,
+                     "intervals": 8
+                }, 
+                {
+                    "resistance": 150,
+                     "intervals": 8
+                },
+                {
+                    "resistance": 150,
+                     "intervals": 8
+                }
+            ]
+        },
+        { "name": "Bench Press",
+            "sets": [
+                {
+                    "resistance": 150,
+                     "intervals": 8
+                }, 
+                {
+                    "resistance": 150,
+                     "intervals": 8
+                },
+                {
+                    "resistance": 150,
+                     "intervals": 8
+                }
+            ]
+        }
+    ]
+}

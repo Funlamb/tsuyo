@@ -1,10 +1,13 @@
+from cgitb import small
 from crypt import methods
+from datetime import datetime
 import imp
+from multiprocessing.sharedctypes import Value
 from unicodedata import name
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
-from helper import message, get_db_connection
+from helper import message, get_db_connection, default
 
 from user import User
 from head_set import Head_set
@@ -12,6 +15,8 @@ from workout import Workout
 from ex_set import Ex_set
 from exercise import Exercise
 from graph_set import Graph_set
+from ExerciseCollection import ExerciseCollection
+import json
 
 app = Flask(__name__)
 app.secret_key = "toots"
@@ -77,23 +82,23 @@ def graph():
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id limit 100"""
    exercises = cur.execute(query, [u_id]).fetchall()
    graph_exercises = []
    exercise_names = []
    for i in exercises:
       graph_exercises.append(Graph_set(i['s_id'], i['s_interval'], i['s_res'], i['s_setNum'], i['w_id'], i['w_datetime'], i['s_exeID'], i['e_name']))
       exercise_names.append(i['e_name'])
-
-   # Get list of exercises
+   
    unique_exercise_names = list(set(exercise_names))
-      
+   unique_exercise_names.sort()
    # find the first exercise of the exercises
    exercise_id = graph_exercises[0].exercise_id
    # start a small list
    big_lst = []
    small_lst = []
-   for i in graph_exercises:
+   graph_len = len(graph_exercises)
+   for j, i in enumerate(graph_exercises):
       # add to small list til exercise changes
       if i.exercise_id == exercise_id:
          small_lst.append(i)
@@ -104,10 +109,15 @@ def graph():
          small_lst = []
          exercise_id = i.exercise_id
          small_lst.append(i)
+      # catches edge case if there is only one exercise in the query
+      if j == graph_len-1: 
+         big_lst.append(small_lst)
 
-   # Make a drop down menu with exercises
-   # Update the graph with user choosen exercise
-   return render_template("graph.html", graph_exercises=graph_exercises, unique_exercise_names=unique_exercise_names)
+   # exercises = {"Exercises": big_lst}
+   exercise_col = ExerciseCollection(big_lst)
+   json_exercise_col = json.dumps(exercise_col, default=default)
+   # print(json_exercise_col)
+   return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=unique_exercise_names)
 
 @app.route('/begin_edit_set', methods=["POST"])
 def begin_edit_set():
@@ -159,13 +169,12 @@ def user_index():
       return message("Must be logged in.")
 
    cur = User.db.cursor()
-   userID = []
-   userID.append(session['userID']) # needs to be in a list to use .execute
+   userID = session['userID']
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
       sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY w_id DESC"""
-   exercises = cur.execute(query, userID).fetchall()
+   exercises = cur.execute(query, [userID]).fetchall()
 
    # If there are zero exercises show the user there name
    if not exercises:
@@ -198,6 +207,7 @@ def user_index():
    number_of_columns_for_table = int(number_of_columns_for_table / 3)
 
    single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
+
    return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table) 
 
 @app.route('/exercise', methods=["GET", "POST"])
@@ -323,7 +333,7 @@ def logout():
    return message("Logged Out")
 
 if __name__ == '__main__':
-   app.run()
+   app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
    # Trying to get the debugger to work
    # https://www.youtube.com/watch?v=UXqiVe6h3lA&t=1194s
    # https://stackoverflow.com/questions/49171144/how-do-i-debug-flask-app-in-vs-code

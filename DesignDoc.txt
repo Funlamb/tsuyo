@@ -2,13 +2,15 @@ This software will keep track of work outs
 Cardio and strength training
 
 Must Haves:
-quick to insert new sets, reps, and weights
-keep track of progress
 show graphs of strength gains
-Edit mistakes
-login on the web
+actual web app 
+Phone css 
 
 Must haves, Done:
+login on the web
+quick to insert new sets, reps, and weights
+keep track of progress
+Edit mistakes
 
 Wants:
 keep track of user's weight

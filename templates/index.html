@@ -11,7 +11,7 @@
     <form action="/begin_edit_set" method="post">
         {%for date in dates %}
         <table> 
-            <caption>{{date}}</caption>
+            <caption>{{date | replace("T", " ")}}</caption>
                 <thead>
                     <th width="20%">Exercise</th>
                     {% set totalCol = columns * 3 %}

@@ -1,65 +1,100 @@
 {%extends 'base.html'%}
 
+{% block title %} Graph {%endblock%}
 {%block content%} 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<input type="text" list="exercise" />
-<datalist name="exercise" id="exercise">
-
-    {% for i in unique_exercise_names %}
-    <option value="{{i}}">{{i}}</option>
-    {% endfor %}
-</datalist>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
 <div>
     <canvas id="myChart"></canvas>
 </div>
+<select name="exercise_type" id="exercise_type" onchange="updateChart(this)">
+    {% for i in dropdown_menu %}
+    <option value="{{i}}">{{i}}</option>
+    {% endfor %}
+</select>
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // <!-- setup function to make one graph -->
-    function makeGraph(lst, indexOfGraph){
-        console.log(lst)
-        console.log(indexOfGraph)
-        const labels = [
-            {% for ex in lst %}
-                '{{ex.workout_date}}',
-            {% endfor %}
-        ];
-    
-        const data = {
-        labels: labels,
-        datasets: [{
-            label: '{{graph_exercises[0].exercise_name}}',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [
-                {% for ex in lst %}
-                        {{ex.resistance}},
-                {% endfor %}
-            ],
-        }]
-        };
-    
-        const config = {
-        type: 'line',
-        data: data,
-        options: {}
-        };
+    // Parse JSON data
+    const json = '{{graph_exercises | safe | replace("\\", "")}}';
+    const obj = JSON.parse(json);
+    console.log(obj)
+
+    // Get chart to update with drop down options
+    const select = document.getElementById('exercise_type');
+    function exercise_changed(){
+        console.log(select.value);
     }
 
-    graphIndex = 'myChart' + str(indexOfGraph)
-        var myChart = new Chart(
-        document.getElementById(graphIndex),
-        config
+    async function updateChart(val){
+        const exercise = obj.exercises;
+        
+        const date = exercise[val.value].map(
+            function(index){
+                return index.workout_date;
+            }
         );
-    
-</script>
+        const data = exercise[val.value].map(
+            function(index){
+                return index.resistance;
+            }
+        );
+        myChart.data.labels = date;
+        myChart.data.datasets[0].label = val.value;
+        myChart.data.datasets[0].data = data;
 
-<script>
+        myChart.update();
+    }
+
+    // setup 
+    let data = {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Weekly Sales',
+        data: [18, 12, 6, 9, 12, 3, 9],
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(0, 0, 0, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(0, 0, 0, 1)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    // config 
+    const config = {
+      type: 'line',
+      data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    // render init block
     const myChart = new Chart(
       document.getElementById('myChart'),
       config
     );
+    
 </script>
+
+<!-- pass smaller list to build those graphs -->
 
 {% endblock %}
