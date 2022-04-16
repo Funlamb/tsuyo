@@ -1,7 +1,8 @@
+Get JS functions in JS files
+Format Dates so they look nice in graph page
 Have exercises drop down so user can input previously done exercises
 Get workouts, sets, and exercises to have classes and helper functions
 Make the edit in the same page (may not be possible)
-Get JS functions in JS files
 Use classes to access data
 Add duration to workouts (may not make sense)
 

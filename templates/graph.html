@@ -18,29 +18,25 @@
     // Parse JSON data
     const json = '{{graph_exercises | safe | replace("\\", "")}}';
     const obj = JSON.parse(json);
-    console.log(obj)
 
     // Get chart to update with drop down options
     const select = document.getElementById('exercise_type');
-    function exercise_changed(){
-        console.log(select.value);
-    }
 
-    async function updateChart(val){
+    async function updateChart(dropdown){
         const exercise = obj.exercises;
         
-        const date = exercise[val.value].map(
+        const date = exercise[dropdown.value].map(
             function(index){
                 return index.workout_date;
             }
         );
-        const data = exercise[val.value].map(
+        const data = exercise[dropdown.value].map(
             function(index){
                 return index.resistance;
             }
         );
         myChart.data.labels = date;
-        myChart.data.datasets[0].label = val.value;
+        myChart.data.datasets[0].label = dropdown.value;
         myChart.data.datasets[0].data = data;
 
         myChart.update();
