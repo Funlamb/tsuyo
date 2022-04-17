@@ -203,17 +203,17 @@ def user_index():
 
    single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
 
-   return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table) 
+   return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table, name=session['name']) 
 
 @app.route('/exercise', methods=["GET", "POST"])
 @login_required
 def exercise():
    if request.method == "POST":
-      dates = request.form.getlist("ndatetime[]")
+      dates = request.form.getlist("nDatetime[]")
       exercises = request.form.getlist("nExercise[]")
-      set_numbers = request.form.getlist("nsetnumber[]")
-      repetitions = request.form.getlist("nrep[]")
-      resistances = request.form.getlist("nresistance[]")
+      set_numbers = request.form.getlist("nSetnumber[]")
+      repetitions = request.form.getlist("nRep[]")
+      resistances = request.form.getlist("nResistance[]")
       zippedExercises = zip(dates, exercises, set_numbers, repetitions, resistances)
       for exercises in zippedExercises:
          # Create workout day and time if one does not exist
@@ -322,7 +322,7 @@ def settings():
 @app.route('/logout')
 def logout():
    session.clear()
-   return message("Logged Out")
+   return message("Logged Out", "Logged Out")
 
 if __name__ == '__main__':
    app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)

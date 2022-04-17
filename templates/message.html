@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
+<h1>
+    {% block title %}
+    {% if name %} 
+        {{name}} 
+    {% endif %} 
+    {% endblock %}
+</h1>
+
 {% block content %} 
-    <h1>
-        {% block title %}
-        {% if name %} 
-            {{name}} 
-        {% endif %} 
-        {% endblock %}
-    </h1>
 
     <h1>
         {% if message %}  
