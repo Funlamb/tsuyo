@@ -1,7 +1,7 @@
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
-from helper import message, get_db_connection, default
+from helper import message, get_db_connection, default, login_required
 
 from user import User
 from head_set import Head_set
@@ -29,8 +29,9 @@ def index():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+   # This block used to temporaroly text site
    user = User.get("fun@gmail.com")
-   session['userID'] = user.get_id()
+   session['user_id'] = user.get_id()
    session['name'] = user.get_first_name()
    session['email'] = user.get_email()
    return redirect("/user_index")
@@ -57,20 +58,22 @@ def login():
       # Check passwork and send to user_index if correct
       password = request.form.get('password')
       if user.check_password(password):
-         session['userID'] = user.get_id()
+         session['user_id'] = user.get_id()
          session['name'] = user.get_first_name()
          session['email'] = user.get_email()
          return redirect("/user_index")
       # If password did not match give user error message
       return message("Invalid credentials")
+   return render_template("login.html")
 
 @app.route('/graph', methods=["GET"])
+@login_required
 def graph():
-   if not session.get('userID'):
+   if not session.get('user_id'):
       return message("Must be logged in.")
       
    cur = database.cursor()
-   u_id = session['userID']
+   u_id = session['user_id']
    # get the exercises the user has done
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
@@ -113,6 +116,7 @@ def graph():
    return render_template("graph.html", graph_exercises=json_exercise_col, dropdown_menu=unique_exercise_names)
 
 @app.route('/begin_edit_set', methods=["POST"])
+@login_required
 def begin_edit_set():
    set_id = request.form.get('edit-set')
    cur = User.db.cursor()
@@ -126,17 +130,18 @@ def begin_edit_set():
    return render_template("edit_set.html", set_to_edit=set_to_edit)
 
 @app.route('/edit_set', methods=["POST"])
+@login_required
 def edit_set():
    set_id = request.form.get('edit-set')
    
    # Get workout id, create a workout if one does not exist
    datetime = request.form.get('datetime')
-   workout_id =  Workout.get_workout_id(datetime, session['userID'])
+   workout_id =  Workout.get_workout_id(datetime, session['user_id'])
    if workout_id:
       workout_id = workout_id[0]
    else:
-      Workout.create_workout(datetime, session['userID'])
-      workout_id = Workout.get_workout_id(datetime, session['userID'])[0]
+      Workout.create_workout(datetime, session['user_id'])
+      workout_id = Workout.get_workout_id(datetime, session['user_id'])[0]
    
    # Get exercise id, create one if one does not exist
    name = request.form.get('e_name')
@@ -156,13 +161,10 @@ def edit_set():
    return message("Set edited successfully")
 
 @app.route('/user_index')
-# @login_required
+@login_required
 def user_index():
-   if not session.get('userID'):
-      return message("Must be logged in.")
-
    cur = User.db.cursor()
-   userID = session['userID']
+   userID = session['user_id']
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
@@ -204,9 +206,8 @@ def user_index():
    return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table) 
 
 @app.route('/exercise', methods=["GET", "POST"])
+@login_required
 def exercise():
-   if not session.get('userID'):
-      return message("Need to be logged in")
    if request.method == "POST":
       dates = request.form.getlist("ndatetime[]")
       exercises = request.form.getlist("nExercise[]")
@@ -216,7 +217,7 @@ def exercise():
       zippedExercises = zip(dates, exercises, set_numbers, repetitions, resistances)
       for exercises in zippedExercises:
          # Create workout day and time if one does not exist
-         doesWorkoutExist = Workout.get_workout_id(exercises[0], session['userID'])
+         doesWorkoutExist = Workout.get_workout_id(exercises[0], session['user_id'])
          workoutID = -1
          if doesWorkoutExist is None:
             # Add a T to the datetime
@@ -226,8 +227,8 @@ def exercise():
                   date_time_str += 'T'
                else:
                   date_time_str += v
-            Workout.create_workout(date_time_str, session['userID'])
-            workoutID = Workout.get_workout_id(date_time_str, session['userID'])[0]
+            Workout.create_workout(date_time_str, session['user_id'])
+            workoutID = Workout.get_workout_id(date_time_str, session['user_id'])[0]
          else:
             workoutID = doesWorkoutExist[0]
          
@@ -291,10 +292,8 @@ def register():
    return message("You successfully registered. Go ahead and log in on the log in page.")
 
 @app.route('/settings', methods=['GET', 'POST'])
+@login_required
 def settings():
-   if not session.get('userID'):
-      return message("Must be logged in.")
-
    if request.method == "GET":
       return render_template("settings.html")
 

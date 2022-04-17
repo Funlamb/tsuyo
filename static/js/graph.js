@@ -1,8 +1,6 @@
-// Parse JSON data
-// const json = '{{graph_exercises | safe | replace("\\", "")}}';
-// const obj = JSON.parse(json);
 let json;
 let obj;
+
 // Get chart to update with drop down options
 async function updateChart(dropdown){
     const exercise = obj.exercises;
