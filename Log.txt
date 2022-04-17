@@ -1,11 +1,14 @@
-Get JS functions in JS files
-Format Dates so they look nice in graph page
 Have exercises drop down so user can input previously done exercises
 Get workouts, sets, and exercises to have classes and helper functions
 Make the edit in the same page (may not be possible)
 Use classes to access data
 Add duration to workouts (may not make sense)
 
+4-17-22
+Format Dates so they look nice in graph page
+Get JS functions in JS files
+Fixed titles of each page
+Added helper function to check if user is logged in
 
 4-15-22
 Fix bug where JSON files creates multiple arrays

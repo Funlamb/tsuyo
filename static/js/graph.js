@@ -7,7 +7,10 @@ async function updateChart(dropdown){
     
     const date = exercise[dropdown.value].map(
         function(index){
-            return index.workout_date;
+            date_lst = index.workout_date;
+            console.log(date_lst);
+            let date_modded = date_lst.replace("T", " ");
+            return date_modded;
         }
     );
     const data = exercise[dropdown.value].map(
