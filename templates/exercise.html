@@ -1,11 +1,10 @@
 {% extends 'base.html'%}
 {% block content %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/exercise.css') }}">
-<h1>
-    {% block title %}
-    Exercise
-    {% endblock %}
-</h1>
+
+{% block title %}
+Exercise
+{% endblock %}
 
 <form action="/exercise" method="post" id="form">
     <table class="form-table">
