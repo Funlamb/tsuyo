@@ -1,7 +1,3 @@
-from cgitb import small
-from crypt import methods
-from multiprocessing.sharedctypes import Value
-from unicodedata import name
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
@@ -72,8 +68,7 @@ def login():
 def graph():
    if not session.get('userID'):
       return message("Must be logged in.")
-   
-   
+      
    cur = database.cursor()
    u_id = session['userID']
    # get the exercises the user has done

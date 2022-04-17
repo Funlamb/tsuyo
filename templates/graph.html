@@ -2,11 +2,11 @@
 
 {% block title %} Graph {%endblock%}
 {%block content%} 
-<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
 <div>
     <canvas id="myChart"></canvas>
 </div>
+
 <select name="exercise_type" id="exercise_type" onchange="updateChart(this)">
     {% for i in dropdown_menu %}
     <option value="{{i}}">{{i}}</option>
@@ -20,8 +20,6 @@
     const obj = JSON.parse(json);
 
     // Get chart to update with drop down options
-    const select = document.getElementById('exercise_type');
-
     async function updateChart(dropdown){
         const exercise = obj.exercises;
         
@@ -41,7 +39,7 @@
 
         myChart.update();
     }
-
+    
     // setup 
     let data = {
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -89,6 +87,9 @@
       config
     );
     
+    // Setup graph first time
+    const select = document.getElementById('exercise_type');
+    updateChart(select);
 </script>
 
 <!-- pass smaller list to build those graphs -->
