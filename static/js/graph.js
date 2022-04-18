@@ -7,12 +7,13 @@ let mainColorSide;
 let secondColor;
 let secondColorSide;
 
-function initColors(color1, alpha1, color2, alpha2, color3, alpha3, color4, alpha4){
-    mainColor = hexToRGB(color1, alpha1);
-    mainColorSide = hexToRGB(color2, alpha2);
-    secondColor = hexToRGB(color3, alpha3);
-    secondColorSide = hexToRGB(color4, alpha4);
+function initColors(mainColor, mainAlpha, mainColorSide, mainColorSideAlpha, secondColor, secondColorAlpha, secondColorSide, secondColorSideAlpha){
+    mainColor = hexToRGB(mainColor, mainAlpha);
+    mainColorSide = hexToRGB(mainColorSide, mainColorSideAlpha);
+    secondColor = hexToRGB(secondColor, secondColorAlpha);
+    secondColorSide = hexToRGB(secondColorSide, secondColorSideAlpha);
 }
+
 // Get chart to update with drop down options
 async function updateChart(dropdown){
     const exercise = obj.exercises;
