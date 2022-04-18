@@ -3,8 +3,12 @@
 {% block title %} 
     Graph
 {%endblock%}
-
 {%block content%} 
+<div>
+    <h1 id="exercise_name">
+        Workout Name
+    </h1>
+</div>
 
 <div>
     <canvas id="myChart"></canvas>
@@ -20,9 +24,15 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/graph.js') }}"></script>
 
 <script>
+    doc = getComputedStyle(document.documentElement);
+    color_main = doc.getPropertyValue('--side');
+    color_main_side = doc.getPropertyValue('--side-off');
+    color_second = doc.getPropertyValue('--primary');
+    color_second_side = doc.getPropertyValue('--primary-off');
+    initColors(color_main, 0.5, color_main_side, 1.0, color_second, 0.5, color_second_side, 1.0);
     json = '{{graph_exercises | safe | replace("\\", "")}}';
     obj = JSON.parse(json);
-
+    exercise_name = document.getElementById('exercise_name');
     // Setup graph first time
     const select = document.getElementById('exercise_type');
     updateChart(select);

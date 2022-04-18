@@ -1,10 +1,20 @@
+:root {
+    --main-color: #d64161;
+    --main: #171616;
+    --white: #FFFFFF;
+    --side: #E28A37;
+    --side-off: #ffa24a;
+    --primary: #587EB1;
+    --primary-off: #8B9ABB;
+}
+
 .post {
     padding: 10px;
     margin: 5px;
     background-color: #f3f3f3;
 }
 nav a {
-    color: #d64161;
+    color: var(--main);
     font-size: 3em;
     margin-left: 50px;
     text-decoration: none;

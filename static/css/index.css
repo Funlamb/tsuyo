@@ -2,9 +2,9 @@
     --main: #171616;
     --white: #FFFFFF;
     --side: #E28A37;
-    --off_side: #ffa24a;
-    --off: #8B9ABB;
-    --on: #587EB1;
+    --side-off: #ffa24a;
+    --primary: #587EB1;
+    --primary-off: #8B9ABB;
 }
 
 .blank_row {
@@ -30,15 +30,15 @@ table, tbody {
 }
 
 tbody:nth-child(odd){
-    background-color: var(--on);
+    background-color: var(--primary);
 }
 
 tbody tr:nth-child(even){
-    background-color: var(--off);
+    background-color: var(--primary-off);
 }
 
 tbody tr:nth-child(even) th {
-    background-color: var(--off_side);
+    background-color: var(--side-off);
 }
 
 tbody tr:nth-child(odd) th {
