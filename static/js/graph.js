@@ -7,12 +7,13 @@ let mainColorSide;
 let secondColor;
 let secondColorSide;
 
-function initColors(color1, alpha1, color2, alpha2, color3, alpha3, color4, alpha4){
-    mainColor = hexToRGB(color1, alpha1);
-    mainColorSide = hexToRGB(color2, alpha2);
-    secondColor = hexToRGB(color3, alpha3);
-    secondColorSide = hexToRGB(color4, alpha4);
+function initColors(mainColor_, mainAlpha, mainColorSide_, mainColorSideAlpha, secondColor_, secondColorAlpha, secondColorSide_, secondColorSideAlpha){
+    mainColor = hexToRGB(mainColor_, mainAlpha);
+    mainColorSide = hexToRGB(mainColorSide_, mainColorSideAlpha);
+    secondColor = hexToRGB(secondColor_, secondColorAlpha);
+    secondColorSide = hexToRGB(secondColorSide_, secondColorSideAlpha);
 }
+
 // Get chart to update with drop down options
 async function updateChart(dropdown){
     const exercise = obj.exercises;
@@ -63,22 +64,22 @@ let data = {
         label: 'Resistance',
         data: [18, 12, 6, 9, 12, 3, 9],
         backgroundColor: [
-            'rgba(255, 26, 104, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(0, 0, 0, 0.2)'
+            // 'rgba(255, 26, 104, 0.2)',
+            // 'rgba(54, 162, 235, 0.2)',
+            // 'rgba(255, 206, 86, 0.2)',
+            // 'rgba(75, 192, 192, 0.2)',
+            // 'rgba(153, 102, 255, 0.2)',
+            // 'rgba(255, 159, 64, 0.2)',
+            // 'rgba(0, 0, 0, 0.2)'
         ],
         borderColor: [
-            'rgba(255, 26, 104, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-            'rgba(0, 0, 0, 1)'
+            // 'rgba(255, 26, 104, 1)',
+            // 'rgba(54, 162, 235, 1)',
+            // 'rgba(255, 206, 86, 1)',
+            // 'rgba(75, 192, 192, 1)',
+            // 'rgba(153, 102, 255, 1)',
+            // 'rgba(255, 159, 64, 1)',
+            // 'rgba(0, 0, 0, 1)'
         ],
         borderWidth: 1
     },
@@ -87,22 +88,22 @@ let data = {
         label: 'Intervals',
         data: [18, 12, 6, 9, 12, 3, 9],
         backgroundColor: [
-            'rgba(255, 26, 104, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(0, 0, 0, 0.2)'
+            // 'rgba(255, 26, 104, 0.2)',
+            // 'rgba(54, 162, 235, 0.2)',
+            // 'rgba(255, 206, 86, 0.2)',
+            // 'rgba(75, 192, 192, 0.2)',
+            // 'rgba(153, 102, 255, 0.2)',
+            // 'rgba(255, 159, 64, 0.2)',
+            // 'rgba(0, 0, 0, 0.2)'
         ],
         borderColor: [
-            'rgba(255, 26, 104, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-            'rgba(0, 0, 0, 1)'
+            // 'rgba(255, 26, 104, 1)',
+            // 'rgba(54, 162, 235, 1)',
+            // 'rgba(255, 206, 86, 1)',
+            // 'rgba(75, 192, 192, 1)',
+            // 'rgba(153, 102, 255, 1)',
+            // 'rgba(255, 159, 64, 1)',
+            // 'rgba(0, 0, 0, 1)'
         ],
         borderWidth: 1
     }]
