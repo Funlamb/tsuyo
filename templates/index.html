@@ -8,6 +8,8 @@
 
 
 {%block content%} 
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
+
     <div style="width:100%;">
     <form action="/begin_edit_set" method="post">
         {%for date in dates %}
@@ -42,52 +44,4 @@
                 {% endfor %}
             </form>
     </div>
-    <style>
-            :root{
-                --main: #171616;
-                --white: #FFFFFF;
-                --side: #E28A37;
-                --off_side: #ffa24a;
-                --off: #8B9ABB;
-                --on: #587EB1;
-            }
-
-            .blank_row {
-                height: 20px !important; /* overwrites any other rules */
-                background-color: var(--white);
-                border:var(--white);
-            }
-            
-            thead {
-                background-color: var(--main);
-                color: var(--white);
-            }
-
-            th, tr, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
-
-            table, tbody {
-                width: 100%;
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
-
-            tbody:nth-child(odd){
-                background-color: var(--on);
-            }
-
-            tbody tr:nth-child(even){
-                background-color: var(--off);
-            }
-
-            tbody tr:nth-child(even) th {
-                background-color: var(--off_side);
-            }
-            
-            tbody tr:nth-child(odd) th {
-                background-color: var(--side);
-            }
-        </style>
 {% endblock %}

@@ -1,21 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" href="{{url_for('static', filename='css/base.css') }}">
+
     <head>
         <meta charset="UTF-8">
         <title>{% block title %} {% endblock %}</title>
-        <style>
-            .post {
-                padding: 10px;
-                margin: 5px;
-                background-color: #f3f3f3;
-            }
-            nav a {
-                color: #d64161;
-                font-size: 3em;
-                margin-left: 50px;
-                text-decoration: none;
-            }
-        </style>
     </head>
     <body>
         <nav>
