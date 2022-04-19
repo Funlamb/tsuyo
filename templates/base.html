@@ -6,19 +6,34 @@
         <meta charset="UTF-8">
         <title>{% block title %} {% endblock %}</title>
     </head>
-    <body>
-        <nav>
-            <a href="/">Log In</a>
-            <a href="/user_index">List of workouts</a>
-            <a href="/logout">Log Out</a>
-            <a href="/settings">Settings</a>
-            <a href="/register">Register</a>
-            <a href="/exercise">Exercise</a>
-            <a href="/graph">Graph</a>
-        </nav>
-        <hr>
-        <div class="content">
-            {%block content%} {%endblock%}
+  <body>
+    <nav>
+      <div class="navbar">
+        <div class="container nav-container">
+            <input class="checkbox" type="checkbox" name="" id="" />
+            <div class="hamburger-lines">
+              <span class="line line1"></span>
+              <span class="line line2"></span>
+              <span class="line line3"></span>
+            </div>  
+          <div class="logo">
+            <h1>Navbar</h1>
+          </div>
+          <div class="menu-items">
+            <li><a href="/">Log In</a></li>
+            <li><a href="/user_index">List of workouts</a></li>
+            <li><a href="/logout">Log Out</a></li>
+            <li><a href="/settings">Settings</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/exercise">Exercise</a></li>
+            <li><a href="/graph">Graph</a></li>
+          </div>
         </div>
-    </body>
+      </div>
+    </nav>
+  </body>
+
+    <div class="content">
+        {%block content%} {%endblock%}
+    </div>
 </html>

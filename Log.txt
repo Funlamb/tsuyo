@@ -3,6 +3,9 @@ Get workouts, sets, and exercises to have classes and helper functions
 Use classes to access data
 Add duration to workouts (may not make sense)
 
+4-19-22
+Added navbar to make it look nice
+
 4-18-22
 Cleaned up css
 Cleaned up color function

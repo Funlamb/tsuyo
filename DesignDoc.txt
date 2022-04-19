@@ -2,11 +2,12 @@ This software will keep track of work outs
 Cardio and strength training
 
 Must Haves:
-show graphs of strength gains
+Cardio
 actual web app 
 Phone css 
 
 Must haves, Done:
+show graphs of strength gains
 login on the web
 quick to insert new sets, reps, and weights
 keep track of progress
