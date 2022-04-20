@@ -1,11 +1,3 @@
-:root{
-    --main: #171616;
-    --white: #FFFFFF;
-    --side: #E28A37;
-    --side-off: #ffa24a;
-    --primary: #587EB1;
-    --primary-off: #8B9ABB;
-}
 
 .blank_row {
     height: 20px !important; /* overwrites any other rules */

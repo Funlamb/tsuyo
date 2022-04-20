@@ -1,14 +1,14 @@
 {%extends 'base.html'%}
 
-{%block title%} 
-    {% if name %} 
-        {{name}} 
-    {% endif %} 
+{%block title%}
+    {% if name %}
+        {{name}}
+    {% endif %}
 {% endblock %}
 
 
-{%block content%} 
-<link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='css/list_workouts.css') }}">
 
     <div style="width:100%;">
     <form action="/begin_edit_set" method="post">
@@ -44,4 +44,13 @@
                 {% endfor %}
             </form>
     </div>
+    
+    <script>
+        let sizeWidth = window.screen.availWidth;
+        console.log(sizeWidth);
+        // Get size of sceen then change layout if need be
+        if (sizeWidth <= 440){
+            window.location.href = "/list_workouts_mobile"; 
+        }
+    </script>
 {% endblock %}

@@ -34,7 +34,7 @@ def login():
    session['user_id'] = user.get_id()
    session['name'] = user.get_first_name()
    session['email'] = user.get_email()
-   return redirect("/user_index")
+   return redirect("/list_workouts")
    # remove any prior session
    session.clear()
    if request.method == "POST":
@@ -55,13 +55,13 @@ def login():
       if not user: # If user does not exist send user error message
          return message("Invalid credentials")
       
-      # Check passwork and send to user_index if correct
+      # Check passwork and send to list_workouts if correct
       password = request.form.get('password')
       if user.check_password(password):
          session['user_id'] = user.get_id()
          session['name'] = user.get_first_name()
          session['email'] = user.get_email()
-         return redirect("/user_index")
+         return redirect("/list_workouts")
       # If password did not match give user error message
       return message("Invalid credentials")
    return render_template("login.html")
@@ -160,9 +160,10 @@ def edit_set():
    database.commit()
    return message("Set edited successfully")
 
-@app.route('/user_index')
+@app.route('/list_workouts')
 @login_required
-def user_index():
+def list_workouts():
+   print("Here")
    cur = User.db.cursor()
    userID = session['user_id']
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
@@ -173,7 +174,7 @@ def user_index():
 
    # If there are zero exercises show the user there name
    if not exercises:
-      return render_template("index.html", name=session['name'])
+      return render_template("list_workouts.html", name=session['name'])
 
    # Get all the exercises in head_set class
    head_sets = []
@@ -203,7 +204,54 @@ def user_index():
 
    single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
 
-   return render_template("index.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table, name=session['name']) 
+   return render_template("list_workouts.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table, name=session['name']) 
+
+@app.route('/list_workouts_mobile')
+@login_required
+def list_workouts_mobile():
+   print("Phone Here")
+   cur = User.db.cursor()
+   userID = session['user_id']
+   query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
+      sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
+      JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY w_id DESC"""
+   exercises = cur.execute(query, [userID]).fetchall()
+
+   # If there are zero exercises show the user there name
+   if not exercises:
+      return render_template("list_workouts_mobile.html", name=session['name'])
+
+   # Get all the exercises in head_set class
+   head_sets = []
+   for ex in exercises:
+      # make a head_set form all the exercises
+      head_set = Head_set(Workout.get(ex['w_id']), Exercise.get(ex['s_exeID']), Ex_set.get(ex['s_id']))
+      head_sets.append(head_set)
+   
+   all_workout_dates = [hs.get_workout().get_date_time() for hs in head_sets]
+   workout_date_dict = {d: {} for d in all_workout_dates}
+
+   # TODO: Need to sort the dict for mobile devices
+   number_of_columns_for_table = 0
+   for hs in head_sets:
+      date = hs.get_workout().get_date_time()
+      name = hs.get_exercise().get_name()
+      interval = hs.get_ex_set().interval
+      resistance = hs.get_ex_set().resistance
+      set_id = hs.get_ex_set().id
+      if name in workout_date_dict[date]:
+         workout_date_dict[date][name] += [interval, resistance, set_id]
+      else:
+         workout_date_dict[date][name] = [interval, resistance, set_id]
+      curr_columns = len(workout_date_dict[date][name])
+      if curr_columns > number_of_columns_for_table:
+         number_of_columns_for_table = curr_columns
+   number_of_columns_for_table = int(number_of_columns_for_table / 3)
+
+   single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
+
+   return render_template("list_workouts_mobile.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table, name=session['name']) 
 
 @app.route('/exercise', methods=["GET", "POST"])
 @login_required
