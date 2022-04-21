@@ -24,17 +24,18 @@
                 <tbody>
                     {% for key, value in workouts[date].items() %}
                     <tr>
-                        <!-- Key  is the name of the exercise -->
                         <th>{{key}}</th>
-
-                        <!-- Loop through the values to get all intervals, resistances, and edit buttons -->
-                        {% if loop.index % 3 == 0 %}
-                        <td><button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-set" value="{{value}}">&#60-Edit</button></td>
-                        {% else %}
-                        <td>{{value}}</td>
-                        {% endif %}
-
-                    </tr>
+                        <!-- Key  is the name of the exercise -->
+                        {% for i in value %}
+                            <!-- Loop through the values to get all intervals, resistances, and edit buttons -->
+                            {% if loop.index % 3 != 0 %}
+                                <td>{{i}}</td>
+                            {% else %}
+                                <td><button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-set" value="{{i}}">&#60-Edit</button></td>
+                                </tr>
+                                <td></td>
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
                     </tbody>
                 {% endfor %}

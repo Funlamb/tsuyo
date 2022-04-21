@@ -4,6 +4,9 @@ Get workouts, sets, and exercises to have classes and helper functions
 Use classes to access data
 Add duration to workouts (may not make sense)
 
+4-21-22
+Fixed mobile layout for list_workouts
+
 4-20-22
 Started process of making a page for mobile devices 
 
