@@ -4,7 +4,7 @@ Cardio and strength training
 Must Haves:
 Cardio
 actual web app 
-Phone css 
+Phone css
 
 Must haves, Done:
 show graphs of strength gains

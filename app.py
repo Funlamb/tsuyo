@@ -78,7 +78,7 @@ def graph():
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
       sets.setNumber AS s_setNum, sets.workoutID AS s_workID, sets.exerciseID AS s_exeID, exercises.name AS e_name FROM users
       JOIN workouts ON users.id = workouts.userID JOIN sets ON workouts.id = sets.workoutID JOIN exercises ON
-      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id limit 100"""
+      sets.exerciseID = exercises.id WHERE users.id = ? ORDER BY exercises.id"""
    exercises = cur.execute(query, [u_id]).fetchall()
    graph_exercises = []
    exercise_names = []
@@ -158,12 +158,11 @@ def edit_set():
    # edit the set
    database.execute(query, [interval, resistance, workout_id, exercise_id, set_id])
    database.commit()
-   return message("Set edited successfully")
+   return redirect("/list_workouts")
 
 @app.route('/list_workouts')
 @login_required
 def list_workouts():
-   print("Here")
    cur = User.db.cursor()
    userID = session['user_id']
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
@@ -209,7 +208,6 @@ def list_workouts():
 @app.route('/list_workouts_mobile')
 @login_required
 def list_workouts_mobile():
-   print("Phone Here")
    cur = User.db.cursor()
    userID = session['user_id']
    query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, sets.id AS s_id, sets.interval AS s_interval, sets.resistance AS s_res,
@@ -232,7 +230,6 @@ def list_workouts_mobile():
    all_workout_dates = [hs.get_workout().get_date_time() for hs in head_sets]
    workout_date_dict = {d: {} for d in all_workout_dates}
 
-   # TODO: Need to sort the dict for mobile devices
    number_of_columns_for_table = 0
    for hs in head_sets:
       date = hs.get_workout().get_date_time()
@@ -253,7 +250,7 @@ def list_workouts_mobile():
 
    return render_template("list_workouts_mobile.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table, name=session['name']) 
 
-@app.route('/exercise', methods=["GET", "POST"])
+@app.route('/add_set', methods=["GET", "POST"])
 @login_required
 def exercise():
    if request.method == "POST":
@@ -294,7 +291,8 @@ def exercise():
          sql = "INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance) VALUES (?, ?, ?, ?, ?)"
          database.execute(sql, [workoutID, exerciseID, exercises[2], exercises[3], exercises[4]])
          database.commit()
-   return render_template("exercise.html")
+      return redirect("list_workouts.html")
+   return render_template("add_set.html")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

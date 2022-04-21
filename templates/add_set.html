@@ -6,7 +6,7 @@
 Exercise
 {% endblock %}
 
-<form action="/exercise" method="post" id="form">
+<form action="/add_set" method="post" id="form">
     <table class="form-table">
         <tr> 
             <th>Date and Time</th>
@@ -27,6 +27,6 @@ Exercise
     <button type="submit" onclick="displayData()">Submit</button>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/exercise.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/add_set.js') }}" type="text/javascript"></script>
 </form>
 {% endblock %}
