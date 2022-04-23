@@ -7,9 +7,9 @@ actual web app
 Phone css
 
 Must haves, Done:
-show graphs of strength gains
 login on the web
 quick to insert new sets, reps, and weights
+show graphs of strength gains
 keep track of progress
 Edit mistakes
 

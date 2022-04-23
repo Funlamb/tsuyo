@@ -1,3 +1,5 @@
+from crypt import methods
+from os import sep
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
@@ -7,9 +9,11 @@ from user import User
 from head_set import Head_set
 from workout import Workout
 from ex_set import Ex_set
+from ex_cardio import Ex_cardio
 from exercise import Exercise
 from graph_set import Graph_set
 from ExerciseCollection import ExerciseCollection
+from head_cardio import Head_cardio
 import json
 
 app = Flask(__name__)
@@ -21,6 +25,7 @@ User.db = database
 Workout.db = database
 Ex_set.db = database
 Exercise.db = database
+Ex_cardio.db = database
 
 @app.route('/')
 def index():
@@ -66,12 +71,31 @@ def login():
       return message("Invalid credentials")
    return render_template("login.html")
 
+
+@app.route('/list_cardio', methods=["GET", "POST"])
+@login_required
+def cardio_list():
+   # get users cardio workouts
+   cur = database.cursor()
+   u_id = session['user_id']
+   query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id AS w_id, cardios.id AS c_id, cardios.duration AS c_duration,
+      cardios.distance AS c_distance, cardios.exerciseID AS c_exercise_id FROM users JOIN workouts ON users.id = workouts.userID JOIN cardios ON 
+      workouts.id = cardios.workoutID JOIN exercises ON cardios.exerciseID = exercises.id WHERE users.id = ? ORDER BY workouts.dateandtime"""
+   cardios = cur.execute(query, [u_id]).fetchall()
+   # build cardio object
+   head_cardios = []
+   for i in cardios:
+      temp = Head_cardio(Workout.get(i['w_id']), Exercise.get(i['c_exercise_id']), Ex_cardio.get(i['c_id']))
+      head_cardios.append(temp)
+   for i in head_cardios:
+      print(i)
+   # orginize them by date
+   # pass them to the page
+   return render_template("cardio.html")
+
 @app.route('/graph', methods=["GET"])
 @login_required
 def graph():
-   if not session.get('user_id'):
-      return message("Must be logged in.")
-      
    cur = database.cursor()
    u_id = session['user_id']
    # get the exercises the user has done

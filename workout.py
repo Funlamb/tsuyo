@@ -42,3 +42,6 @@ class Workout:
         """
         Workout.db.execute("INSERT INTO workouts (userID, DateAndTime) VALUES (?,?)", [userID, datetime])
         Workout.db.commit()
+
+    def __str__(self):
+        return ("ID: " + str(self.id) + " Date Time: " + str(self.date_time))

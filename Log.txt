@@ -1,8 +1,13 @@
-Get List to show nicely on phone
 Have exercises drop down so user can input previously done exercises
 Get workouts, sets, and exercises to have classes and helper functions
 Use classes to access data
 Add duration to workouts (may not make sense)
+
+4-23-22
+Add Cardio
+
+4-22-22
+Get List to show nicely on phone
 
 4-21-22
 Fixed mobile layout for list_workouts

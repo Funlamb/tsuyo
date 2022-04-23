@@ -1,0 +1,47 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    {% if name %}
+        {{name}}
+    {% endif %}
+{% endblock %}
+
+
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='css/list_workouts.css') }}">
+
+    <div style="width:100%;">
+    <form action="/begin_edit_cardio" method="post">
+        {%for date in dates %}
+        <table> 
+            <caption>{{date | replace("T", " ")}}</caption>
+                <thead>
+                    <th width="20%">Exercise</th>
+                    <th width="20%">Duration</th>
+                    <th width="20%">Distance</th>
+                    <th width="20%"></th>
+                </thead>
+                <tbody>
+                    {% for key, value in workouts[date].items() %}
+                    <tr>
+                        <!-- Key  is the name of the exercise -->
+                        <th>{{key}}</th>
+                        {% for i in value %}
+                        <!-- Loop through the values to get all intervals, resistances, and edit buttons -->
+                        {% if loop.index % 3 == 0 %}
+                        <td><button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-set" value="{{i}}">&#60-Edit</button></td>
+                        {% else %}
+                        <td>{{i}}</td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                {% endfor %}
+            </form>
+    </div>
+    
+    <script>
+
+    </script>
+{% endblock %}

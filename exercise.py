@@ -1,7 +1,4 @@
 
-from os import stat
-
-
 class Exercise:
     db = None
     def __init__(self, id, name):
@@ -39,3 +36,6 @@ class Exercise:
     def create_exercise(name):
         Exercise.db.execute("INSERT INTO exercises (name) VALUES (?)", [name])
         Exercise.db.commit()
+    
+    def __str__(self):
+        return ("Id: " + str(self.id) + " Name: " + self.name)
