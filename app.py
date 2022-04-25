@@ -71,6 +71,51 @@ def login():
       return message("Invalid credentials")
    return render_template("login.html")
 
+@app.route('/edit_cardio', methods=["POST"])
+@login_required
+def edit_cardio():
+   cardio_id = request.form.get('edit-cardio')
+   
+   # Get workout id, create a workout if one does not exist
+   datetime = request.form.get('datetime')
+   workout_id =  Workout.get_workout_id(datetime, session['user_id'])
+   if workout_id:
+      workout_id = workout_id[0]
+   else:
+      Workout.create_workout(datetime, session['user_id'])
+      workout_id = Workout.get_workout_id(datetime, session['user_id'])[0]
+   
+   # Get exercise id, create one if one does not exist
+   name = request.form.get('e_name')
+   exercise_id = Exercise.get_exercise_id(name)
+   if exercise_id:
+      exercise_id = exercise_id[0]
+   else:
+      Exercise.create_exercise(name)
+      exercise_id = Exercise.get_exercise_id(name)[0]
+
+   duration = request.form.get('c_duration')
+   distance = request.form.get('c_dist')
+   query = """UPDATE cardios SET duration=?, distance=?, workoutID=?, exerciseID=? WHERE ID=?"""
+   # edit the set
+   database.execute(query, [duration, distance, workout_id, exercise_id, cardio_id])
+   database.commit()
+   return redirect("/list_cardio")
+
+@app.route('/begin_edit_cardio', methods=['POST'])
+@login_required
+def begin_edit_cardio():
+   # get cardio from database
+   cur = database.cursor()
+   cardio_id = request.form.get('edit-cardio')
+   query = """SELECT users.firstName, workouts.dateandtime AS w_datetime, workouts.id as w_id, cardios.id AS c_id, cardios.duration AS c_duration, 
+      cardios.distance AS c_dist, cardios.setNumber AS c_setNum, cardios.workoutID AS c_workID, cardios.exerciseID AS c_exeID, exercises.name AS e_name FROM users
+      JOIN workouts ON users.id = workouts.userID JOIN cardios ON workouts.id = cardios.workoutID JOIN exercises ON
+      cardios.exerciseID = exercises.id WHERE c_id = ?"""
+   cardio_to_edit = cur.execute(query, [cardio_id]).fetchone()
+
+   # pass information to page
+   return render_template("edit_cardio.html", cardio_to_edit=cardio_to_edit)
 
 @app.route('/list_cardio', methods=["GET", "POST"])
 @login_required
@@ -87,11 +132,25 @@ def cardio_list():
    for i in cardios:
       temp = Head_cardio(Workout.get(i['w_id']), Exercise.get(i['c_exercise_id']), Ex_cardio.get(i['c_id']))
       head_cardios.append(temp)
-   for i in head_cardios:
-      print(i)
+
    # orginize them by date
+   all_workout_dates = [hs.get_workout().get_date_time() for hs in head_cardios]
+   workout_date_dict = {d: {} for d in all_workout_dates}
+
+   for hc in head_cardios:
+      date = hc.get_workout().get_date_time()
+      name = hc.get_exercise().get_name()
+      duration = hc.get_ex_set().interval
+      distance = hc.get_ex_set().resistance
+      cardio_id = hc.get_ex_set().id
+      if name in workout_date_dict[date]:
+         workout_date_dict[date][name] += [duration, distance, cardio_id]
+      else:
+         workout_date_dict[date][name] = [duration, distance, cardio_id]
+   
+   single_workout_dates = sorted(workout_date_dict.keys(), reverse=True)
    # pass them to the page
-   return render_template("cardio.html")
+   return render_template("cardio.html", dates=single_workout_dates, workouts=workout_date_dict)
 
 @app.route('/graph', methods=["GET"])
 @login_required

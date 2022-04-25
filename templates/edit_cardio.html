@@ -1,0 +1,33 @@
+{%extends 'base.html'%}
+
+{% block title %}
+Edit Cardio
+{% endblock %}
+
+{%block content%} 
+<table class="table tablestriped">
+    <tbody>
+        <thead>
+            <th>{{date}}</th>
+        </thead>
+        <thead>
+            <th>Date</th>
+            <th>Exercise</th>
+            <th>Intervals</th>
+            <th>Resistance</th>
+        </thead>
+        {% if cardio_to_edit %}
+        <tr>
+            <form action="/edit_cardio" method="post">
+                <td class="border-0 fw-bold text-end"> <input type="datetime-local" name="datetime" value="{{cardio_to_edit['w_datetime']}}"></td>
+                <td class="border-0 fw-bold text-end"><input type="text" name="e_name" value="{{cardio_to_edit['e_name']}}"></td>
+                <td class="border-0 fw-bold text-end"> <input type="text" name="c_duration" value="{{cardio_to_edit['c_duration']}}"></td>
+                <td class="border-0 fw-bold text-end"> <input type="text" name="c_dist" value="{{cardio_to_edit['c_dist']}}"></td>
+                <td>
+                    <button type="submit" width="200" height="200" id="edit[]" type="button" name="edit-cardio" value="{{cardio_to_edit['c_id']}}">Save</button>
+                </td>
+            </form>
+        </tr>
+        {% endif %}
+    </tbody>
+{% endblock %}

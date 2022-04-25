@@ -3,6 +3,9 @@ Get workouts, sets, and exercises to have classes and helper functions
 Use classes to access data
 Add duration to workouts (may not make sense)
 
+4-25-22
+Added ability to edit cardio exercises
+
 4-23-22
 Add Cardio
 
