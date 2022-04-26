@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% block content %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/exercise.css') }}">
+
+{% block title %}
+Exercise
+{% endblock %}
+
+<form action="/add_cardio" method="post" id="form">
+    <table class="form-table">
+        <tr> 
+            <th>Date and Time</th>
+            <th>Exercise</th>
+            <th>Duration</th>
+            <th>Distance</th>
+        </tr>
+        <tr valign="top">
+            <td id="datetime"><input type="datetime-local" name="datetime"/></td>
+            <td id="exercise"><input type="text" name="exercise"></td>
+            <td id="duration"><input type="number" name="duration"></td>
+            <td id="distance"><input type="number" name="distance" step="0.01"></td>
+        </tr>
+    </table>
+    <button type="submit" onclick="displayData()">Submit</button>
+</form>
+{% endblock %}

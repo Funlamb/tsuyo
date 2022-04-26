@@ -71,6 +71,42 @@ def login():
       return message("Invalid credentials")
    return render_template("login.html")
 
+@app.route('/add_cardio', methods=["GET" ,"POST"])
+@login_required
+def add_cardio():
+   if request.method == "GET":
+      return render_template("add_cardio.html")
+   # get relevent info
+   duration = request.form.get('duration')
+   distance = request.form.get('distance')
+
+   # Get workout id, create a workout if one does not exist
+   datetime = request.form.get('datetime')
+   workout_id =  Workout.get_workout_id(datetime, session['user_id'])
+   if workout_id:
+      workout_id = workout_id[0]
+   else:
+      Workout.create_workout(datetime, session['user_id'])
+      workout_id = Workout.get_workout_id(datetime, session['user_id'])[0]
+   
+   # Get exercise id, create one if one does not exist
+   exercise = request.form.get('exercise')
+   exercise_id = Exercise.get_exercise_id(exercise)
+   if exercise_id:
+      exercise_id = exercise_id[0]
+   else:
+      Exercise.create_exercise(exercise)
+      exercise_id = Exercise.get_exercise_id(exercise)[0]
+
+   # edit the set
+   query = """INSERT INTO cardios (duration, distance, setNumber, workoutID, exerciseID) VALUES (?, ?, ?, ?, ?)"""
+   database.execute(query, [duration, distance, 1, workout_id, exercise_id])
+   database.commit()
+
+   # add info to database
+   # redirect user to list_cardio
+   return redirect("/list_cardio")
+
 @app.route('/edit_cardio', methods=["POST"])
 @login_required
 def edit_cardio():
