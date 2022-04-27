@@ -2,6 +2,10 @@ Have exercises drop down so user can input previously done exercises
 Get workouts, sets, and exercises to have classes and helper functions
 Use classes to access data
 Add duration to workouts (may not make sense)
+Found bug that stopped adding multiple sets FIX: change names in exercise.js
+
+4-27-22
+Refactored
 
 4-25-22
 Added ability to edit cardio exercises

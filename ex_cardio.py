@@ -18,5 +18,17 @@ class Ex_cardio:
         else:
             return None
     
+    @staticmethod
+    def add_cardio(duration, distance, workout_id, exercise_id):
+        query = """INSERT INTO cardios (duration, distance, setNumber, workoutID, exerciseID) VALUES (?, ?, ?, ?, ?)"""
+        Ex_cardio.db.execute(query, [duration, distance, 1, workout_id, exercise_id])
+        Ex_cardio.db.commit()
+    
+    @staticmethod
+    def edit_cario(duration, distance, workout_id, exercise_id, cardio_id):
+        query = """UPDATE cardios SET duration=?, distance=?, workoutID=?, exerciseID=? WHERE ID=?"""
+        Ex_cardio.db.execute(query, [duration, distance, workout_id, exercise_id, cardio_id])
+        Ex_cardio.db.commit()
+
     def __str__(self) -> str:
         return ("ID: " + str(self.id) + " Duration: " + str(self.interval) + " Distance " + str(self.resistance))

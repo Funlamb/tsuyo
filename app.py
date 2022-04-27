@@ -98,13 +98,8 @@ def add_cardio():
       Exercise.create_exercise(exercise)
       exercise_id = Exercise.get_exercise_id(exercise)[0]
 
-   # edit the set
-   query = """INSERT INTO cardios (duration, distance, setNumber, workoutID, exerciseID) VALUES (?, ?, ?, ?, ?)"""
-   database.execute(query, [duration, distance, 1, workout_id, exercise_id])
-   database.commit()
-
-   # add info to database
-   # redirect user to list_cardio
+   # add row to database
+   Ex_cardio.add_cardio(duration, distance, workout_id, exercise_id)
    return redirect("/list_cardio")
 
 @app.route('/edit_cardio', methods=["POST"])
@@ -132,10 +127,7 @@ def edit_cardio():
 
    duration = request.form.get('c_duration')
    distance = request.form.get('c_dist')
-   query = """UPDATE cardios SET duration=?, distance=?, workoutID=?, exerciseID=? WHERE ID=?"""
-   # edit the set
-   database.execute(query, [duration, distance, workout_id, exercise_id, cardio_id])
-   database.commit()
+   Ex_cardio.edit_cario(duration, distance, workout_id, exercise_id, cardio_id)
    return redirect("/list_cardio")
 
 @app.route('/begin_edit_cardio', methods=['POST'])
@@ -273,10 +265,7 @@ def edit_set():
 
    interval = request.form.get('s_interval')
    resistance = request.form.get('s_res')
-   query = """UPDATE sets SET interval=?, resistance=?, workoutID=?, exerciseID=? WHERE ID=?"""
-   # edit the set
-   database.execute(query, [interval, resistance, workout_id, exercise_id, set_id])
-   database.commit()
+   Ex_set.edit_set(interval, resistance, workout_id, exercise_id, set_id)
    return redirect("/list_workouts")
 
 @app.route('/list_workouts')
@@ -369,9 +358,10 @@ def list_workouts_mobile():
 
    return render_template("list_workouts_mobile.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table, name=session['name']) 
 
+# TODO Fix bug that wont allow multiple adds It's in the exercise.js It's a naming issue
 @app.route('/add_set', methods=["GET", "POST"])
 @login_required
-def exercise():
+def add_set():
    if request.method == "POST":
       dates = request.form.getlist("nDatetime[]")
       exercises = request.form.getlist("nExercise[]")
@@ -379,10 +369,13 @@ def exercise():
       repetitions = request.form.getlist("nRep[]")
       resistances = request.form.getlist("nResistance[]")
       zippedExercises = zip(dates, exercises, set_numbers, repetitions, resistances)
+      print(dates)
+      print(set_numbers)
+
       for exercises in zippedExercises:
          # Create workout day and time if one does not exist
          doesWorkoutExist = Workout.get_workout_id(exercises[0], session['user_id'])
-         workoutID = -1
+         workout_id = -1
          if doesWorkoutExist is None:
             # Add a T to the datetime
             date_time_str = ''
@@ -392,25 +385,27 @@ def exercise():
                else:
                   date_time_str += v
             Workout.create_workout(date_time_str, session['user_id'])
-            workoutID = Workout.get_workout_id(date_time_str, session['user_id'])[0]
+            workout_id = Workout.get_workout_id(date_time_str, session['user_id'])[0]
          else:
-            workoutID = doesWorkoutExist[0]
+            workout_id = doesWorkoutExist[0]
          
          # Create exercise if one does not exist
          word = ''.join(exercises[1])
          doesExerciseExist = Exercise.get_exercise_id(word)
-         exerciseID = -1
+         exercise_id = -1
          if doesExerciseExist is None:
             Exercise.create_exercise(word)
-            exerciseID = Exercise.get_exercise_id(word)[0]
+            exercise_id = Exercise.get_exercise_id(word)[0]
          else:
-            exerciseID = doesExerciseExist[0]
+            exercise_id = doesExerciseExist[0]
       
          # Create the set
-         sql = "INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance) VALUES (?, ?, ?, ?, ?)"
-         database.execute(sql, [workoutID, exerciseID, exercises[2], exercises[3], exercises[4]])
-         database.commit()
-      return redirect("list_workouts.html")
+         Ex_set.add_set(workout_id, exercise_id, exercises)
+         print("app.py")
+         # sql = "INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance) VALUES (?, ?, ?, ?, ?)"
+         # database.execute(sql, [workout_id, exercise_id, exercises[2], exercises[3], exercises[4]])
+         # database.commit()
+      return redirect("/list_workouts")
    return render_template("add_set.html")
 
 @app.route('/register', methods=['GET', 'POST'])

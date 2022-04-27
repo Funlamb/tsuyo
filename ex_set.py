@@ -18,3 +18,18 @@ class Ex_set:
             return Ex_set(ex_set_result[0], ex_set_result[1],ex_set_result[2],ex_set_result[3],ex_set_result[4], ex_set_result[5])
         else:
             return None
+    
+    @staticmethod
+    def edit_set(interval, resistance, workout_id, exercise_id, set_id):
+        query = """UPDATE sets SET interval=?, resistance=?, workoutID=?, exerciseID=? WHERE ID=?"""
+        # edit the set
+        Ex_set.db.execute(query, [interval, resistance, workout_id, exercise_id, set_id])
+        Ex_set.db.commit()
+
+    @staticmethod
+    def add_set(workout_id, exercise_id, exercises):
+        print(exercises)
+        sql = "INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance) VALUES (?, ?, ?, ?, ?)"
+        Ex_set.db.execute(sql, [workout_id, exercise_id, exercises[2], exercises[3], exercises[4]])
+        Ex_set.db.commit()
+        print("class add_set")
