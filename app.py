@@ -400,10 +400,6 @@ def add_set():
       
          # Create the set
          Ex_set.add_set(workout_id, exercise_id, exercises)
-         print("app.py")
-         # sql = "INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance) VALUES (?, ?, ?, ?, ?)"
-         # database.execute(sql, [workout_id, exercise_id, exercises[2], exercises[3], exercises[4]])
-         # database.commit()
       return redirect("/list_workouts")
    return render_template("add_set.html")
 
