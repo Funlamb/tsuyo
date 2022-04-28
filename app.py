@@ -358,7 +358,6 @@ def list_workouts_mobile():
 
    return render_template("list_workouts_mobile.html", dates=single_workout_dates, workouts=workout_date_dict, columns=number_of_columns_for_table, name=session['name']) 
 
-# TODO Fix bug that wont allow multiple adds It's in the exercise.js It's a naming issue
 @app.route('/add_set', methods=["GET", "POST"])
 @login_required
 def add_set():

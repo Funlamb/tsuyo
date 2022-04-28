@@ -3,7 +3,7 @@ function addRow(){
     let datetimeValue = document.getElementById("datetime").lastElementChild.value;
     let datetime = $("#datetime");
     var input;
-    var input = $("<input>").attr("type", "datetime-local").attr("name", "ndatetime[]").attr("value", datetimeValue);  
+    var input = $("<input>").attr("type", "datetime-local").attr("name", "nDatetime[]").attr("value", datetimeValue);  
     var br = $("<br>");
     datetime.append(br);
     datetime.append(input);
@@ -19,7 +19,7 @@ function addRow(){
     let setNumberValue = parseInt(document.getElementById("setnumber").lastElementChild.value) + 1;
     let setNumber = $("#setnumber");
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", "nsetnumber[]").attr("value", setNumberValue);  
+    var input = $("<input>").attr("type", "number").attr("name", "nSetnumber[]").attr("value", setNumberValue);  
     var br = $("<br>");
     setNumber.append(br);
     setNumber.append(input);
@@ -27,7 +27,7 @@ function addRow(){
     let repValue = parseInt(document.getElementById("rep").lastElementChild.value);
     let rep = $("#rep")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", "nrep[]").attr("value", repValue);  
+    var input = $("<input>").attr("type", "number").attr("name", "nRep[]").attr("value", repValue);  
     var br = $("<br>");
     rep.append(br);
     rep.append(input);
@@ -35,7 +35,7 @@ function addRow(){
     let resistanceValue = parseInt(document.getElementById("resistance").lastElementChild.value);
     let resistance = $("#resistance")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", "nresistance[]").attr("step", ".5").attr("value", resistanceValue);  
+    var input = $("<input>").attr("type", "number").attr("name", "nResistance[]").attr("step", ".5").attr("value", resistanceValue);  
     var br = $("<br>");
     resistance.append(br);
     resistance.append(input);
