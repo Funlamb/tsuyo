@@ -64,3 +64,4 @@ function checkFilled(){
 }
 
 trackInputs();
+addRow();

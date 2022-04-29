@@ -7,7 +7,6 @@ Phone view for adding exercises
 
 Must haves, Done:
 Phone view for viewing exercises
-
 Cardio
 login on the web
 quick to insert new sets, reps, and weights

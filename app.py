@@ -368,8 +368,6 @@ def add_set():
       repetitions = request.form.getlist("nRep[]")
       resistances = request.form.getlist("nResistance[]")
       zippedExercises = zip(dates, exercises, set_numbers, repetitions, resistances)
-      print(dates)
-      print(set_numbers)
 
       for exercises in zippedExercises:
          # Create workout day and time if one does not exist
