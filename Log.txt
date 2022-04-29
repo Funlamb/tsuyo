@@ -3,6 +3,7 @@ Add duration to workouts (may not make sense)
 Use classes to access data
 Get workouts, sets, and exercises to have classes and helper functions
 Tab order for add exercises
+add ex_sets with mobile layout
 
 4-28-22
 Fixed bug that stopped adding multiple sets
