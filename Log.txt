@@ -1,13 +1,11 @@
 Have exercises drop down so user can input previously done exercises
-Add duration to workouts (may not make sense)
 Use classes to access data
 Get workouts, sets, and exercises to have classes and helper functions
-Tab order for add exercises
-add ex_sets with mobile layout
 
 5-02-22
 Fixed the tabindex of the add_sets page
 Set focus to the exercise name when adding a set in add_sets
+add ex_sets with mobile layout
 
 4-28-22
 Fixed bug that stopped adding multiple sets

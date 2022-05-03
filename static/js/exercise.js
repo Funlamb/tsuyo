@@ -8,7 +8,7 @@ function addRow(){
     let datetimeValue = document.getElementById("datetime").lastElementChild.value;
     let datetime = $("#datetime");
     var input;
-    var input = $("<input>").attr("type", "datetime-local").attr("name", dateTimeName).attr("value", datetimeValue).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "datetime-local").attr("name", dateTimeName).attr("value", datetimeValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
     var br = $("<br>");
     datetime.append(br);
     datetime.append(input);
@@ -17,7 +17,7 @@ function addRow(){
     let exerciseValue = document.getElementById("exercise").lastElementChild.value;
     let exercise = $("#exercise");
     var input;
-    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("value", exerciseValue).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("value", exerciseValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
     var br = $("<br>");
     exercise.append(br);
     exercise.append(input);
@@ -27,7 +27,7 @@ function addRow(){
     let setNumberValue = parseInt(document.getElementById("setnumber").lastElementChild.value) + 1;
     let setNumber = $("#setnumber");
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("value", setNumberValue).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("value", setNumberValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
     var br = $("<br>");
     setNumber.append(br);
     setNumber.append(input);
@@ -36,7 +36,7 @@ function addRow(){
     let repValue = parseInt(document.getElementById("rep").lastElementChild.value);
     let rep = $("#rep")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", repName).attr("value", repValue).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "number").attr("name", repName).attr("value", repValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
     var br = $("<br>");
     rep.append(br);
     rep.append(input);
@@ -45,7 +45,7 @@ function addRow(){
     let resistanceValue = parseInt(document.getElementById("resistance").lastElementChild.value);
     let resistance = $("#resistance")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", resistanceName).attr("step", ".5").attr("value", resistanceValue).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "number").attr("name", resistanceName).attr("step", ".5").attr("value", resistanceValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
     var br = $("<br>");
     resistance.append(br);
     resistance.append(input);
@@ -78,7 +78,7 @@ let tabIndexNum = 1;
 function addInitialRow(){
     let datetime = $("#datetime");
     var input;
-    var input = $("<input>").attr("type", "datetime-local").attr("name", dateTimeName).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "datetime-local").attr("name", dateTimeName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
     var br = $("<br>");
     datetime.append(br);
     datetime.append(input);
@@ -86,7 +86,7 @@ function addInitialRow(){
 
     let exercise = $("#exercise");
     var input;
-    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
     var br = $("<br>");
     exercise.append(br);
     exercise.append(input);
@@ -94,7 +94,7 @@ function addInitialRow(){
 
     let setNumber = $("#setnumber");
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("tabindex", tabIndexNum);
+    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");
     var br = $("<br>");
     setNumber.append(br);
     setNumber.append(input);
@@ -102,7 +102,7 @@ function addInitialRow(){
 
     let rep = $("#rep")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", repName).attr("tabindex", tabIndexNum);
+    var input = $("<input>").attr("type", "number").attr("name", repName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");
     var br = $("<br>");
     rep.append(br);
     rep.append(input);
@@ -110,7 +110,7 @@ function addInitialRow(){
 
     let resistance = $("#resistance")
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", resistanceName).attr("step", ".5").attr("tabindex", tabIndexNum);
+    var input = $("<input>").attr("type", "number").attr("name", resistanceName).attr("step", ".5").attr("tabindex", tabIndexNum).attr("autocomplete", "off");
     var br = $("<br>");
     resistance.append(br);
     resistance.append(input);
