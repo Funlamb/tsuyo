@@ -54,6 +54,7 @@ function addRow(){
 }
 
 function trackInputs(){
+    document.getElementById('addRowButton').disabled = true;
     let inputs = document.getElementsByTagName("input");
     for (let index = 0; index < inputs.length; index++) {
         inputs[index].addEventListener("input", checkFilled);
@@ -63,6 +64,7 @@ function trackInputs(){
 function checkFilled(){
     let inputs = document.getElementsByTagName("input");
     let count = inputs.length;
+    console.log(count);
     let testCount = 0;
     for (let index = 0; index < count; index++) {
         if (inputs[index].value !== "") {
@@ -70,7 +72,7 @@ function checkFilled(){
         }
     }
     if (testCount == count){
-        document.getElementById('addCap').removeAttribute("disabled");
+        document.getElementById('addRowButton').removeAttribute("disabled");
     }
 }
 
@@ -94,7 +96,7 @@ function addInitialRow(){
 
     let setNumber = $("#setnumber");
     var input;
-    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");
+    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("tabindex", tabIndexNum).attr("autocomplete", "off").attr("value", 1);
     var br = $("<br>");
     setNumber.append(br);
     setNumber.append(input);
