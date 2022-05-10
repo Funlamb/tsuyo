@@ -17,7 +17,7 @@ function addRow(){
     let exerciseValue = document.getElementById("exercise").lastElementChild.value;
     let exercise = $("#exercise");
     var input;
-    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("value", exerciseValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
+    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("value", exerciseValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off").attr("special", true);  
     var br = $("<br>");
     exercise.append(br);
     exercise.append(input);
@@ -51,8 +51,17 @@ function addRow(){
     resistance.append(input);
     tabIndexNum++;
 
+    addEvents();
 }
 
+function addEvents(){
+    let items = document.querySelectorAll("input")
+    items.forEach(e => {
+        if(e.hasAttribute("special")){
+            e.addEventListener("input", changeSetNumber)
+        }
+    })
+}
 function trackInputs(){
     document.getElementById('addRowButton').disabled = true;
     let inputs = document.getElementsByTagName("input");
@@ -64,7 +73,6 @@ function trackInputs(){
 function checkFilled(){
     let inputs = document.getElementsByTagName("input");
     let count = inputs.length;
-    console.log(count);
     let testCount = 0;
     for (let index = 0; index < count; index++) {
         if (inputs[index].value !== "") {
@@ -88,7 +96,7 @@ function addInitialRow(){
 
     let exercise = $("#exercise");
     var input;
-    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
+    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum).attr("autocomplete", "off").attr("special", true);  
     var br = $("<br>");
     exercise.append(br);
     exercise.append(input);
@@ -122,3 +130,19 @@ function addInitialRow(){
 }
 
 addInitialRow();
+
+let exercisesTop = document.getElementById("exercise");
+console.log(exercisesTop.children[1].getAttribute("tabindex"));
+exercisesTop.children[1].addEventListener("input", changeSetNumber);
+
+function changeSetNumber(e){
+    let tabIndex = e.target.getAttribute('tabindex');
+    tabIndex++;
+    let inputToChange = document.querySelectorAll('input');
+    console.log(tabIndex);
+    inputToChange.forEach(element => {
+        if (element.getAttribute("tabindex") == tabIndex){
+            element.value = 1;
+        }
+    });
+}
