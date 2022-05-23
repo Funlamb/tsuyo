@@ -4,6 +4,7 @@ Get workouts, sets, and exercises to have classes and helper functions
 
 5-23-22
 Got select2 working on a test page
+Got select2 to work on add_sets.html in a text select box
 
 5-02-22
 Fixed the tabindex of the add_sets page
