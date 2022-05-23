@@ -2,6 +2,9 @@ Have exercises drop down so user can input previously done exercises
 Use classes to access data
 Get workouts, sets, and exercises to have classes and helper functions
 
+5-23-22
+Got select2 working on a test page
+
 5-02-22
 Fixed the tabindex of the add_sets page
 Set focus to the exercise name when adding a set in add_sets

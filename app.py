@@ -27,6 +27,10 @@ Ex_set.db = database
 Exercise.db = database
 Ex_cardio.db = database
 
+@app.route('/select2')
+def select2():
+   return render_template("select2.html")
+
 @app.route('/')
 def index():
    session.clear()
