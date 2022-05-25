@@ -403,6 +403,11 @@ def add_set():
          # Create the set
          Ex_set.add_set(workout_id, exercise_id, exercises)
       return redirect("/list_workouts")
+   cur = User.db.cursor()
+   query = "SELECT name FROM exercises"
+   workout_list = cur.execute(query).fetchall()
+   for i in workout_list:
+      print(i[0])
    return render_template("add_set.html")
 
 @app.route('/register', methods=['GET', 'POST'])
