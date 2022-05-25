@@ -132,7 +132,6 @@ function addInitialRow(){
 addInitialRow();
 
 let exercisesTop = document.getElementById("exercise");
-console.log(exercisesTop.children[1].getAttribute("tabindex"));
 exercisesTop.children[1].addEventListener("input", changeSetNumber);
 
 function changeSetNumber(e){
@@ -146,3 +145,17 @@ function changeSetNumber(e){
         }
     });
 }
+var workout_lst;
+
+// function test_func(){
+//     console.log("hello");
+// }
+
+// function load_workout_lst(lst){
+//     console.log(lst);
+//     for (let i = 0; i < lst.length; i++){
+//         workout_lst.push(lst[i]);
+//     }
+// }
+
+// console.log(workout_lst);

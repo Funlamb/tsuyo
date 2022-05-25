@@ -405,10 +405,13 @@ def add_set():
       return redirect("/list_workouts")
    cur = User.db.cursor()
    query = "SELECT name FROM exercises"
-   workout_list = cur.execute(query).fetchall()
-   for i in workout_list:
-      print(i[0])
-   return render_template("add_set.html")
+   workout_list_sql = cur.execute(query).fetchall()
+   workout_list = []
+   for i in workout_list_sql:
+      workout_list.append(i[0])
+   sorted_workout_list = sorted(workout_list)
+   # add list to actual exercise dropdown 
+   return render_template("add_set.html", workout_list=sorted_workout_list)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

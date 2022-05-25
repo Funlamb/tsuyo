@@ -31,19 +31,18 @@ Exercise
     </table>
     <button type="submit" onclick="displayData()">Submit</button>
     <select class="js-example-basic-single" name="state">
-        <option value="AL">Alabama</option>
-        <option value="AL">Arch</option>
-        <option value="AL">Linux</option>
-        <option value="AL">Tampa</option>
-        <option value="WY">Wyoming</option>
-      </select>
+        {% for i in workout_list %}
+        <option>{{i}}</option>
+        {% endfor %}
+    </select>
     <script src="{{ url_for('static', filename='js/exercise.js') }}" type="text/javascript"></script>
 </form>
 
 <script>
-        $(document).ready(function() { 
-        console.log("Ready");
-    $('.js-example-basic-single').select2();
+    $(document).ready(function() { 
+        $('.js-example-basic-single').select2();
 });
+    // test_func();
+    // load_workout_lst({{workout_list}});
 </script>
 {% endblock %}
