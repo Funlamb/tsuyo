@@ -30,19 +30,25 @@ Add Set
         </tr>
     </table>
     <button type="submit" onclick="displayData()">Submit</button>
-    <select class="js-example-basic-single" name="state">
-        {% for i in workout_list %}
-        <option>{{i}}</option>
-        {% endfor %}
-    </select>
-    <script src="{{ url_for('static', filename='js/exercise.js') }}" type="text/javascript"></script>
+    <select class="js-example-basic-single" name="state"></select>
 </form>
 
+<script src="{{ url_for('static', filename='js/exercise.js') }}" type="text/javascript"></script>
 <script>
     $(document).ready(function() { 
         $('.js-example-basic-single').select2();
-});
-    // test_func();
-    // load_workout_lst({{workout_list}});
+    });
+    
+    load_workout_lst({{workout_list | tojson}});
+    
+    let lst = {{workout_list | tojson}};
+    let e = document.getElementsByName('state');
+    console.log(e);
+    for(var i = 0, l = lst.length; i < l; i++){
+        var option2 = lst[i];
+        e[0].options.add(new Option(option2));
+    }
+    addInitialRow();
+
 </script>
 {% endblock %}

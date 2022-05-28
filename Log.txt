@@ -1,4 +1,5 @@
 Have exercises drop down so user can input previously done exercises
+Add a way to add new exercises
 Use classes to access data
 Get workouts, sets, and exercises to have classes and helper functions
 

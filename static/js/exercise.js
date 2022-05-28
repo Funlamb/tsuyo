@@ -96,10 +96,17 @@ function addInitialRow(){
 
     let exercise = $("#exercise");
     var input;
-    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum).attr("autocomplete", "off").attr("special", true);  
+    var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
     var br = $("<br>");
     exercise.append(br);
     exercise.append(input);
+    input.select2();
+    console.log(input);
+    for(var i = 0, l = workout_lst.length; i < l; i++){
+        console.log(workout_lst[i]);
+        var item = workout_lst[i];
+        input.options.add(new Option(item));
+    }
     tabIndexNum++;
 
     let setNumber = $("#setnumber");
@@ -129,11 +136,6 @@ function addInitialRow(){
     trackInputs();
 }
 
-addInitialRow();
-
-let exercisesTop = document.getElementById("exercise");
-exercisesTop.children[1].addEventListener("input", changeSetNumber);
-
 function changeSetNumber(e){
     let tabIndex = e.target.getAttribute('tabindex');
     tabIndex++;
@@ -145,17 +147,14 @@ function changeSetNumber(e){
         }
     });
 }
-var workout_lst;
+var workout_lst = [];
 
-// function test_func(){
-//     console.log("hello");
-// }
+function load_workout_lst(lst){
+    for (let i = 0; i < lst.length; i++){
+        workout_lst.push(lst[i]);
+    }
+}
 
-// function load_workout_lst(lst){
-//     console.log(lst);
-//     for (let i = 0; i < lst.length; i++){
-//         workout_lst.push(lst[i]);
-//     }
-// }
-
-// console.log(workout_lst);
+// addInitialRow();
+let exercisesTop = document.getElementById("exercise");
+// exercisesTop.children[1].addEventListener("input", changeSetNumber);
