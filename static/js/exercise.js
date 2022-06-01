@@ -96,17 +96,17 @@ function addInitialRow(){
 
     let exercise = $("#exercise");
     var input;
-    var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
+    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
     var br = $("<br>");
     exercise.append(br);
     exercise.append(input);
-    input.select2();
-    console.log(input);
-    for(var i = 0, l = workout_lst.length; i < l; i++){
-        console.log(workout_lst[i]);
-        var item = workout_lst[i];
-        input.options.add(new Option(item));
-    }
+    // input.select2();
+    // console.log(input);
+    // for(var i = 0, l = workout_lst.length; i < l; i++){
+    //     console.log(workout_lst[i]);
+    //     var item = workout_lst[i];
+    //     input.options.add(new Option(item));
+    // }
     tabIndexNum++;
 
     let setNumber = $("#setnumber");
