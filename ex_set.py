@@ -30,4 +30,3 @@ class Ex_set:
         sql = "INSERT INTO sets (workoutID, exerciseID, setNumber, interval, resistance) VALUES (?, ?, ?, ?, ?)"
         Ex_set.db.execute(sql, [workout_id, exercise_id, exercises[2], exercises[3], exercises[4]])
         Ex_set.db.commit()
-        print("class add_set")
