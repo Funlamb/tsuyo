@@ -16,13 +16,23 @@ function addRow(){
     
     let exerciseValue = document.getElementById("exercise").lastElementChild.value;
     let exercise = $("#exercise");
-    var input;
-    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("value", exerciseValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off").attr("special", true);  
+    var inputDrop = document.createElement("select");
+    inputDrop.setAttribute("name", exerciseName);
+    inputDrop.setAttribute("tabindex", tabIndexNum);
+    inputDrop.setAttribute("value", exerciseValue);
+    // var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
+    console.log(inputDrop);
+    for(var i = 0, l = workout_lst.length; i < l; i++){
+        console.log(workout_lst[i]);
+        var item = workout_lst[i];
+        inputDrop.options.add(new Option(item));
+    }
     var br = $("<br>");
     exercise.append(br);
-    exercise.append(input);
-    input.focus();
+    exercise.append(inputDrop);
+    // inputDrop.select2();
     tabIndexNum++;
+    input.focus();
 
     let setNumberValue = parseInt(document.getElementById("setnumber").lastElementChild.value) + 1;
     let setNumber = $("#setnumber");
@@ -54,35 +64,35 @@ function addRow(){
     addEvents();
 }
 
-function addEvents(){
-    let items = document.querySelectorAll("input")
-    items.forEach(e => {
-        if(e.hasAttribute("special")){
-            e.addEventListener("input", changeSetNumber)
-        }
-    })
-}
-function trackInputs(){
-    document.getElementById('addRowButton').disabled = true;
-    let inputs = document.getElementsByTagName("input");
-    for (let index = 0; index < inputs.length; index++) {
-        inputs[index].addEventListener("input", checkFilled);
-    }
-}
+// function addEvents(){
+//     let items = document.querySelectorAll("input")
+//     items.forEach(e => {
+//         if(e.hasAttribute("special")){
+//             e.addEventListener("input", changeSetNumber)
+//         }
+//     })
+// }
+// function trackInputs(){
+//     document.getElementById('addRowButton').disabled = true;
+//     let inputs = document.getElementsByTagName("input");
+//     for (let index = 0; index < inputs.length; index++) {
+//         inputs[index].addEventListener("input", checkFilled);
+//     }
+// }
 
-function checkFilled(){
-    let inputs = document.getElementsByTagName("input");
-    let count = inputs.length;
-    let testCount = 0;
-    for (let index = 0; index < count; index++) {
-        if (inputs[index].value !== "") {
-            testCount += 1;
-        }
-    }
-    if (testCount == count){
-        document.getElementById('addRowButton').removeAttribute("disabled");
-    }
-}
+// function checkFilled(){
+//     let inputs = document.getElementsByTagName("input");
+//     let count = inputs.length;
+//     let testCount = 0;
+//     for (let index = 0; index < count; index++) {
+//         if (inputs[index].value !== "") {
+//             testCount += 1;
+//         }
+//     }
+//     if (testCount == count){
+//         document.getElementById('addRowButton').removeAttribute("disabled");
+//     }
+// }
 
 let tabIndexNum = 1;
 function addInitialRow(){
@@ -95,18 +105,20 @@ function addInitialRow(){
     tabIndexNum++;
 
     let exercise = $("#exercise");
-    var input;
-    var input = $("<input>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
+    var inputDrop = document.createElement("select");
+    inputDrop.setAttribute("name", exerciseName);
+    inputDrop.setAttribute("tabindex", tabIndexNum);
+    // var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
+    console.log(inputDrop);
+    for(var i = 0, l = workout_lst.length; i < l; i++){
+        console.log(workout_lst[i]);
+        var item = workout_lst[i];
+        inputDrop.options.add(new Option(item));
+    }
     var br = $("<br>");
     exercise.append(br);
-    exercise.append(input);
-    // input.select2();
-    // console.log(input);
-    // for(var i = 0, l = workout_lst.length; i < l; i++){
-    //     console.log(workout_lst[i]);
-    //     var item = workout_lst[i];
-    //     input.options.add(new Option(item));
-    // }
+    exercise.append(inputDrop);
+    // inputDrop.select2();
     tabIndexNum++;
 
     let setNumber = $("#setnumber");
@@ -133,6 +145,8 @@ function addInitialRow(){
     resistance.append(input);
     tabIndexNum++;
 
+    inputDrop.select2();
+    
     trackInputs();
 }
 
