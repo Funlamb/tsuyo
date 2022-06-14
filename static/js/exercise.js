@@ -16,17 +16,17 @@ function addRow(){
     
     let exerciseValue = document.getElementById("exercise").lastElementChild.value;
     let exercise = $("#exercise");
-    var inputDrop = document.createElement("select");
+    var inputDrop = document.createElement("input");
     inputDrop.setAttribute("name", exerciseName);
     inputDrop.setAttribute("tabindex", tabIndexNum);
     inputDrop.setAttribute("value", exerciseValue);
     // var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
     console.log(inputDrop);
-    for(var i = 0, l = workout_lst.length; i < l; i++){
-        console.log(workout_lst[i]);
-        var item = workout_lst[i];
-        inputDrop.options.add(new Option(item));
-    }
+    // for(var i = 0, l = workout_lst.length; i < l; i++){
+    //     console.log(workout_lst[i]);
+    //     var item = workout_lst[i];
+    //     inputDrop.options.add(new Option(item));
+    // }
     var br = $("<br>");
     exercise.append(br);
     exercise.append(inputDrop);
@@ -105,16 +105,16 @@ function addInitialRow(){
     tabIndexNum++;
 
     let exercise = $("#exercise");
-    var inputDrop = document.createElement("select");
+    var inputDrop = document.createElement("input");
     inputDrop.setAttribute("name", exerciseName);
     inputDrop.setAttribute("tabindex", tabIndexNum);
     // var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
     console.log(inputDrop);
-    for(var i = 0, l = workout_lst.length; i < l; i++){
-        console.log(workout_lst[i]);
-        var item = workout_lst[i];
-        inputDrop.options.add(new Option(item));
-    }
+    // for(var i = 0, l = workout_lst.length; i < l; i++){
+    //     console.log(workout_lst[i]);
+    //     var item = workout_lst[i];
+    //     inputDrop.options.add(new Option(item));
+    // }
     var br = $("<br>");
     exercise.append(br);
     exercise.append(inputDrop);
