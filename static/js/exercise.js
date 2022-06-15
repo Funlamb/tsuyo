@@ -4,24 +4,36 @@ var setNumberName = "nSetnumber[]"
 var repName = "nRep[]"
 var resistanceName = "nResistance[]"
 
+let tabIndexNum = 1;
+let datetime = $("#datetime");
+let exercise = $("#exercise");
+let setNumber = $("#setnumber");
+let rep = $("#rep");
+let resistance = $("#resistance");
+
 function addRow(){
-    let datetimeValue = document.getElementById("datetime").lastElementChild.value;
-    let datetime = $("#datetime");
-    var input;
-    var input = $("<input>").attr("type", "datetime-local").attr("name", dateTimeName).attr("value", datetimeValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
+    var input = document.createElement("input");
+    input.setAttribute("type", "datetime-local");
+    input.setAttribute("name", dateTimeName);
+    input.setAttribute("tabindex", tabIndexNum)
+    input.setAttribute("autocomplete", "off");
+    if (document.getElementById("datetime").firstChild){
+        let datetimeValue = document.getElementById("datetime").lastElementChild.value;
+        input.setAttribute("value", datetimeValue);
+    } 
     var br = $("<br>");
     datetime.append(br);
     datetime.append(input);
     tabIndexNum++;
     
-    let exerciseValue = document.getElementById("exercise").lastElementChild.value;
-    let exercise = $("#exercise");
     var inputDrop = document.createElement("input");
     inputDrop.setAttribute("name", exerciseName);
     inputDrop.setAttribute("tabindex", tabIndexNum);
-    inputDrop.setAttribute("value", exerciseValue);
+    if(document.getElementById("exercise").firstChild){
+        let exerciseValue = document.getElementById("exercise").lastElementChild.value;
+        inputDrop.setAttribute("value", exerciseValue);
+    }
     // var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
-    console.log(inputDrop);
     // for(var i = 0, l = workout_lst.length; i < l; i++){
     //     console.log(workout_lst[i]);
     //     var item = workout_lst[i];
@@ -32,30 +44,45 @@ function addRow(){
     exercise.append(inputDrop);
     // inputDrop.select2();
     tabIndexNum++;
-    input.focus();
+    inputDrop.focus();
 
-    let setNumberValue = parseInt(document.getElementById("setnumber").lastElementChild.value) + 1;
-    let setNumber = $("#setnumber");
-    var input;
-    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("value", setNumberValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
+    var input = document.createElement("input");
+    input.setAttribute("type", "number");
+    input.setAttribute("name", setNumberName);
+    input.setAttribute("tabindex", tabIndexNum);
+    input.setAttribute("autocomplete", "off");
+    if(document.getElementById("setnumber").firstChild){
+        let setNumberValue = parseInt(document.getElementById("setnumber").lastElementChild.value) + 1;
+        input.setAttribute("value", setNumberValue);
+    }
     var br = $("<br>");
     setNumber.append(br);
     setNumber.append(input);
     tabIndexNum++;
-
-    let repValue = parseInt(document.getElementById("rep").lastElementChild.value);
-    let rep = $("#rep")
-    var input;
-    var input = $("<input>").attr("type", "number").attr("name", repName).attr("value", repValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
+    
+    var input = document.createElement("input");
+    input.setAttribute("type", "number");
+    input.setAttribute("name", repName);
+    input.setAttribute("tabindex", tabIndexNum);
+    input.setAttribute("autocomplete", "off");
+    if(document.getElementById("rep").firstChild){
+        let repValue = parseInt(document.getElementById("rep").lastElementChild.value);
+        input.setAttribute("value", repValue);
+    }
     var br = $("<br>");
     rep.append(br);
     rep.append(input);
     tabIndexNum++;
 
-    let resistanceValue = parseInt(document.getElementById("resistance").lastElementChild.value);
-    let resistance = $("#resistance")
-    var input;
-    var input = $("<input>").attr("type", "number").attr("name", resistanceName).attr("step", ".5").attr("value", resistanceValue).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
+    var input = document.createElement("input");
+    input.setAttribute("type", "number");
+    input.setAttribute("name", resistanceName);
+    input.setAttribute("tabindex", tabIndexNum);
+    input.setAttribute("autocomplete", "off");
+    if(document.getElementById("resistance").firstChild){
+        let resistanceValue = parseInt(document.getElementById("resistance").lastElementChild.value);
+        input.setAttribute("value", resistanceValue);
+    }
     var br = $("<br>");
     resistance.append(br);
     resistance.append(input);
@@ -64,14 +91,14 @@ function addRow(){
     addEvents();
 }
 
-// function addEvents(){
-//     let items = document.querySelectorAll("input")
-//     items.forEach(e => {
-//         if(e.hasAttribute("special")){
-//             e.addEventListener("input", changeSetNumber)
-//         }
-//     })
-// }
+function addEvents(){
+    let items = document.querySelectorAll("input")
+    items.forEach(e => {
+        if(e.hasAttribute("special")){
+            e.addEventListener("input", changeSetNumber)
+        }
+    })
+}
 // function trackInputs(){
 //     document.getElementById('addRowButton').disabled = true;
 //     let inputs = document.getElementsByTagName("input");
@@ -94,67 +121,10 @@ function addRow(){
 //     }
 // }
 
-let tabIndexNum = 1;
-function addInitialRow(){
-    let datetime = $("#datetime");
-    var input;
-    var input = $("<input>").attr("type", "datetime-local").attr("name", dateTimeName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");  
-    var br = $("<br>");
-    datetime.append(br);
-    datetime.append(input);
-    tabIndexNum++;
-
-    let exercise = $("#exercise");
-    var inputDrop = document.createElement("input");
-    inputDrop.setAttribute("name", exerciseName);
-    inputDrop.setAttribute("tabindex", tabIndexNum);
-    // var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
-    console.log(inputDrop);
-    // for(var i = 0, l = workout_lst.length; i < l; i++){
-    //     console.log(workout_lst[i]);
-    //     var item = workout_lst[i];
-    //     inputDrop.options.add(new Option(item));
-    // }
-    var br = $("<br>");
-    exercise.append(br);
-    exercise.append(inputDrop);
-    // inputDrop.select2();
-    tabIndexNum++;
-
-    let setNumber = $("#setnumber");
-    var input;
-    var input = $("<input>").attr("type", "number").attr("name", setNumberName).attr("tabindex", tabIndexNum).attr("autocomplete", "off").attr("value", 1);
-    var br = $("<br>");
-    setNumber.append(br);
-    setNumber.append(input);
-    tabIndexNum++;
-
-    let rep = $("#rep")
-    var input;
-    var input = $("<input>").attr("type", "number").attr("name", repName).attr("tabindex", tabIndexNum).attr("autocomplete", "off");
-    var br = $("<br>");
-    rep.append(br);
-    rep.append(input);
-    tabIndexNum++;
-
-    let resistance = $("#resistance")
-    var input;
-    var input = $("<input>").attr("type", "number").attr("name", resistanceName).attr("step", ".5").attr("tabindex", tabIndexNum).attr("autocomplete", "off");
-    var br = $("<br>");
-    resistance.append(br);
-    resistance.append(input);
-    tabIndexNum++;
-
-    inputDrop.select2();
-    
-    trackInputs();
-}
-
 function changeSetNumber(e){
     let tabIndex = e.target.getAttribute('tabindex');
     tabIndex++;
     let inputToChange = document.querySelectorAll('input');
-    console.log(tabIndex);
     inputToChange.forEach(element => {
         if (element.getAttribute("tabindex") == tabIndex){
             element.value = 1;
