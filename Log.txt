@@ -3,6 +3,9 @@ Add a way to add new exercises
 Use classes to access data
 Get workouts, sets, and exercises to have classes and helper functions
 
+6-15-22
+Refactored exercise.JS
+
 6-01-22
 Found a weird bug when editing cardio workouts - They change more than one workout
 

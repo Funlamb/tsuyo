@@ -36,16 +36,9 @@ function addRow(){
         let exerciseValue = document.getElementById("exercise").lastElementChild.value;
         inputDrop.setAttribute("value", exerciseValue);
     }
-    // var input = $("<select>").attr("type", "text").attr("name", exerciseName).attr("tabindex", tabIndexNum);  
-    // for(var i = 0, l = workout_lst.length; i < l; i++){
-    //     console.log(workout_lst[i]);
-    //     var item = workout_lst[i];
-    //     inputDrop.options.add(new Option(item));
-    // }
     var br = $("<br>");
     exercise.append(br);
     exercise.append(inputDrop);
-    // inputDrop.select2();
     tabIndexNum++;
     inputDrop.focus();
 
@@ -105,27 +98,6 @@ function addEvents(){
         }
     })
 }
-// function trackInputs(){
-//     document.getElementById('addRowButton').disabled = true;
-//     let inputs = document.getElementsByTagName("input");
-//     for (let index = 0; index < inputs.length; index++) {
-//         inputs[index].addEventListener("input", checkFilled);
-//     }
-// }
-
-// function checkFilled(){
-//     let inputs = document.getElementsByTagName("input");
-//     let count = inputs.length;
-//     let testCount = 0;
-//     for (let index = 0; index < count; index++) {
-//         if (inputs[index].value !== "") {
-//             testCount += 1;
-//         }
-//     }
-//     if (testCount == count){
-//         document.getElementById('addRowButton').removeAttribute("disabled");
-//     }
-// }
 
 function changeSetNumber(e){
     let tabIndex = e.target.getAttribute('tabindex');
@@ -137,8 +109,9 @@ function changeSetNumber(e){
         }
     });
 }
-var workout_lst = [];
 
+//Depriciated used for loading a list of workouts into a select2 input that did not work
+var workout_lst = [];
 function load_workout_lst(lst){
     for (let i = 0; i < lst.length; i++){
         workout_lst.push(lst[i]);
