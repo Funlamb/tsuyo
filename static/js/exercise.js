@@ -12,6 +12,7 @@ let rep = $("#rep");
 let resistance = $("#resistance");
 
 function addRow(){
+    //Date and Time
     var input = document.createElement("input");
     input.setAttribute("type", "datetime-local");
     input.setAttribute("name", dateTimeName);
@@ -26,9 +27,11 @@ function addRow(){
     datetime.append(input);
     tabIndexNum++;
     
+    //Exercise Input
     var inputDrop = document.createElement("input");
     inputDrop.setAttribute("name", exerciseName);
     inputDrop.setAttribute("tabindex", tabIndexNum);
+    inputDrop.setAttribute("special", true);
     if(document.getElementById("exercise").firstChild){
         let exerciseValue = document.getElementById("exercise").lastElementChild.value;
         inputDrop.setAttribute("value", exerciseValue);
@@ -46,6 +49,7 @@ function addRow(){
     tabIndexNum++;
     inputDrop.focus();
 
+    //Set Number Inpute
     var input = document.createElement("input");
     input.setAttribute("type", "number");
     input.setAttribute("name", setNumberName);
@@ -60,6 +64,7 @@ function addRow(){
     setNumber.append(input);
     tabIndexNum++;
     
+    //Repetition Input
     var input = document.createElement("input");
     input.setAttribute("type", "number");
     input.setAttribute("name", repName);
@@ -74,6 +79,7 @@ function addRow(){
     rep.append(input);
     tabIndexNum++;
 
+    //Resistance Input
     var input = document.createElement("input");
     input.setAttribute("type", "number");
     input.setAttribute("name", resistanceName);
@@ -138,7 +144,3 @@ function load_workout_lst(lst){
         workout_lst.push(lst[i]);
     }
 }
-
-// addInitialRow();
-let exercisesTop = document.getElementById("exercise");
-// exercisesTop.children[1].addEventListener("input", changeSetNumber);

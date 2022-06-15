@@ -43,7 +43,6 @@ Add Set
     
     let lst = {{workout_list | tojson}};
     let e = document.getElementsByName('state');
-    console.log(e);
     for(var i = 0, l = lst.length; i < l; i++){
         var option2 = lst[i];
         e[0].options.add(new Option(option2));
