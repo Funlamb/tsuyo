@@ -42,7 +42,7 @@ function addRow(){
     tabIndexNum++;
     inputDrop.focus();
 
-    //Set Number Inpute
+    //Set Number Input
     var input = document.createElement("input");
     input.setAttribute("type", "number");
     input.setAttribute("name", setNumberName);
@@ -78,6 +78,7 @@ function addRow(){
     input.setAttribute("name", resistanceName);
     input.setAttribute("tabindex", tabIndexNum);
     input.setAttribute("autocomplete", "off");
+    input.setAttribute("step", ".5");
     if(document.getElementById("resistance").firstChild){
         let resistanceValue = parseInt(document.getElementById("resistance").lastElementChild.value);
         input.setAttribute("value", resistanceValue);
