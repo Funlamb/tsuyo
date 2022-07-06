@@ -16,8 +16,8 @@ from head_cardio import Head_cardio
 import json
 
 app = Flask(__name__)
-app.secret_key = "toots"
 port = int(os.getenv('PORT'))
+app.secret_key = "toots"
 
 # Setup databases from all classes
 database = get_db_connection()
@@ -39,11 +39,11 @@ def index():
 @app.route('/login', methods=["GET", "POST"])
 def login():
    # This block used to temporaroly text site
-   user = User.get("fun@gmail.com")
-   session['user_id'] = user.get_id()
-   session['name'] = user.get_first_name()
-   session['email'] = user.get_email()
-   return redirect("/list_workouts")
+   # user = User.get("fun@gmail.com")
+   # session['user_id'] = user.get_id()
+   # session['name'] = user.get_first_name()
+   # session['email'] = user.get_email()
+   # return redirect("/list_workouts")
    # remove any prior session
    session.clear()
    if request.method == "POST":
