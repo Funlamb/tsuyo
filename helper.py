@@ -4,9 +4,9 @@ from flask import redirect, render_template, request, session
 from functools import wraps
 import sqlite3
 
-def message(message, title):
+def message(message):
     """Render a message to the user"""
-    return render_template("message.html", message=message, name=title)
+    return render_template("message.html", message=message)
 
 def get_db_connection():
    db = sqlite3.connect("workout.db", check_same_thread=False)
