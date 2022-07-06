@@ -1,5 +1,4 @@
-from crypt import methods
-from os import sep
+import os
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
@@ -18,6 +17,7 @@ import json
 
 app = Flask(__name__)
 app.secret_key = "toots"
+port = int(os.getenv('PORT'))
 
 # Setup databases from all classes
 database = get_db_connection()
@@ -490,7 +490,7 @@ def logout():
    return message("Logged Out", "Logged Out")
 
 if __name__ == '__main__':
-   app.run()
+   app.run(port=port)
    
    # Removed to run on gunicorn
    # app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
