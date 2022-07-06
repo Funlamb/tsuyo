@@ -487,7 +487,7 @@ def settings():
 @app.route('/logout')
 def logout():
    session.clear()
-   return message("Logged Out", "Logged Out")
+   return message("Logged Out")
 
 if __name__ == '__main__':
    app.run(port=port)
