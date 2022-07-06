@@ -490,7 +490,11 @@ def logout():
    return message("Logged Out", "Logged Out")
 
 if __name__ == '__main__':
-   app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
+   app.run()
+   
+   # Removed to run on gunicorn
+   # app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
+   
    # Trying to get the debugger to work
    # https://www.youtube.com/watch?v=UXqiVe6h3lA&t=1194s
    # https://stackoverflow.com/questions/49171144/how-do-i-debug-flask-app-in-vs-code
