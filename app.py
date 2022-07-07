@@ -1,4 +1,5 @@
 import os
+from pickle import FALSE, TRUE
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 
@@ -16,8 +17,10 @@ from head_cardio import Head_cardio
 import json
 
 app = Flask(__name__)
-# port = int(os.getenv('PORT'))
 app.secret_key = "toots"
+
+# Select true to run on Heroku false to run local
+running_heroku = TRUE 
 
 # Setup databases from all classes
 database = get_db_connection()
@@ -490,9 +493,12 @@ def logout():
    return message("Logged Out")
 
 if __name__ == '__main__':
-   app.run()
-   # app.run(port=port)
-   
+   if (running_heroku == TRUE):
+      port = int(os.getenv('PORT'))
+      app.run(port=port)
+   else:
+      app.run()
+
    # Removed to run on gunicorn
    # app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
    
