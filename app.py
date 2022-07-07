@@ -16,7 +16,7 @@ from head_cardio import Head_cardio
 import json
 
 app = Flask(__name__)
-port = int(os.getenv('PORT'))
+# port = int(os.getenv('PORT'))
 app.secret_key = "toots"
 
 # Setup databases from all classes
@@ -490,7 +490,8 @@ def logout():
    return message("Logged Out")
 
 if __name__ == '__main__':
-   app.run(port=port)
+   app.run()
+   # app.run(port=port)
    
    # Removed to run on gunicorn
    # app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
