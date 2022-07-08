@@ -497,10 +497,9 @@ if __name__ == '__main__':
       port = int(os.getenv('PORT'))
       app.run(port=port)
    else:
-      app.run()
+      app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
 
    # Removed to run on gunicorn
-   # app.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
    
    # Trying to get the debugger to work
    # https://www.youtube.com/watch?v=UXqiVe6h3lA&t=1194s
