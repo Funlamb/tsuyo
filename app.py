@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = "toots"
 
 # Select true to run on Heroku false to run local
-running_heroku = TRUE 
+running_heroku = FALSE 
 
 # Setup databases from all classes
 database = get_db_connection()
