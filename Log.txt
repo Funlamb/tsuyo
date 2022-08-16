@@ -3,6 +3,11 @@ Add a way to add new exercises
 Use classes to access data
 Get workouts, sets, and exercises to have classes and helper functions
 
+8-16-22
+Added test user
+test@test.com
+test
+
 6-15-22
 Refactored exercise.JS
 
