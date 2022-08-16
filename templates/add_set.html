@@ -30,23 +30,23 @@ Add Set
         </tr>
     </table>
     <button type="submit" onclick="displayData()">Submit</button>
-    <select class="js-example-basic-single" name="state"></select>
+    <!-- <select class="js-example-basic-single" name="state"></select> -->
 </form>
 
 <script src="{{ url_for('static', filename='js/add_set.js') }}" type="text/javascript"></script>
 <script>
-    $(document).ready(function() { 
-        $('.js-example-basic-single').select2();
-    });
+    // $(document).ready(function() { 
+    //     $('.js-example-basic-single').select2();
+    // });
     
-    load_workout_lst({{workout_list | tojson}});
+    // load_workout_lst({{workout_list | tojson}});
     
-    let lst = {{workout_list | tojson}};
-    let e = document.getElementsByName('state');
-    for(var i = 0, l = lst.length; i < l; i++){
-        var option2 = lst[i];
-        e[0].options.add(new Option(option2));
-    }
+    // let lst = {{workout_list | tojson}};
+    // let e = document.getElementsByName('state');
+    // for(var i = 0, l = lst.length; i < l; i++){
+    //     var option2 = lst[i];
+    //     e[0].options.add(new Option(option2));
+    // }
     addRow();
 
 </script>
