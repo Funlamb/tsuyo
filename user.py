@@ -79,3 +79,7 @@ class User:
     def get_date_of_birth(self):
         return self.date_of_birth
     
+    def reset_password(self, ls):
+        temp = [generate_password_hash(ls['password']), self.id] #Change password of given id
+        User.db.execute("UPDATE users SET hash = ? WHERE id = ?", temp)
+        User.db.commit()
