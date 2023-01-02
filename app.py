@@ -42,17 +42,17 @@ def index():
 @app.route('/login', methods=["GET", "POST"])
 def login():
    # This block used to temporaroly test site
-   # user = User.get("fun@gmail.com")
+   # user = User.get("funlamb@gmail.com")
    # session['user_id'] = user.get_id()
    # session['name'] = user.get_first_name()
    # session['email'] = user.get_email()
-   # return redirect("/list_workouts")
 
    # reset password for user
    # user = User.get("test@test.com") # input user's email address
    # ls = {}
    # ls['password'] = "test" # change password to this word
    # user.reset_password(ls)
+   # return redirect("/list_workouts")
    
    # remove any prior session
    session.clear()
